@@ -1,0 +1,17 @@
+# Card metadata consumed by https://amishchadha.com
+name: ZeerBox
+slug: zeerbox
+area: Agriculture
+status: concept          # concept | design | prototype | tested | released
+shortlisted: false
+pitch: >-
+  Walk-in evaporative cooling chamber with a solar fan that forces air through a wetted pad, and a controller that responds to humidity.
+problem: >-
+  Smallholders lose produce after harvest because they have no cold storage.
+budget_usd: 300
+difficulty: 2  # 1 easiest, 5 hardest
+hero_image: media/hero.png
+licenses:
+  hardware: CERN-OHL-S-2.0
+  software: MIT
+tags: [agriculture, open-hardware, cern-ohl-s]
