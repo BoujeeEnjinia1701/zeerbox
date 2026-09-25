@@ -3,7 +3,7 @@ doc_id: ZBX-PRB-001
 title: ZeerBox problem statement
 project: ZeerBox
 doc_type: Problem statement
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -17,6 +17,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Populate to TRL 2 (users, context, constraints, out of scope, prior work with sources)
+- version: "0.3"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Record the budget decision (ZBX-DDR-001 item 1), the co-design partner rule and the TRL 3 water figure
 ---
 
 # ZeerBox problem statement
@@ -59,7 +63,7 @@ ZeerBox is a walk-in evaporative store, large enough for about 24 crates, that u
 
 ## Constraints
 
-- Garage-buildable prototype at about $300 USD (`project.yaml`). The walk-in structure alone is likely to exceed this; see ZBX-PRC-001 and `docs/REVIEW.md` for the cost split and the proposed budget options, awaiting Amish.
+- The $300 USD budget (`project.yaml`) covers the cooling equipment kit: pad, sump and pump, fans, controller, solar panel, power box and wiring. The walk-in structure is built from local materials and costed separately (decided by Amish, 2026-09-25, ZBX-DDR-001 item 1). At TRL 3 the kit costs about $260 and the structure about $360 (ZBX-CAL-001).
 - Structure built by a local mason and carpenter from local materials, with no specialist refrigeration skills, refrigerant or mains power.
 - Fans, pump and controller run from one small solar panel at 12 V, safe to touch and to work on.
 - Water use modest enough to carry or pump by hand on the hottest day.
@@ -84,9 +88,9 @@ ZeerBox is a walk-in evaporative store, large enough for about 24 crates, that u
 
 ## Open questions
 
-- Which partner organization and which region first? A dry-season vegetable area in the Sahel (Mali, Niger, northern Nigeria, Burkina Faso) or a semi-arid area of East Africa (northern Kenya) fits the design point. Proposed, awaiting Amish.
+- Which partner organization and which region first? A dry-season vegetable area in the Sahel (Mali, Niger, northern Nigeria, Burkina Faso) or a semi-arid area of East Africa (northern Kenya) fits the design point. Amish decided on 2026-09-25 that community designs pick co-design partners per area later; the choice for ZeerBox is still open (ZBX-DDR-001 item 10).
 - Is the store for one farm or for a group? This drives size, cost and who waters and cleans it.
-- How far is the water source, and is 55 L on a hot day acceptable?
+- How far is the water source, and is about 44 L on a hot day acceptable (ZBX-CAL-001)?
 - Which crops dominate, and which must be kept apart (for example ethylene-producing tomatoes and bananas next to leafy greens)?
 - Do users need the store to work in the rainy season, or only in the dry season when losses and prices are highest?
 

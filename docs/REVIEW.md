@@ -71,3 +71,66 @@ Requirements not met or at risk:
 ### Recommended next step
 
 Review this note and the media, then decide items 1 and 2. If approved, run `/advance-trl3` to check the heat balance (including a wet cavity), the pad and fan selection, the RH problem (R3) and the solar sizing by calculation, and to produce the parametric model and drawing sheet.
+
+## Session 2026-09-25: TRL 3
+
+Amish reviewed the TRL 2 points on 2026-09-25 and wrote: "proceed with all of your recommendations across all batches. Make sure we don't proceed to TRL 4 on any of them." This session advanced ZeerBox to TRL 3 and stopped there. **TRL 4 is on hold by Amish's instruction.**
+
+### What was done
+
+- `docs/decisions/0001-trl2-review-decisions.md` (ZBX-DDR-001 v0.1): records items 1 to 8 as decided by Amish, 2026-09-25 (go with recommendation), the cross-cutting approvals, and the open items 9 to 13.
+- `docs/04-calcs/01-sizing.md` (ZBX-CAL-001 v0.1) and `docs/04-calcs/sizing.py`: psychrometrics, fan and pad operating point, heat balance with three scenarios, humidity, wet cavity against dry fills, off-design weather, energy and solar, water, electrical, structure (bricks, bearing, roof uplift) and cost, with a results table for R1 to R12. The script reads `cad/src/model.py`, `bom/bom.csv` and `project.yaml`, prints every quoted number and writes `docs/04-calcs/results.csv`.
+- `cad/src/model.py`: parametric build123d model (all 13 modeled BOM lines) with `PARAMS` and `derived()`; exports `cad/step/zeerbox-assembly.step`, `zeerbox-structure.step`, `zeerbox-cooling-kit.step` and matching STL files.
+- `cad/src/sheets.py` and `cad/drawings/ZBX-DWG-001.svg`, `.pdf`, `.png`: general arrangement at Rev P1, 1:50, third-angle, with key dimensions, marked "CONCEPT, NOT FOR FABRICATION" and "PRELIMINARY, NOT FOR FABRICATION". The concept sheet keeps ZBX-DWG-010, so DWG-001 was the next free number.
+- `bom/bom.csv` and `bom/bom-notes.md`: every line priced with a supplier type; 150 W panel, 20 A PWM controller, 2.5 mm² PV cable, 500 mm post footings, brick and sand quantities from the calculation.
+- `cad/src/concept_media.py` now builds from the model; `media/` refreshed (hero, blueprint, exploded, cutaway, flow, `model.glb`, `viewer.html`). All images were inspected; temporary `media/_views*` folders were deleted.
+- ZBX-PRB-001, ZBX-PRC-001 and ZBX-REQ-001 raised to v0.3 with the decisions and the checked figures; R12 redefined as the cooling equipment kit. `README.md` updated (TRL 3, 150 W, costs, links). `project.yaml`: `trl: 3`, `trl_target: 3`, evidence list extended. The pitch and problem lines are unchanged (no rewording was recommended).
+- PDFs of all controlled documents rebuilt in `docs/pdf/`.
+
+### Requirements (ZBX-CAL-001), not met first
+
+| ID | Status | Value (central, range) |
+| --- | --- | --- |
+| R3 | **Not met** | Store RH 71 % (66 to 76 %) against 85 % |
+| R2 | **At risk** | 9.1 K below ambient (8.0 to 10.0 K); store 25.9 °C |
+| R6, R10, R11 | Not verifiable at TRL 3 | Shelf life, local repair times and component life need field data or a partner |
+| R1, R7, R8, R12 | Met | 24 crates, top shelf 1.40 m; 372 Wh/day against 525 Wh (41 % margin); 44 L/day; kit $260 against $300 |
+| R4, R5, R9 | Met by logic or design review | Mode switch at 3.7 K depression; about 8 air changes an hour in hold; 12 V, fused, guarded, inside release |
+
+Key numbers: airflow 584 m³/h at 16 Pa (not 650 m³/h); heat load 418 W (not 550 W); supply air 24.8 °C and 75 % RH; about 44 L of water per day (not 55 L); 372 Wh/day (the 100 W panel of TRL 2 would have been 6 % short); structure about $360 and store total about $620, crates excluded.
+
+Other findings: the 10 A charge controller was too small for a 150 W panel (1.25 x Isc is 11.2 A), so the BOM now has 20 A; and the wet sand cavity is worth only about 0.15 K over dry sand in the central case and is slightly worse than dry sand in the unfavorable case.
+
+### Decisions recorded
+
+Decided by Amish, 2026-09-25, go with recommendation (ZBX-DDR-001): (1) keep `budget_usd: 300` for the cooling equipment kit, structure costed separately, R12 redefined; (2) 150 W panel; (3) keep the battery; (4) forced air through a pad; (5) exhaust fans with the pad opposite; (6) wet sand cavity walls, pending the TRL 3 heat balance; (7) 24 crates; (8) control thresholds as starting values. Cross-cutting: SwapCell interface v0.3 and shared-pack pricing do not apply (no SwapCell pack); partners are picked per area later.
+
+### Still awaiting Amish
+
+9. Wall material: fired brick, mud brick or block. No recommendation was stated; fired brick is the working choice.
+10. First partner, region and crop mix (left open by the per-area partner rule).
+11. R3 not met and R2 at risk. Options: 150 mm pad (10.5 K, 81 % RH, about $10 more), a relaxed R3, produce-level measures. Recommendation: a 150 mm pad and R3 at 80 %.
+12. Wet cavity against a dry insulating fill. Dry rice husk gives 9.2 K (8.2 K unfavorable) with no cavity water. Recommendation: dry fill, if a durable, pest-proof fill is available locally. This reopens the substance of decided item 6, because the heat balance it was waiting for does not support it.
+13. Roof footings and design wind speed: 500 x 500 x 600 mm footings are in the model; confirm the local design wind speed.
+
+### Safety concerns
+
+- Roof uplift is the main structural hazard: about 2.2 kN per post at a 30 m/s gust. The footings were enlarged to 500 x 500 x 600 mm; a 400 mm footing would have had no margin.
+- Walk-in room: the door opens from inside with no outside lock; air the store out before entering after a long hold.
+- *Legionella* and other bacteria in the warm sump and pad: covered sump, weekly drain and clean, no reuse of sump water.
+- LiFePO4 battery (154 Wh): BMS rated for at least 10 A of charge, terminal fuse, shaded and ventilated box; charge controller sized to 1.25 x Isc.
+- Fans guarded on both faces; isolate before cleaning. Heavy masonry (about 7 t of brick and 2.4 t of wet sand) needs a competent mason, and the wet cavity must not undermine the footings.
+- Not cold chain; not for meat, fish, milk or medicines.
+
+### Problems and notes
+
+- No TRL 4 material exists in the repo; none was created. `build-log/` holds only its README. STANDARDS section 9 asks for a build-log entry on a TRL change; none was added because build-log work is outside this brief, so the TRL change is recorded here and in `project.yaml`.
+- No citations were flagged as unchecked in the TRL 2 review; no new sources were added.
+- Pad pressure drop, pad effectiveness at 0.54 m/s and the fan curve are assumptions; supplier data for the chosen parts should replace them.
+- As at TRL 2, the hero view shows the pad end, and the small controller (9) and power box (11) are partly hidden by their callouts in the exploded view.
+
+### Recommended next step
+
+Decide items 11 and 12 (pad depth, the R3 target and the cavity fill), then items 9 and 13. These are paper changes that can be made at TRL 3: update `PARAMS`, rerun `sizing.py`, and reissue the drawing at Rev P2.
+
+TRL 4 is on hold by Amish's instruction. For reference only, TRL 4 would need: a pad and fan test article with measured airflow, pressure drop and pad effectiveness; a bench test of the controller logic with sensors; a lab test report (TST with `environment: lab`); and build-log entries. None of this has been started.

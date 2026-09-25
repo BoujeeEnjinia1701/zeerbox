@@ -1,0 +1,13 @@
+req,quantity,value,target,status
+R1,Crates on shelves; highest shelf,24 crates (480 kg); top shelf 1.40 m,20 or more crates; no lift above 1.6 m,Met
+R2,"Mean store air below outside air, design point",9.1 K (8.0 to 10.0 K); store 25.9 C,8 K or more,At risk
+R3,Mean store RH while cooling,71 % (66 to 76 %),85 % or more,Not met
+R4,Humid-weather detection and mode change,"Threshold 4 K wet-bulb depression; 30 C, 75 % RH gives 3.7 K and switches to hold; lamp shows mode","Detect under 4 K and switch, with indicator",Met (logic review; bench test later)
+R5,Guard and minimum ventilation,Pump off at 95 % RH for 60 min; hold mode about 8 ACH at about 2 W,Pump stop rule; 1 ACH or more with produce inside,Met (logic review; bench test later)
+R6,Tomato shelf life,"No calculation basis; ZECC data (about 1.8 times) come from a cooler, more humid chamber",1.5 times ambient or more,Not verifiable at TRL 3
+R7,Design-day energy from one PV panel,372 Wh/day needed; 150 W panel gives 525 Wh/day (41 % margin),"10 h cooling plus 2 h evening, no grid",Met
+R8,Water per design day; sump capacity,"44 L/day (pad 28, cavity 12, bleed 4); sump 60 L for 32 L of pad use",70 L or less; sump at least one day,Met
+R9,"12 V DC, fused, guarded, door opens from inside","12.8 V system, 15 A terminal fuse; guards both faces; inside release (design review)","12 V DC, fused, guarded, inside release",Met (design review)
+R10,Local build; 30 min part swaps,"Masonry, timber and generic 12 V parts; swap times and parts survey need the partner",Local trades; swap in 30 min or less,Not verifiable at TRL 3
+R11,"Durability: structure 10 years, pad and fans 3 years",Wall bearing 21 kPa; post footings 1.6 x uplift at 30 m/s; pad and fan life from supplier data not yet available,"10 years structure; 3 years pad, fans, pump",Not verifiable at TRL 3
+R12,Cooling equipment kit cost (structure costed separately),Kit $260; structure $360 (separate); crates $96 (user supplied),Kit $300 or less,Met

@@ -1,14 +1,14 @@
 # ZeerBox
 
-![TRL 2](https://img.shields.io/badge/TRL-2%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
+![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
 
-**Area:** Agriculture · **TRL:** 2 of 9 (concept formulated) · **Prototype budget:** about $300 USD · **Difficulty:** 2 of 5
+**Area:** Agriculture · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** $300 USD for the cooling equipment kit · **Difficulty:** 2 of 5
 
 Walk-in evaporative cooling chamber with a solar fan that forces air through a wetted pad, and a controller that responds to humidity.
 
 ![ZeerBox concept](media/hero.png)
 
-[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Review note](docs/REVIEW.md)
+[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement ZBX-DWG-001 (PDF)](cad/drawings/ZBX-DWG-001.pdf) · [Sizing note ZBX-CAL-001](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
 
 ## Problem
 
@@ -16,7 +16,7 @@ Smallholders lose produce after harvest because they have no cold storage. Refri
 
 ## Concept
 
-A walk-in store (2.4 x 1.5 x 2.0 m inside, 24 crates) with double brick walls around a wet sand cavity. Two 12 V fans pull outside air through a wetted cellulose pad, and a controller reads temperature and humidity inside and out to choose between evaporative cooling, night ventilation and hold. A 100 W solar panel powers it. On a 35 °C, 30 % RH day the store should run about 9 K below the outside air (estimate).
+A walk-in store (2.4 x 1.5 x 2.0 m inside, 24 crates) with double brick walls around a wet sand cavity. Two 12 V fans pull outside air through a wetted cellulose pad, and a controller reads temperature and humidity inside and out to choose between evaporative cooling, night ventilation and hold. A 150 W solar panel with a small battery powers it. The TRL 3 calculation puts the store at about 25.9 °C on a 35 °C, 30 % RH day, 9.1 K below the outside air, using about 44 L of water. Store humidity is about 71 %, short of the 85 % target (estimates, [ZBX-CAL-001](docs/04-calcs/01-sizing.md)).
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
@@ -26,10 +26,10 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md)
 - 100 mm cellulose evaporative pad with drip header and gutter
 - Two 250 mm 12 V DC exhaust fans
 - 60 L sump drum with a 12 V pump
-- 100 W PV panel, PWM charge controller and small LiFePO4 battery
+- 150 W PV panel, 20 A PWM charge controller and small LiFePO4 battery
 - Controller with inside and outside humidity and temperature sensors
 
-The working bill of materials is in [bom/bom.csv](bom/bom.csv). The complete store is about $575 in parts, over the $300 budget; see the [review note](docs/REVIEW.md).
+The priced bill of materials is in [bom/bom.csv](bom/bom.csv). The $300 budget covers the cooling equipment kit, about $260; the structure is built from local materials and costed separately, about $360 (indicative).
 
 ## Safety
 
