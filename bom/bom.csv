@@ -1,7 +1,15 @@
 item,qty,spec,supplier,unit_cost_usd,make_buy,notes
-Brick or panel walls,,,,,,
-Cellulose evaporative pads,,,,,,
-12 V fans,,,,,,
-Small pump,,,,,,
-PV panel,,,,,,
-Humidity and temperature sensor,,,,,,
+1 Double brick walls and floor,1,"About 2,200 fired bricks for two 115 mm leaves (outer 3.01 x 2.11 m, 2.1 m high) and a brick floor on compacted sand; cement-sand mortar; door, fan and pad openings with timber lintels",Local brickworks and hardware shop,160.00,make,Indicative material cost (bricks about $0.06 each plus mortar); mason's labor not included
+2 Wet sand cavity fill,1,"About 1.5 m3 of clean river sand in the 75 mm cavity, with a perforated 20 mm pipe along the top for wetting",Local sand supplier,20.00,buy,Indicative price including pipe
+3 Insulated ceiling,1,"Timber joists and boards over 3.0 x 2.1 m, about 50 mm straw, rice husk or foam board, plastic vapor sheet",Local timber yard,35.00,make,Indicative material cost
+4 Shade roof on posts,1,"Corrugated galvanized steel sheets about 3.9 x 3.0 m on four 75 mm timber or steel posts set in concrete, 450 mm clear above the ceiling, anchored against uplift",Local hardware shop,50.00,make,Indicative material cost
+5 Insulated door with seal,1,"0.8 x 1.8 m timber frame, plywood skins, 50 mm insulation, rubber seal, hinges, inside release latch",Local carpenter,35.00,make,Indicative material cost; must open from inside without a key
+6 Cellulose pad and frame,1,"100 mm cellulose evaporative pad 0.6 x 0.5 m (0.3 m2) in a timber or aluminum frame; perforated 32 mm drip header; return gutter",Poultry or greenhouse equipment supplier; local carpenter,30.00,buy,Indicative price (pad about $20)
+7 Sump drum and pump,1,"60 L covered plastic drum, 12 V DC submersible pump about 6 W and 2 m head, float switch, feed and return hoses",Local market and solar or pump supplier,25.00,buy,Indicative price
+8 Exhaust fans,2,"250 mm 12 V DC axial fan, about 12 W and about 400 m3/h free air, with finger guards both faces and gravity shutter",Solar or electronics supplier,15.00,buy,Indicative price; delivered airflow at 30 Pa to be checked (TRL 3)
+9 Controller and sensors,1,"Low-cost microcontroller board, two digital temperature and RH sensors (one in a radiation shield outside), MOSFET fan and pump drivers, memory card logger, three-color mode lamp, IP65 box",Electronics distributor,30.00,buy,Indicative price
+10 Solar panel,1,"100 W monocrystalline, about 1,000 x 670 x 35 mm, Vmp about 18 V, with roof clamps",Regional solar distributor,45.00,buy,Indicative price; 150 W option about $20 more (proposed)
+11 Power box,1,"10 A PWM solar charge controller, 12.8 V 12 Ah LiFePO4 battery with BMS, 15 A fuse at the terminal, ventilated shaded box",Regional solar distributor,58.00,buy,Indicative price (battery about $40)
+12 Shelving racks,2,"Timber rack 2.2 m long, 0.45 m deep, three slatted shelves at 0.35, 0.9 and 1.45 m, termite-treated",Local carpenter,20.00,make,Indicative material cost per rack
+13 Produce crates,24,"Ventilated plastic crate about 500 x 350 x 300 mm, 20 kg of produce",User supplied,4.00,buy,Not included in the store cost; users normally own crates
+14 Wiring and plumbing,1,"1.5 mm2 twin cable, IP65 connectors, cable glands, hose clips, fixings, dielectric grease",Local hardware shop,15.00,buy,Indicative price; no exploded-view callout

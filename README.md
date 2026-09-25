@@ -6,26 +6,34 @@
 
 Walk-in evaporative cooling chamber with a solar fan that forces air through a wetted pad, and a controller that responds to humidity.
 
+![ZeerBox concept](media/hero.png)
+
+[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Review note](docs/REVIEW.md)
+
 ## Problem
 
-Smallholders lose produce after harvest because they have no cold storage.
+Smallholders lose produce after harvest because they have no cold storage. Refrigerated cold rooms cost tens of thousands of dollars, and passive evaporative coolers are small and fail in humid weather. Design with, not for: requirements must come from co-design sessions and field trials with the intended users through a local partner.
 
 ## Concept
 
-Walk-in evaporative cooling chamber with a solar fan that forces air through a wetted pad, and a controller that responds to humidity.
+A walk-in store (2.4 x 1.5 x 2.0 m inside, 24 crates) with double brick walls around a wet sand cavity. Two 12 V fans pull outside air through a wetted cellulose pad, and a controller reads temperature and humidity inside and out to choose between evaporative cooling, night ventilation and hold. A 100 W solar panel powers it. On a 35 °C, 30 % RH day the store should run about 9 K below the outside air (estimate).
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
 ## Key components
 
-- Brick or panel walls
-- Cellulose evaporative pads
-- 12 V fans
-- Small pump
-- PV panel
-- Humidity and temperature sensor
+- Double brick walls with a wet sand cavity, insulated ceiling and shade roof
+- 100 mm cellulose evaporative pad with drip header and gutter
+- Two 250 mm 12 V DC exhaust fans
+- 60 L sump drum with a 12 V pump
+- 100 W PV panel, PWM charge controller and small LiFePO4 battery
+- Controller with inside and outside humidity and temperature sensors
 
-The working bill of materials is in [bom/bom.csv](bom/bom.csv).
+The working bill of materials is in [bom/bom.csv](bom/bom.csv). The complete store is about $575 in parts, over the $300 budget; see the [review note](docs/REVIEW.md).
+
+## Safety
+
+> A walk-in room: the door must open from inside. Warm recirculating water can grow *Legionella*, so cover, drain and clean the sump weekly. Contains a LiFePO4 battery; use a BMS, fuse it and keep it shaded. Guard the fans. Not for meat, fish, milk or medicines.
 
 ## Repository layout
 
