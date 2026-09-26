@@ -177,3 +177,17 @@ None. No decision needs another repo to change.
 ### TRL 4
 
 TRL 4 remains on hold by Amish's instruction. No TRL 4 work was created. Confirming the husk supply and the local design wind speed, crate liner trials, and a pad and fan test article all wait for a partner and for TRL 4 to be released.
+
+## Session 2026-09-26: sources strengthened
+
+Amish asked for the weaker sources to be fixed. Every replacement below was fetched and checked against the claim it supports.
+
+| Where | Claim | Old source | New source |
+| --- | --- | --- | --- |
+| README, Northern Nigeria row; ZBX-PRB-001 gap 1 | ColdHubs pay-per-crate solar cold rooms at markets and farm clusters | Wikipedia, "ColdHubs" | [ColdHubs](https://coldhubs.com/) official site and [IFPRI](https://www.ifpri.org/blog/coldhubs-addressing-crucial-problem-food-loss-nigeria-solar-powered-refrigeration/) (about $0.50 per crate per day); zeer revival cited to *TIME* |
+| README, Australia row | Coolgardie safe | Wikipedia, "Coolgardie safe" | [Western Australian Museum](https://visitwanderland.com.au/explore/golden-outback/warden-finnertys-residence/coolgardie-safe). The unverified "3 to 9 °C below the air" figure and the uncited remote supply claim were removed |
+| README, What sparked the idea; ZBX-PRB-001 prior work | Bah Abba pot-in-pot cooler | Wikipedia, "Pot-in-pot refrigerator" | Verploegen, Sanogo and Chagomoka, [MIT D-Lab Mali evaluation](https://d-lab.mit.edu/sites/default/files/inline-files/GHTC%20-%20Evaluation%20of%20Low-Cost%20Evaporative%20Cooling%20Technologies%20for%20Improved%20Vegetable%20Storage%20in%20Mali.pdf) (popularized in Nigeria from 1995) and [*TIME*, Best Inventions of 2001](https://content.time.com/time/specials/packages/article/0,28804,1936165_1936254_1936632,00.html). The unverified "first batch of 5,000" and the award year were dropped; the name now follows the Rolex and D-Lab spelling, Mohammed |
+| ZBX-PRB-001 gap 3 | Evaporative cooling weakens in humid air | Wikipedia, "Evaporative cooling chambers" (25 °C, 40 % RH rule of thumb) | MIT D-Lab Mali evaluation: peak cooling up to 10.4 °C below 40 % RH, 4.2 °C above 70 % RH |
+| README, Mali row; ZBX-PRB-001 prior work | Brick chamber cooling in Mali | MIT News only | MIT D-Lab paper added as the primary source alongside MIT News |
+
+The inspiration event is unchanged; its line in the portfolio `INSPIRATIONS.md` was corrected to the verified facts. ZBX-PRB-001 moved to v0.5. No budget change for ZeerBox.

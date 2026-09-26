@@ -38,16 +38,16 @@ The losses fall hardest on perishables and on the farmers who grow them. Without
 
 | Country or region | Why it matters there |
 | --- | --- |
-| Mali and the wider Sahel | Long hot, dry seasons suit evaporative cooling; brick chambers gave more than 8 °C of cooling in real use in Mali ([MIT News, 2018](https://news.mit.edu/2018/mit-d-lab-cite-evaluation-low-cost-evaporative-cooling-devices-mali-0620)) |
-| Northern Nigeria | Home of the modern zeer revival; pay-per-crate solar cold rooms such as ColdHubs serve market hubs but not individual farms ([ColdHubs](https://en.wikipedia.org/wiki/ColdHubs)) |
+| Mali and the wider Sahel | Long hot, dry seasons suit evaporative cooling; in field use in Mali, brick chambers cut the daily peak temperature by up to 10.4 °C when the air was below 40 % RH, but by only 4.2 °C above 70 % RH ([Verploegen, Sanogo and Chagomoka, MIT D-Lab](https://d-lab.mit.edu/sites/default/files/inline-files/GHTC%20-%20Evaluation%20of%20Low-Cost%20Evaporative%20Cooling%20Technologies%20for%20Improved%20Vegetable%20Storage%20in%20Mali.pdf); [MIT News, 2018](https://news.mit.edu/2018/mit-d-lab-cite-evaluation-low-cost-evaporative-cooling-devices-mali-0620)) |
+| Northern Nigeria | Home of the modern zeer revival ([*TIME*, 2001](https://content.time.com/time/specials/packages/article/0,28804,1936165_1936254_1936632,00.html)); pay-per-crate solar walk-in cold rooms such as ColdHubs, at about $0.50 per crate per day, sit in markets, collection centers and farm clusters rather than on individual farms ([ColdHubs](https://coldhubs.com/); [IFPRI](https://www.ifpri.org/blog/coldhubs-addressing-crucial-problem-food-loss-nigeria-solar-powered-refrigeration/)) |
 | India | The zero energy cool chamber was developed at the Indian Agricultural Research Institute; one study found tomato shelf life rising from 6 to 11 days ([*e-planet* 18(2)](https://www.e-planet.co.in/images/Publication/vol-18-2/storage.pdf)) |
 | Kenya | MIT D-Lab has piloted forced-air evaporative chambers, some solar powered, the closest prior work to ZeerBox ([MIT D-Lab](https://d-lab.mit.edu/research/evaporative-cooling-vegetable-preservation)) |
 | Malawi and Zimbabwe | Solar cold room pilots showed the demand and the cost, about $40,000 per unit, with some rooms largely unused ([Efficiency for Access](https://efficiencyforaccess.org/wp-content/uploads/Lessons-learned-from-implementing-solar-powered-walk-in-cold-rooms-for-smallholder-agriculture-in-Zimbabwe-and-Malawi.pdf)) |
-| Australia (arid interior) | A high-income example with a long evaporative tradition: the Coolgardie safe of the 1890s goldfields held food 3 to 9 °C below the air; remote farms and community gardens still face long, hot supply runs ([Coolgardie safe](https://en.wikipedia.org/wiki/Coolgardie_safe)) |
+| Australia (arid interior) | A high-income example with a long evaporative tradition: the Coolgardie safe, invented in the Western Australian goldfields in the late 1890s, kept food cool by trickling water through a hessian cover ([Western Australian Museum](https://visitwanderland.com.au/explore/golden-outback/warden-finnertys-residence/coolgardie-safe)) |
 
 ## What sparked the idea
 
-The idea traces back to the pot-in-pot cooler that Mohamed Bah Abba developed in rural northern Nigeria in the 1990s: one clay pot inside another, with wet sand between them, cooling the inner pot as the water evaporates. He had potters mass-produce a first batch of 5,000 and received the Rolex Award for Enterprise in 2001 for spreading it ([Pot-in-pot refrigerator](https://en.wikipedia.org/wiki/Pot-in-pot_refrigerator)). The zeer shows how far evaporation can go with no power at all, and also where it stops: a pot holds a family's vegetables, not a farmer's harvest, and it cannot tell when the air is too humid to cool. ZeerBox keeps the principle and the name and asks what the same idea looks like at the scale of a walk-in room, with a fan, a deeper pad and a sensor to decide when to use them.
+The idea traces back to the pot-in-pot cooler, or zeer, that Mohammed Bah Abba popularized in Nigeria from 1995: a small earthenware pot inside a larger one, with moist sand between them, cooling the inner pot as the water evaporates ([MIT D-Lab, evaluation of evaporative cooling in Mali](https://d-lab.mit.edu/sites/default/files/inline-files/GHTC%20-%20Evaluation%20of%20Low-Cost%20Evaporative%20Cooling%20Technologies%20for%20Improved%20Vegetable%20Storage%20in%20Mali.pdf)). Bah Abba, a teacher from a potmaking family, received a Rolex Award for Enterprise for the work; *TIME* reported that eggplants kept for 27 days instead of three and that 12,000 coolers had been sold ([*TIME*, Best Inventions of 2001](https://content.time.com/time/specials/packages/article/0,28804,1936165_1936254_1936632,00.html)). The zeer shows how far evaporation can go with no power at all, and also where it stops: a pot holds a family's vegetables, not a farmer's harvest, and it cannot tell when the air is too humid to cool. ZeerBox keeps the principle and the name and asks what the same idea looks like at the scale of a walk-in room, with a fan, a deeper pad and a sensor to decide when to use them.
 
 ## Problem
 
@@ -91,6 +91,12 @@ The priced bill of materials is in [bom/bom.csv](bom/bom.csv). The $300 budget c
 ## Documentation
 
 Controlled documents follow the portfolio [documentation standard](.kit/STANDARDS.md). Each carries a document ID (ZBX-PRC-001 for the precis), a version and a revision history. Branded PDFs are built with `python .kit/render.py` and attached to GitHub Releases when a document is tagged, for example `ZBX-PRC-001/v1.0`.
+
+## Credits
+
+Designed by Amish Chadha. See [CONTRIBUTORS.md](CONTRIBUTORS.md) for roles. To cite this design, use [CITATION.cff](CITATION.cff) (GitHub shows it as "Cite this repository").
+
+AI assistance (Claude) was used to accelerate concept renders, prototype documentation and first-pass sizing calculations. Design direction and all decisions are Amish Chadha's, recorded in this repository's decision records (`docs/decisions/`).
 
 ## Licenses
 

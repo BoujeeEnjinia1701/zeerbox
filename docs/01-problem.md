@@ -3,9 +3,9 @@ doc_id: ZBX-PRB-001
 title: ZeerBox problem statement
 project: ZeerBox
 doc_type: Problem statement
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-09-25'
+date: '2026-09-26'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,6 +25,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002). Dry rice husk fill in place of the wet-cavity wall; cost and water figures from ZBX-CAL-001 v0.2
+- version: "0.5"
+  date: '2026-09-26'
+  author: Amish Chadha
+  change: Stronger sources
 ---
 
 # ZeerBox problem statement
@@ -39,9 +43,9 @@ The result is that a farmer must sell on the day of harvest, often to the first 
 
 Three gaps block the obvious fix:
 
-1. **Refrigeration is out of reach.** A solar-powered walk-in cold room for smallholder agriculture in Malawi and Zimbabwe cost about $40,000 per unit for 10 t of capacity, with a 10 kWp array and 15 kWh of batteries, and some pilot rooms stood largely unused ([Efficiency for Access, lessons from Zimbabwe and Malawi](https://efficiencyforaccess.org/wp-content/uploads/Lessons-learned-from-implementing-solar-powered-walk-in-cold-rooms-for-smallholder-agriculture-in-Zimbabwe-and-Malawi.pdf)). Pay-per-crate solar cold rooms such as ColdHubs in Nigeria work where a business runs them, but they serve market hubs rather than individual farms ([ColdHubs, Wikipedia](https://en.wikipedia.org/wiki/ColdHubs)).
+1. **Refrigeration is out of reach.** A solar-powered walk-in cold room for smallholder agriculture in Malawi and Zimbabwe cost about $40,000 per unit for 10 t of capacity, with a 10 kWp array and 15 kWh of batteries, and some pilot rooms stood largely unused ([Efficiency for Access, lessons from Zimbabwe and Malawi](https://efficiencyforaccess.org/wp-content/uploads/Lessons-learned-from-implementing-solar-powered-walk-in-cold-rooms-for-smallholder-agriculture-in-Zimbabwe-and-Malawi.pdf)). Pay-per-crate solar walk-in cold rooms such as ColdHubs in Nigeria, at about $0.50 per crate per day, work where a business runs them, but they sit in markets, collection centers and farm clusters rather than on individual farms ([ColdHubs](https://coldhubs.com/); [IFPRI](https://www.ifpri.org/blog/coldhubs-addressing-crucial-problem-food-loss-nigeria-solar-powered-refrigeration/)).
 2. **Passive evaporative coolers are small and slow.** Clay pot-in-pot coolers and brick zero energy cool chambers (ZECCs) cost little and roughly double the shelf life of tomatoes in the dry season, but they hold tens of kilograms, sit at ground level where every crate must be lifted in and out, and depend on wind for air movement ([MIT D-Lab evaluation in Mali](https://news.mit.edu/2018/mit-d-lab-cite-evaluation-low-cost-evaporative-cooling-devices-mali-0620); [ZECC storage study, *e-planet* 18(2)](https://www.e-planet.co.in/images/Publication/vol-18-2/storage.pdf)).
-3. **Evaporative cooling fails in humid weather, and nobody tells the user.** Evaporative chambers work best above about 25 °C and below about 40 % RH ([Evaporative cooling chambers, Wikipedia](https://en.wikipedia.org/wiki/Evaporative_cooling_chambers)). In the rainy season a wet pad adds humidity without much cooling, and a sealed, damp chamber can grow mold. Passive designs cannot sense this or change their behavior.
+3. **Evaporative cooling fails in humid weather, and nobody tells the user.** Higher humidity slows evaporation and so reduces the cooling effect: in the Mali field evaluation, brick chambers cut the daily peak temperature by up to 10.4 °C when the air was below 40 % RH but by only 4.2 °C above 70 % RH ([Verploegen, Sanogo and Chagomoka, MIT D-Lab](https://d-lab.mit.edu/sites/default/files/inline-files/GHTC%20-%20Evaluation%20of%20Low-Cost%20Evaporative%20Cooling%20Technologies%20for%20Improved%20Vegetable%20Storage%20in%20Mali.pdf)). In the rainy season a wet pad adds humidity without much cooling, and a sealed, damp chamber can grow mold. Passive designs cannot sense this or change their behavior.
 
 ZeerBox is a walk-in evaporative store, large enough for about 24 crates, that uses a small solar-powered fan to pull outside air through a wetted pad and a controller that reads temperature and humidity inside and out, so it cools hard when the air is dry, ventilates at night when the air is humid, and tells the user which mode it is in.
 
@@ -84,9 +88,9 @@ ZeerBox is a walk-in evaporative store, large enough for about 24 crates, that u
 
 ## Prior work
 
-- **Pot-in-pot cooler (zeer).** Mohamed Bah Abba spread the clay pot-in-pot cooler in northern Nigeria in the 1990s and won a Rolex Award for Enterprise in 2001 ([Pot-in-pot refrigerator, Wikipedia](https://en.wikipedia.org/wiki/Pot-in-pot_refrigerator)). ZeerBox takes its name and its principle from the zeer.
+- **Pot-in-pot cooler (zeer).** Mohammed Bah Abba popularized the clay pot-in-pot cooler in Nigeria from 1995 ([MIT D-Lab, Mali evaluation](https://d-lab.mit.edu/sites/default/files/inline-files/GHTC%20-%20Evaluation%20of%20Low-Cost%20Evaporative%20Cooling%20Technologies%20for%20Improved%20Vegetable%20Storage%20in%20Mali.pdf)) and received a Rolex Award for Enterprise; *TIME* reported eggplants keeping for 27 days instead of three and 12,000 coolers sold ([*TIME*, Best Inventions of 2001](https://content.time.com/time/specials/packages/article/0,28804,1936165_1936254_1936632,00.html)). ZeerBox takes its name and its principle from the zeer.
 - **Zero energy cool chamber (ZECC).** A double brick wall with a wet sand cavity, developed at the Indian Agricultural Research Institute from 1986. One study measured 4.4 to 5.0 K below ambient on monthly averages and 7.25 K on the best day, with tomato shelf life rising from 6 to 11 days and banana from 7 to 20 days ([*e-planet* 18(2)](https://www.e-planet.co.in/images/Publication/vol-18-2/storage.pdf)). ZeerBox borrowed the wet-cavity wall at TRL 2; the TRL 3 heat balance found little benefit with forced air, so the cavity is now filled with dry rice husk (ZBX-DDR-002 item 12).
-- **MIT D-Lab evaluation in Mali.** Brick chambers and clay pot coolers achieved more than 8 °C of cooling in real use in the dry season, and brick chambers outperformed straw and sack designs ([MIT News, 2018](https://news.mit.edu/2018/mit-d-lab-cite-evaluation-low-cost-evaporative-cooling-devices-mali-0620)). D-Lab has since piloted forced-air evaporative chambers in Kenya, some solar powered ([MIT D-Lab, evaporative cooling research](https://d-lab.mit.edu/research/evaporative-cooling-vegetable-preservation)). This is the closest prior work to ZeerBox and should be studied before TRL 3.
+- **MIT D-Lab evaluation in Mali.** Brick chambers and clay pot coolers achieved more than 8 °C of cooling in real use in the dry season, and brick chambers outperformed straw and sack designs ([Verploegen, Sanogo and Chagomoka, MIT D-Lab](https://d-lab.mit.edu/sites/default/files/inline-files/GHTC%20-%20Evaluation%20of%20Low-Cost%20Evaporative%20Cooling%20Technologies%20for%20Improved%20Vegetable%20Storage%20in%20Mali.pdf); [MIT News, 2018](https://news.mit.edu/2018/mit-d-lab-cite-evaluation-low-cost-evaporative-cooling-devices-mali-0620)). D-Lab has since piloted forced-air evaporative chambers in Kenya, some solar powered ([MIT D-Lab, evaporative cooling research](https://d-lab.mit.edu/research/evaporative-cooling-vegetable-preservation)). This is the closest prior work to ZeerBox and should be studied before TRL 3.
 - **Fan and pad cooling in poultry houses and greenhouses.** Cellulose pad walls with exhaust fans are standard practice and well characterized; once the pad is fully wetted, extra water flow adds little ([review of evaporative pad operation, *Renewable and Sustainable Energy Reviews*](https://www.sciencedirect.com/science/article/pii/S1364032121009072)). ZeerBox scales this down to one small pad and two 12 V fans.
 - **Solar cold rooms.** ColdHubs (Nigeria) and the Zimbabwe and Malawi pilots show both the demand and the cost and utilization risks of refrigerated storage for smallholders (sources above).
 
