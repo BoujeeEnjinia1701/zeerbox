@@ -109,9 +109,9 @@ Decided by Amish, 2026-09-25, go with recommendation (ZBX-DDR-001): (1) keep `bu
 
 9. Wall material: fired brick, mud brick or block. No recommendation was stated; fired brick is the working choice.
 10. First partner, region and crop mix (left open by the per-area partner rule).
-11. R3 not met and R2 at risk. Options: 150 mm pad (10.5 K, 81 % RH, about $10 more), a relaxed R3, produce-level measures. Recommendation: a 150 mm pad and R3 at 80 %.
-12. Wet cavity against a dry insulating fill. Dry rice husk gives 9.2 K (8.2 K unfavorable) with no cavity water. Recommendation: dry fill, if a durable, pest-proof fill is available locally. This reopens the substance of decided item 6, because the heat balance it was waiting for does not support it.
-13. Roof footings and design wind speed: 500 x 500 x 600 mm footings are in the model; confirm the local design wind speed.
+11. R3 not met and R2 at risk. **Decided by Amish, 2026-09-25: go with recommendation (ZBX-DDR-002).** Options: 150 mm pad (10.5 K, 81 % RH, about $10 more), a relaxed R3, produce-level measures. Recommendation: a 150 mm pad and R3 at 80 %.
+12. Wet cavity against a dry insulating fill. **Decided by Amish, 2026-09-25: go with recommendation (ZBX-DDR-002).** Dry rice husk gives 9.2 K (8.2 K unfavorable) with no cavity water. Recommendation: dry fill, if a durable, pest-proof fill is available locally. This reopens the substance of decided item 6, because the heat balance it was waiting for does not support it.
+13. Roof footings and design wind speed: **Decided by Amish, 2026-09-25: go with recommendation (ZBX-DDR-002).** 500 x 500 x 600 mm footings are in the model; confirm the local design wind speed.
 
 ### Safety concerns
 
@@ -134,3 +134,46 @@ Decided by Amish, 2026-09-25, go with recommendation (ZBX-DDR-001): (1) keep `bu
 Decide items 11 and 12 (pad depth, the R3 target and the cavity fill), then items 9 and 13. These are paper changes that can be made at TRL 3: update `PARAMS`, rerun `sizing.py`, and reissue the drawing at Rev P2.
 
 TRL 4 is on hold by Amish's instruction. For reference only, TRL 4 would need: a pad and fan test article with measured airflow, pressure drop and pad effectiveness; a bench test of the controller logic with sensors; a lab test report (TST with `environment: lab`); and build-log entries. None of this has been started.
+
+## Session 2026-09-25: recommendations accepted
+
+Amish wrote on 2026-09-25, in chat: "i accept all your recommendations, go with them across all repos." Every open item with a recommendation is now **Decided by Amish, 2026-09-25: go with recommendation**, recorded in `docs/decisions/0002-recommendations-accepted.md` (ZBX-DDR-002 v0.1). The repo stays at TRL 3.
+
+### Decisions applied and what changed
+
+- **Item 11 (R3 not met, R2 at risk):** option (c). Pad 100 to 150 mm (`PAD_T` in `cad/src/model.py`; BOM line 6 $30 to $40); R3 target 85 to 80 %; covered or lined crates for leafy and water-sensitive produce as an operating practice. Pad effectiveness 75.7 to 88.2 %; airflow 584 to 563 m³/h; supply air 24.8 °C and 75 % RH to 23.1 °C and 87 % RH.
+- **Item 12 (wet cavity against a dry fill):** option (b). Dry rice husk fill, lime-treated, on a damp-proof course and capped with mortar; dry sand is the fallback if no durable, pest-proof supply exists locally. Supersedes ZBX-DDR-001 item 6. BOM line 2 $20 to $15 (wetting pipe removed); cavity water 12 to 0 L/day; fill mass 2.4 to 0.15 t; wall line load 9.3 to 7.1 kN/m.
+- **Item 13 (roof footings):** keep 500 x 500 x 600 mm footings as a minimum and confirm the local design wind speed with a builder at the chosen site. No geometry change.
+- Combined result: store 25.9 to 24.3 °C; drop 9.1 K (8.0 to 10.0 K) to 10.7 K (9.8 to 11.4 K); store RH 71 % to 81 % (77 to 85 %); heat load 418 to 442 W; water 44 to 36 L/day; kit $260 to $270; structure $360 to $355; store total $620 to $625.
+- **Budget:** `budget_usd` unchanged at $300 for the cooling equipment kit (no budget change was recommended). Pitch and problem lines unchanged (no rewording was recommended).
+- Files: `cad/src/model.py` (and STEP, STL re-exported), `docs/04-calcs/sizing.py` and `results.csv`, ZBX-CAL-001 v0.2, ZBX-REQ-001 v0.4, ZBX-PRC-001 v0.4, ZBX-PRB-001 v0.4, ZBX-DDR-001 v0.2, `bom/bom.csv`, `bom/bom-notes.md`, drawing ZBX-DWG-001 at Rev P2 (`cad/src/sheets.py`), `cad/src/concept_media.py` and all of `media/`, `README.md`, `project.yaml` (DDR-002 added to the evidence list). All PDFs in `docs/pdf/` rebuilt; the drawing and media were regenerated so no generated file shows the old site address.
+- `README.md` gained "Concept rationale", "Burning platform", "Where it could be used" and "What sparked the idea" (the Bah Abba pot-in-pot cooler, northern Nigeria, 1990s).
+
+### Requirements (ZBX-CAL-001 v0.2), not met first
+
+| ID | Status | Value (central, range) |
+| --- | --- | --- |
+| (none) | Not met | No requirement is not met |
+| R3 | **At risk** | Store RH 81 % (77 to 85 %) against 80 % |
+| R6, R10, R11 | Not verifiable at TRL 3 | Shelf life, local repair times and component life need field data or a partner |
+| R1, R2, R7, R8, R12 | Met | 24 crates; 10.7 K (9.8 to 11.4 K); 41 % solar margin; 36 L/day; kit $270 against $300 |
+| R4, R5, R9 | Met by logic or design review | Mode switch at 3.7 K depression; about 8 air changes an hour in hold; 12 V, fused, guarded, inside release |
+
+### Still awaiting Amish
+
+9. Wall material: fired brick, mud brick or block. No recommendation; fired brick remains the working choice.
+10. First co-design partner, region and crop mix. No recommendation; partners are picked per area later.
+
+### Cross-repo actions
+
+None. No decision needs another repo to change.
+
+### Safety concerns
+
+- Dry rice husk is combustible: keep the cavity capped with mortar, keep hot work and flames away from the walls during building, and run solar wiring in conduit where it passes the wall top (added to ZBX-PRC-001 v0.4).
+- The husk must stay dry and closed to termites and rodents; a wet or infested fill loses its insulation and can harbor mold.
+- All earlier concerns stand: roof uplift, inside door release, *Legionella* in the sump, battery, fan guards, not for cold-chain products.
+
+### TRL 4
+
+TRL 4 remains on hold by Amish's instruction. No TRL 4 work was created. Confirming the husk supply and the local design wind speed, crate liner trials, and a pad and fan test article all wait for a partner and for TRL 4 to be released.

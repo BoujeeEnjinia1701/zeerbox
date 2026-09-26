@@ -20,11 +20,12 @@ PARAMS = {
     "IN_L": 2400.0, "IN_W": 1500.0, "IN_H": 2000.0,
     "FLOOR": 100.0,            # brick floor on compacted sand; top of floor above ground
     "LEAF": 115.0,             # fired-brick leaf (DDR-001 item 9 still open: fired brick is the working choice)
-    "CAV": 75.0,               # wet sand cavity
+    "CAV": 75.0,               # dry rice husk cavity fill (DDR-002, item 12; was wet sand)
+    "FILL": "rice husk",       # cavity fill: "rice husk" (decided), "dry sand" (fallback) or "wet sand" (TRL 3 v0.1)
     # openings
     "DOOR_W": 800.0, "DOOR_H": 1800.0,
     "FAN_D": 250.0, "FAN_Y": 575.0, "FAN_Z": 1650.0,   # two exhaust fans beside the door
-    "PAD_W": 600.0, "PAD_H": 500.0, "PAD_T": 100.0, "PAD_Z": 1250.0,  # pad center height above ground
+    "PAD_W": 600.0, "PAD_H": 500.0, "PAD_T": 150.0, "PAD_Z": 1250.0,  # 150 mm pad (DDR-002, item 11; was 100 mm); center height above ground
     # ceiling and shade roof
     "CEIL_T": 120.0,           # boards, 50 mm straw or foam, vapor sheet, joists
     "ROOF_CLEAR": 450.0,       # air gap between ceiling and roof sheet
@@ -94,9 +95,9 @@ def build_parts(p=PARAMS):
     floor = Pos(0, 0, fl / 2) * Box(p["IN_L"], p["IN_W"], fl)
     parts[1] = ("Double brick walls and floor", outer + inner - openings + floor)
 
-    # 2 Wet sand cavity fill with the perforated wetting pipe along the top
+    # 2 Dry rice husk cavity fill (lime-treated, capped with mortar, on a damp-proof course)
     sand = block(out_l - 2 * leaf, out_w - 2 * leaf) - block(p["IN_L"] + 2 * leaf, p["IN_W"] + 2 * leaf) - openings
-    parts[2] = ("Wet sand cavity fill", sand)
+    parts[2] = ("Dry rice husk cavity fill", sand)
 
     # 3 Insulated ceiling slab over the walls
     parts[3] = ("Insulated ceiling", Pos(0, 0, top + p["CEIL_T"] / 2) * Box(out_l, out_w, p["CEIL_T"]))

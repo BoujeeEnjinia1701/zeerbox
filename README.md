@@ -10,26 +10,65 @@ Walk-in evaporative cooling chamber with a solar fan that forces air through a w
 
 [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement ZBX-DWG-001 (PDF)](cad/drawings/ZBX-DWG-001.pdf) · [Sizing note ZBX-CAL-001](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
 
+## Concept rationale
+
+Refrigeration is the right answer for a market hub with a business behind it, but it is the wrong starting point for a farm with no grid and no capital. Evaporative cooling needs only water, air and a little power, and in hot, dry weather it can hold produce several kelvin below the outside air (about 10 K on paper for ZeerBox). ZeerBox takes the principle of the clay zeer and the brick zero energy cool chamber and scales it to a room a person can walk into, with shelves at working height, a pad and two 12 V fans for a controlled airflow, and a controller that stops the store from making things worse when the air turns humid.
+
+It is open and garage-buildable because the people who need it are far from any supplier of cold rooms. The structure is ordinary masonry, timber and corrugated sheet that a local mason and carpenter already know, and the cooling kit is a poultry-house pad, generic DC fans, a small pump and solar home system parts, all replaceable from a regional town. Publishing the geometry, calculations and bill of materials lets a partner adapt the size, wall material and crop mix to its own site.
+
+## Burning platform
+
+About 14 % of the food produced for human consumption is lost between harvest and retail, and a further 17 % is wasted. UNEP and FAO estimate that the lack of effective refrigeration alone caused the loss of 12 % of total food production in 2017, enough to feed around 1 billion people at a time when 811 million were hungry ([UNEP and FAO, *Sustainable Food Cold Chains*, 2022](https://www.unep.org/resources/report/sustainable-food-cold-chains-opportunities-challenges-and-way-forward)).
+
+The losses fall hardest on perishables and on the farmers who grow them. Without a cool place to hold a harvest for a few days, a grower must sell on the day of picking at whatever price is offered. A solar walk-in cold room in the Malawi and Zimbabwe pilots cost about $40,000 per unit ([Efficiency for Access](https://efficiencyforaccess.org/wp-content/uploads/Lessons-learned-from-implementing-solar-powered-walk-in-cold-rooms-for-smallholder-agriculture-in-Zimbabwe-and-Malawi.pdf)), far beyond a smallholder or a small farmer group.
+
+## Where it could be used
+
+### By industry
+
+| Industry | Use |
+| --- | --- |
+| Smallholder horticulture | Hold one to five days of tomatoes, peppers, okra and leafy greens so they can be sold when the price is right |
+| Farmer groups and cooperatives | Shared store at a collection point, loaded by several members on a rota |
+| Market trading | Keep stock fresh between market days at a stall or small depot |
+| Agricultural extension and NGOs | Demonstration store and training unit for postharvest handling programs |
+| School and community gardens | Short-term storage of garden produce for school meals or local sale |
+
+### By country or region
+
+| Country or region | Why it matters there |
+| --- | --- |
+| Mali and the wider Sahel | Long hot, dry seasons suit evaporative cooling; brick chambers gave more than 8 °C of cooling in real use in Mali ([MIT News, 2018](https://news.mit.edu/2018/mit-d-lab-cite-evaluation-low-cost-evaporative-cooling-devices-mali-0620)) |
+| Northern Nigeria | Home of the modern zeer revival; pay-per-crate solar cold rooms such as ColdHubs serve market hubs but not individual farms ([ColdHubs](https://en.wikipedia.org/wiki/ColdHubs)) |
+| India | The zero energy cool chamber was developed at the Indian Agricultural Research Institute; one study found tomato shelf life rising from 6 to 11 days ([*e-planet* 18(2)](https://www.e-planet.co.in/images/Publication/vol-18-2/storage.pdf)) |
+| Kenya | MIT D-Lab has piloted forced-air evaporative chambers, some solar powered, the closest prior work to ZeerBox ([MIT D-Lab](https://d-lab.mit.edu/research/evaporative-cooling-vegetable-preservation)) |
+| Malawi and Zimbabwe | Solar cold room pilots showed the demand and the cost, about $40,000 per unit, with some rooms largely unused ([Efficiency for Access](https://efficiencyforaccess.org/wp-content/uploads/Lessons-learned-from-implementing-solar-powered-walk-in-cold-rooms-for-smallholder-agriculture-in-Zimbabwe-and-Malawi.pdf)) |
+| Australia (arid interior) | A high-income example with a long evaporative tradition: the Coolgardie safe of the 1890s goldfields held food 3 to 9 °C below the air; remote farms and community gardens still face long, hot supply runs ([Coolgardie safe](https://en.wikipedia.org/wiki/Coolgardie_safe)) |
+
+## What sparked the idea
+
+The idea traces back to the pot-in-pot cooler that Mohamed Bah Abba developed in rural northern Nigeria in the 1990s: one clay pot inside another, with wet sand between them, cooling the inner pot as the water evaporates. He had potters mass-produce a first batch of 5,000 and received the Rolex Award for Enterprise in 2001 for spreading it ([Pot-in-pot refrigerator](https://en.wikipedia.org/wiki/Pot-in-pot_refrigerator)). The zeer shows how far evaporation can go with no power at all, and also where it stops: a pot holds a family's vegetables, not a farmer's harvest, and it cannot tell when the air is too humid to cool. ZeerBox keeps the principle and the name and asks what the same idea looks like at the scale of a walk-in room, with a fan, a deeper pad and a sensor to decide when to use them.
+
 ## Problem
 
 Smallholders lose produce after harvest because they have no cold storage. Refrigerated cold rooms cost tens of thousands of dollars, and passive evaporative coolers are small and fail in humid weather. Design with, not for: requirements must come from co-design sessions and field trials with the intended users through a local partner.
 
 ## Concept
 
-A walk-in store (2.4 x 1.5 x 2.0 m inside, 24 crates) with double brick walls around a wet sand cavity. Two 12 V fans pull outside air through a wetted cellulose pad, and a controller reads temperature and humidity inside and out to choose between evaporative cooling, night ventilation and hold. A 150 W solar panel with a small battery powers it. The TRL 3 calculation puts the store at about 25.9 °C on a 35 °C, 30 % RH day, 9.1 K below the outside air, using about 44 L of water. Store humidity is about 71 %, short of the 85 % target (estimates, [ZBX-CAL-001](docs/04-calcs/01-sizing.md)).
+A walk-in store (2.4 x 1.5 x 2.0 m inside, 24 crates) with double brick walls around a dry rice husk cavity. Two 12 V fans pull outside air through a 150 mm wetted cellulose pad, and a controller reads temperature and humidity inside and out to choose between evaporative cooling, night ventilation and hold. A 150 W solar panel with a small battery powers it. The TRL 3 calculation puts the store at about 24.3 °C on a 35 °C, 30 % RH day, 10.7 K below the outside air, using about 36 L of water. Store humidity is about 81 %, just above the 80 % target and at risk in the unfavorable case (estimates, [ZBX-CAL-001](docs/04-calcs/01-sizing.md)).
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
 ## Key components
 
-- Double brick walls with a wet sand cavity, insulated ceiling and shade roof
-- 100 mm cellulose evaporative pad with drip header and gutter
+- Double brick walls with a dry rice husk cavity, insulated ceiling and shade roof
+- 150 mm cellulose evaporative pad with drip header and gutter
 - Two 250 mm 12 V DC exhaust fans
 - 60 L sump drum with a 12 V pump
 - 150 W PV panel, 20 A PWM charge controller and small LiFePO4 battery
 - Controller with inside and outside humidity and temperature sensors
 
-The priced bill of materials is in [bom/bom.csv](bom/bom.csv). The $300 budget covers the cooling equipment kit, about $260; the structure is built from local materials and costed separately, about $360 (indicative).
+The priced bill of materials is in [bom/bom.csv](bom/bom.csv). The $300 budget covers the cooling equipment kit, about $270; the structure is built from local materials and costed separately, about $355 (indicative).
 
 ## Safety
 
@@ -58,4 +97,4 @@ Controlled documents follow the portfolio [documentation standard](.kit/STANDARD
 - **Hardware** (CAD, drawings, BOM, electronics): [CERN-OHL-S v2](LICENSE)
 - **Software** (firmware, scripts, notebooks): [MIT](LICENSE-SOFTWARE)
 
-Part of the open hardware portfolio at [amishchadha.com](https://amishchadha.com).
+A project of the [Design Molecule](https://designmolecule.com) lab.

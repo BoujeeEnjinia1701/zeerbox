@@ -3,7 +3,7 @@ doc_id: ZBX-PRB-001
 title: ZeerBox problem statement
 project: ZeerBox
 doc_type: Problem statement
-version: "0.3"
+version: "0.4"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -21,6 +21,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Record the budget decision (ZBX-DDR-001 item 1), the co-design partner rule and the TRL 3 water figure
+- version: "0.4"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: Recommendations accepted by Amish (DDR-002). Dry rice husk fill in place of the wet-cavity wall; cost and water figures from ZBX-CAL-001 v0.2
 ---
 
 # ZeerBox problem statement
@@ -63,7 +67,7 @@ ZeerBox is a walk-in evaporative store, large enough for about 24 crates, that u
 
 ## Constraints
 
-- The $300 USD budget (`project.yaml`) covers the cooling equipment kit: pad, sump and pump, fans, controller, solar panel, power box and wiring. The walk-in structure is built from local materials and costed separately (decided by Amish, 2026-09-25, ZBX-DDR-001 item 1). At TRL 3 the kit costs about $260 and the structure about $360 (ZBX-CAL-001).
+- The $300 USD budget (`project.yaml`) covers the cooling equipment kit: pad, sump and pump, fans, controller, solar panel, power box and wiring. The walk-in structure is built from local materials and costed separately (decided by Amish, 2026-09-25, ZBX-DDR-001 item 1). At TRL 3 the kit costs about $270 and the structure about $355 (ZBX-CAL-001 v0.2).
 - Structure built by a local mason and carpenter from local materials, with no specialist refrigeration skills, refrigerant or mains power.
 - Fans, pump and controller run from one small solar panel at 12 V, safe to touch and to work on.
 - Water use modest enough to carry or pump by hand on the hottest day.
@@ -81,7 +85,7 @@ ZeerBox is a walk-in evaporative store, large enough for about 24 crates, that u
 ## Prior work
 
 - **Pot-in-pot cooler (zeer).** Mohamed Bah Abba spread the clay pot-in-pot cooler in northern Nigeria in the 1990s and won a Rolex Award for Enterprise in 2001 ([Pot-in-pot refrigerator, Wikipedia](https://en.wikipedia.org/wiki/Pot-in-pot_refrigerator)). ZeerBox takes its name and its principle from the zeer.
-- **Zero energy cool chamber (ZECC).** A double brick wall with a wet sand cavity, developed at the Indian Agricultural Research Institute from 1986. One study measured 4.4 to 5.0 K below ambient on monthly averages and 7.25 K on the best day, with tomato shelf life rising from 6 to 11 days and banana from 7 to 20 days ([*e-planet* 18(2)](https://www.e-planet.co.in/images/Publication/vol-18-2/storage.pdf)). ZeerBox reuses the wet-cavity wall.
+- **Zero energy cool chamber (ZECC).** A double brick wall with a wet sand cavity, developed at the Indian Agricultural Research Institute from 1986. One study measured 4.4 to 5.0 K below ambient on monthly averages and 7.25 K on the best day, with tomato shelf life rising from 6 to 11 days and banana from 7 to 20 days ([*e-planet* 18(2)](https://www.e-planet.co.in/images/Publication/vol-18-2/storage.pdf)). ZeerBox borrowed the wet-cavity wall at TRL 2; the TRL 3 heat balance found little benefit with forced air, so the cavity is now filled with dry rice husk (ZBX-DDR-002 item 12).
 - **MIT D-Lab evaluation in Mali.** Brick chambers and clay pot coolers achieved more than 8 °C of cooling in real use in the dry season, and brick chambers outperformed straw and sack designs ([MIT News, 2018](https://news.mit.edu/2018/mit-d-lab-cite-evaluation-low-cost-evaporative-cooling-devices-mali-0620)). D-Lab has since piloted forced-air evaporative chambers in Kenya, some solar powered ([MIT D-Lab, evaporative cooling research](https://d-lab.mit.edu/research/evaporative-cooling-vegetable-preservation)). This is the closest prior work to ZeerBox and should be studied before TRL 3.
 - **Fan and pad cooling in poultry houses and greenhouses.** Cellulose pad walls with exhaust fans are standard practice and well characterized; once the pad is fully wetted, extra water flow adds little ([review of evaporative pad operation, *Renewable and Sustainable Energy Reviews*](https://www.sciencedirect.com/science/article/pii/S1364032121009072)). ZeerBox scales this down to one small pad and two 12 V fans.
 - **Solar cold rooms.** ColdHubs (Nigeria) and the Zimbabwe and Malawi pilots show both the demand and the cost and utilization risks of refrigerated storage for smallholders (sources above).
@@ -90,7 +94,7 @@ ZeerBox is a walk-in evaporative store, large enough for about 24 crates, that u
 
 - Which partner organization and which region first? A dry-season vegetable area in the Sahel (Mali, Niger, northern Nigeria, Burkina Faso) or a semi-arid area of East Africa (northern Kenya) fits the design point. Amish decided on 2026-09-25 that community designs pick co-design partners per area later; the choice for ZeerBox is still open (ZBX-DDR-001 item 10).
 - Is the store for one farm or for a group? This drives size, cost and who waters and cleans it.
-- How far is the water source, and is about 44 L on a hot day acceptable (ZBX-CAL-001)?
+- How far is the water source, and is about 36 L on a hot day acceptable (ZBX-CAL-001 v0.2)?
 - Which crops dominate, and which must be kept apart (for example ethylene-producing tomatoes and bananas next to leafy greens)?
 - Do users need the store to work in the rainy season, or only in the dry season when losses and prices are highest?
 

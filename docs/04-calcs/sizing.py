@@ -135,9 +135,13 @@ def u_dry(k_fill):
 
 
 K_HUSK = 0.06          # W/(m K), loose rice husk, dry (assumption)
+FILL_K = {"rice husk": K_HUSK, "dry sand": K_SAND_DRY, "wet sand": None}
+WET = P["FILL"] == "wet sand"
+K_FILL = FILL_K[P["FILL"]] or K_SAND_DRY
+R3_TARGET = 0.80       # R3 relaxed from 85 % to 80 % (ZBX-DDR-002, item 11)
 
 
-def store(t_out, rh_out, s, wet_cavity=True, depth_m=P["PAD_T"] / 1000, k_fill=K_SAND_DRY):
+def store(t_out, rh_out, s, wet_cavity=WET, depth_m=P["PAD_T"] / 1000, k_fill=K_FILL):
     """Steady design-hour balance of the store in evaporative cooling mode."""
     twb = wet_bulb(t_out, rh_out)
     w_out = w_from_rh(t_out, rh_out)
@@ -222,19 +226,24 @@ pr(f"outside 35 C, 30 % RH: wet bulb {c['twb']:.2f} C, W {c['w_out']*1000:.2f} g
 for k in ("fav", "cen", "unf"):
     r = R[k]
     pr(f"[{k}] Q {r['q']*3600:.0f} m3/h ({r['q']*3600/1.699:.0f} cfm) at {r['dp']:.1f} Pa; pad {r['v']:.2f} m/s, eff {r['eff']*100:.1f} %; "
-       f"supply {r['t_sup']:.2f} C {r['rh_sup']*100:.0f} %; cavity {r['t_cav']:.2f} C; gains {r['qtot']:.0f} W; rise {r['rise']:.2f} K; "
+       f"supply {r['t_sup']:.2f} C {r['rh_sup']*100:.0f} %; cavity {'dry' if r['t_cav'] is None else round(r['t_cav'], 2)}; gains {r['qtot']:.0f} W; rise {r['rise']:.2f} K; "
        f"room {r['t_room']:.2f} C {r['rh_room']*100:.0f} %; exhaust {r['t_exh']:.2f} C {r['rh_exh']*100:.0f} %; drop {r['drop']:.2f} K; ACH {r['ach']:.0f}")
 pr("central heat gains, W: " + ", ".join(f"{k} {v:.0f}" for k, v in c["gains"].items()) + f"; total {c['qtot']:.0f}")
-dry = store(35, 0.30, SCEN["cen"], wet_cavity=False)
-pr(f"dry sand cavity (central): walls {dry['gains']['walls']:.0f} W, total {dry['qtot']:.0f} W, room {dry['t_room']:.2f} C, drop {dry['drop']:.2f} K")
-dry_u = store(35, 0.30, SCEN["unf"], wet_cavity=False)
-pr(f"dry sand cavity (unfavorable loads): walls {dry_u['gains']['walls']:.0f} W vs wet {R['unf']['gains']['walls']:.0f} W; drop {dry_u['drop']:.2f} K vs {R['unf']['drop']:.2f} K")
-husk = store(35, 0.30, SCEN["cen"], wet_cavity=False, k_fill=K_HUSK)
-husk_u = store(35, 0.30, SCEN["unf"], wet_cavity=False, k_fill=K_HUSK)
-pr(f"rice husk cavity, U {u_dry(K_HUSK):.2f}: central walls {husk['gains']['walls']:.0f} W, room {husk['t_room']:.2f} C, drop {husk['drop']:.2f} K; unfavorable drop {husk_u['drop']:.2f} K; no cavity water")
-for d_mm in (150.0,):
-    r150 = store(35, 0.30, SCEN["cen"], depth_m=d_mm / 1000)
-    pr(f"150 mm pad (central, same fans, pressure drop scaled with depth): Q {r150['q']*3600:.0f} m3/h, eff {r150['eff']*100:.1f} %, supply RH {r150['rh_sup']*100:.0f} %, room {r150['t_room']:.2f} C, RH {r150['rh_room']*100:.0f} %, drop {r150['drop']:.2f} K")
+pr(f"design: {P['PAD_T']:.0f} mm pad, cavity fill {P['FILL']} (U {U_WALL_DRY if WET else u_dry(K_FILL):.2f} W/(m2 K) if dry)")
+opts = [("100 mm pad, wet sand (TRL 3 v0.1)", 0.100, True, K_SAND_DRY),
+        ("100 mm pad, rice husk", 0.100, False, K_HUSK),
+        ("150 mm pad, wet sand", 0.150, True, K_SAND_DRY),
+        ("150 mm pad, dry sand (fallback)", 0.150, False, K_SAND_DRY),
+        ("150 mm pad, rice husk (decided)", 0.150, False, K_HUSK)]
+alt = {}
+for name, dm, wet, kf in opts:
+    rc = store(35, 0.30, SCEN["cen"], wet_cavity=wet, depth_m=dm, k_fill=kf)
+    ru = store(35, 0.30, SCEN["unf"], wet_cavity=wet, depth_m=dm, k_fill=kf)
+    rf = store(35, 0.30, SCEN["fav"], wet_cavity=wet, depth_m=dm, k_fill=kf)
+    alt[name] = (rc, ru, rf)
+    pr(f"{name}: Q {rc['q']*3600:.0f} m3/h, eff {rc['eff']*100:.1f} %, walls {rc['gains']['walls']:.0f} W, total {rc['qtot']:.0f} W, "
+       f"room {rc['t_room']:.2f} C {rc['rh_room']*100:.0f} % ({ru['rh_room']*100:.0f} to {rf['rh_room']*100:.0f} %), "
+       f"drop {rc['drop']:.2f} K ({ru['drop']:.2f} to {rf['drop']:.2f} K)")
 # effectiveness that would put mean room RH at 85 % with the central temperature rise
 need = None
 for e_try in [x / 1000 for x in range(700, 1000)]:
@@ -261,7 +270,7 @@ pr(f"even with saturated supply at {t_sat:.1f} C, the store mean must stay withi
 res("R2", "Mean store air below outside air, design point", f"{c['drop']:.1f} K ({R['unf']['drop']:.1f} to {R['fav']['drop']:.1f} K); store {c['t_room']:.1f} C",
     "8 K or more", "Met" if R["unf"]["drop"] >= 8 else ("At risk" if c["drop"] >= 8 else "Not met"))
 res("R3", "Mean store RH while cooling", f"{c['rh_room']*100:.0f} % ({R['unf']['rh_room']*100:.0f} to {R['fav']['rh_room']*100:.0f} %)",
-    "85 % or more", "Met" if c["rh_room"] >= 0.85 else "Not met")
+    f"{R3_TARGET*100:.0f} % or more", "Met" if R["unf"]["rh_room"] >= R3_TARGET else ("At risk" if c["rh_room"] >= R3_TARGET else "Not met"))
 
 # ------------------------------------------------------------------ 3 humid weather and controller (R4, R5)
 pr("\n== 3 Off-design weather and control (R4, R5) ==")
@@ -313,7 +322,7 @@ res("R7", "Design-day energy from one PV panel", f"{e_day:.0f} Wh/day needed; 15
 # ------------------------------------------------------------------ 5 water (R8)
 pr("\n== 5 Water (R8) ==")
 pad_l = c["pad_evap_kgh"] * HOURS_COOL
-cav_w = U_OUT_WET * A["wall_out"] * (35 - c["t_cav"])
+cav_w = U_OUT_WET * A["wall_out"] * (35 - c["t_cav"]) if WET else 0.0
 cav_l = cav_w * 12 * 3600 / HFG
 bleed = 4.0
 total_w = pad_l + cav_l + bleed
@@ -323,7 +332,7 @@ pad_len = P["PAD_W"] / 1000
 flow_lpm = 6.0 * pad_len
 hyd = 1000 * 9.81 * 2.0 * flow_lpm / 60000
 pr(f"pad evaporation {c['pad_evap_kgh']:.2f} kg/h, {pad_l:.1f} L over {HOURS_COOL:.0f} h; unfavorable {R['unf']['pad_evap_kgh']*HOURS_COOL:.1f} L, favorable {R['fav']['pad_evap_kgh']*HOURS_COOL:.1f} L")
-pr(f"cavity: {cav_w:.0f} W through the outer leaf over 12 h equivalent = {cav_l:.1f} L/day (allowance in TRL 2: 20 L)")
+pr(f"cavity ({P['FILL']}): {cav_w:.0f} W through the outer leaf over 12 h equivalent = {cav_l:.1f} L/day (wet sand in TRL 3 v0.1: about 12 L)")
 pr(f"bleed and cleaning {bleed:.0f} L; total {total_w:.1f} L/day")
 pr(f"sump {sump_gross:.0f} L gross, {sump_work:.0f} L working; pad and bleed per day {pad_l + bleed:.1f} L")
 pr(f"pad wetting flow {flow_lpm:.1f} L/min (6 L/min per m of pad length, assumed); hydraulic power at 2 m head {hyd:.2f} W; at 20 % pump efficiency {hyd/0.2:.1f} W")
@@ -341,7 +350,8 @@ res("R10", "Local build; 30 min part swaps", "Masonry, timber and generic 12 V p
 
 # ------------------------------------------------------------------ 7 structure (R11)
 pr("\n== 7 Structure (R11) ==")
-RHO_BRICK, RHO_SAND = 1800.0, 1900.0
+RHO_BRICK = 1800.0
+RHO_FILL = {"rice husk": 120.0, "dry sand": 1600.0, "wet sand": 1900.0}[P["FILL"]]   # kg/m3, assumptions
 nominal = (0.240 * 0.085)          # 230 x 110 x 75 brick with 10 mm joints, laid on bed, one leaf
 leaf_area_out = 2 * ((D["out_l"] - P["LEAF"]) + (D["out_w"] - P["LEAF"])) / 1000 * D["top"] / 1000
 leaf_area_in = 2 * ((P["IN_L"] + P["LEAF"]) + (P["IN_W"] + P["LEAF"])) / 1000 * D["top"] / 1000
@@ -353,11 +363,11 @@ wall_vol = (leaf_area_out + leaf_area_in - open_both) * P["LEAF"] / 1000
 cav_vol = (2 * ((P["IN_L"] + 2 * P["LEAF"] + P["CAV"]) + (P["IN_W"] + 2 * P["LEAF"] + P["CAV"])) / 1000 * D["top"] / 1000
            - (D["door_area_m2"] + D["pad_area_m2"] + D["fan_area_m2"])) * P["CAV"] / 1000
 mass_walls = wall_vol * RHO_BRICK
-mass_sand = cav_vol * RHO_SAND
+mass_sand = cav_vol * RHO_FILL
 line_load = (mass_walls + mass_sand) * 9.81 / (2 * (D["out_l"] + D["out_w"]) / 1000 - 2 * P["LEAF"] / 1000)
 bearing = line_load / 0.45
 pr(f"bricks: walls {wall_bricks:.0f}, floor {floor_bricks:.0f}, with 10 % waste {bricks:.0f}")
-pr(f"brick volume {wall_vol:.2f} m3, {mass_walls/1000:.1f} t; wet sand {cav_vol:.2f} m3, {mass_sand/1000:.1f} t")
+pr(f"brick volume {wall_vol:.2f} m3, {mass_walls/1000:.1f} t; {P['FILL']} fill {cav_vol:.2f} m3, {mass_sand/1000:.2f} t")
 pr(f"wall line load {line_load/1000:.1f} kN/m; on a 450 mm strip footing {bearing/1000:.0f} kPa (firm soils allow about 100 kPa or more)")
 V_WIND, CP_NET, RHO_W = 30.0, 1.5, 1.2
 q_w = 0.5 * RHO_W * V_WIND ** 2
