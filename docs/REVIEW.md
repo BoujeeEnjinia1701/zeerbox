@@ -191,3 +191,34 @@ Amish asked for the weaker sources to be fixed. Every replacement below was fetc
 | README, Mali row; ZBX-PRB-001 prior work | Brick chamber cooling in Mali | MIT News only | MIT D-Lab paper added as the primary source alongside MIT News |
 
 The inspiration event is unchanged; its line in the portfolio `INSPIRATIONS.md` was corrected to the verified facts. ZBX-PRB-001 moved to v0.5. No budget change for ZeerBox.
+
+## Session 2026-09-26: product appearance model and photoreal renders
+
+Amish chose this repo for the first batch of product renders on 2026-09-26. This session adds an appearance model for photoreal renders; it changes no dimension, calculation, drawing or BOM line.
+
+### What was done
+
+- `cad/src/product_model.py` (new): `product_parts()`, `TITLE` and three `RENDER_VIEWS` (hero, exploded, detail). It imports `PARAMS`, `derived()` and `build_parts()` from `cad/src/model.py` and reuses the walls, cavity fill and rack geometry directly. It adds:
+  - Structure: brick bed joints on the outer leaf, a rendered plinth band, timber lintel faces over the door and pad openings, a timber fascia on the ceiling edge, a corrugated galvanized roof sheet with purlins, rafters and screws, galvanized posts with cap plates and concrete footing collars.
+  - Solar panel: aluminum frame, 36 cells with busbars, backsheet, junction box and four mounting legs, in the model.py position and tilt.
+  - Cooling kit: cellulose pad with a fluted face in an aluminum frame with screws, PVC drip header with end caps and tee, galvanized gutter with outlet; 60 L drum with hoops, lid, fittings and label, feed and return hoses; fan housings, blades, hubs, finger guards and gravity shutters; IP65 controller with lid parting line, clear lid window over the board, terminals and memory card, glands, name plate, a lit green mode lamp and the outside sensor in a stacked-plate radiation shield; ventilated power box with rain hood, door, window onto the charge controller (lit display and charging light), battery, hinges, hasp and label; a PVC cable conduit with clips.
+  - Door with seal, hinges, handle and sign; slatted rack shelves; open ventilated crates with produce.
+  - Context: a compact patch of ground and the shared clay mannequin (1.75 m, standing) by the door.
+- Views: hero from the front right at about 30 deg (pad, sump and panel visible, person by the door); exploded from the front right at about 28 deg; detail of the cooling kit alone from the door end at about 18 deg (controller, fans, power box, pad and sump).
+- `README.md`: the hero image now points to `media/render-hero.png`, with an exploded render link. The render files are produced separately.
+
+### Differences from model.py (appearance only)
+
+Main dimensions, positions and interfaces are unchanged. The items below go beyond model.py and are recorded for Amish.
+
+1. **Roof framing.** model.py runs the posts up to the roof sheet; the appearance model adds timber purlins and rafters under the sheet, so the posts stop under the rafters. The corrugated sheet stays inside model.py's 25 mm roof envelope. Proposed, awaiting Amish. Recommendation: add purlins and rafters to model.py at the next CAD revision so the drawing shows how the sheet is carried.
+2. **Clear windows on the controller lid and power box door.** The BOM calls for an IP65 box and a ventilated shaded box, with no window. The windows show the internals in the renders. Proposed, awaiting Amish. Recommendation: keep the controller window (a clear-lid IP65 box is a stock part and lets users read the board lights); drop the power box window if a partner prefers a plain steel door, since the battery box must stay shaded.
+3. **Mode lamp position.** model.py does not place the three-color mode lamp; the precis puts it by the door. The appearance model puts it on top of the controller box, which sits beside the door. Proposed, awaiting Amish. Recommendation: accept, and add it to model.py.
+4. **Radiation shield shape.** Stacked round plates, 46 mm across, in place of model.py's 40 x 40 x 60 mm block. Proposed, awaiting Amish. Recommendation: accept; the envelope grows by 3 mm a side.
+5. **Plinth render band and lintel faces.** A 10 mm cement render band 300 mm high around the base and timber lintel faces 6 mm proud over the door and pad openings (lintels are in BOM line 1 but not modeled). Proposed, awaiting Amish. Recommendation: accept the lintels; treat the plinth render as optional, a finish a local mason can choose.
+6. **Hose and conduit routing.** The return hose runs down from the gutter outlet and across to the drum instead of model.py's straight diagonal; a PVC conduit (BOM line 14, not modeled in model.py) links the power box, the controller and the ceiling edge. Proposed, awaiting Amish. Recommendation: accept as a routing sketch only; wiring and plumbing stay unmodeled at TRL 3.
+7. **Footing collars.** A 30 mm concrete collar shows the top of each footing at ground level; the footings themselves (ZBX-CAL-001) are below ground and not drawn. No change to the footing size.
+
+### Status
+
+Appearance only: no tolerances, no fabrication detail and no TRL 4 work. `trl` stays 3 and TRL 4 remains on hold by Amish's instruction.
