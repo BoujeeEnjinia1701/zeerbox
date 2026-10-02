@@ -3,9 +3,9 @@ doc_id: ZBX-PRC-001
 title: ZeerBox design precis
 project: ZeerBox
 doc_type: Design precis
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,20 +25,24 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002). 150 mm pad, dry rice husk cavity fill, R3 at 80 % with covered or lined crates; figures from ZBX-CAL-001 v0.2; drawing ZBX-DWG-001 Rev P2
+- version: "0.5"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Design made constructable (ZBX-DDR-003): fans in a ceiling fan box, footings, lintels, linings, framed ceiling and roof; cost against the value-engineering target; build plan ZBX-BLD-001 and register ZBX-DEC-001; drawing Rev P3"
 ---
 
 # ZeerBox design precis
 
-ZeerBox is a walk-in store, 2.4 x 1.5 x 2.0 m inside, with double brick walls around a dry rice husk cavity, a shade roof, a 150 mm cellulose pad in the back wall, and two 12 V exhaust fans beside the door that pull outside air through the pad and along the aisle between two shelving racks. A controller reads temperature and humidity inside and outside and chooses between evaporative cooling, night ventilation and hold, and a 150 W solar panel with a small LiFePO4 battery powers it all. The TRL 3 calculation (ZBX-CAL-001 v0.2) shows that on a 35 °C, 30 % RH day the store holds 480 kg of produce at about 24.3 °C, 10.7 K below the outside air, using about 36 L of water and 372 Wh of solar energy. Store humidity is about 81 %, just above the 80 % target (R3, at risk in the unfavorable case). The cooling equipment kit costs about $270 against the $300 budget; the structure, about $355 in local materials, is costed separately.
+ZeerBox is a walk-in store, 2.4 x 1.5 x 2.0 m inside, with double brick walls around a dry rice husk cavity, a shade roof, a 150 mm cellulose pad in the back wall, and two 12 V exhaust fans in the ceiling at the door end that pull outside air through the pad and along the aisle between two shelving racks. A controller reads temperature and humidity inside and outside and chooses between evaporative cooling, night ventilation and hold, and a 150 W solar panel with a small LiFePO4 battery powers it all. The TRL 3 calculation (ZBX-CAL-001 v0.3) shows that on a 35 °C, 30 % RH day the store holds 480 kg of produce at about 24.3 °C, 10.7 K below the outside air, using about 36 L of water and 372 Wh of solar energy. Store humidity is about 81 %, just above the 80 % target (R3, at risk in the unfavorable case). Value-engineering target: USD 300 for the cooling equipment kit. Estimated cost of the constructable design: USD 299 for the kit (USD 1 under the target); the structure, about USD 574 in local materials, is costed separately. How to build it is in the prototype build plan ([ZBX-BLD-001](05-build-plan.md)).
 
 ![Hero render](../media/hero.png)
 
-*Figure 1. ZeerBox from the TRL 3 parametric model, with the pad and sump on the back wall, the 150 W panel on the shade roof and a 1.75 m person for scale. The door and fans are on the far end.*
+*Figure 1. ZeerBox from the TRL 3 parametric model, with the pad and sump on the back wall, the 150 W panel on the shade roof and a 1.75 m person for scale. The door is on the far end, with the fan box in the ceiling above it.*
 
 ## How it works
 
 1. **Wet.** A 12 V pump in a 60 L sump drum lifts about 3.6 L/min to a perforated header on top of the pad. Water runs down through the 150 mm cellulose pad and drains back to the sump through a gutter. The wall cavity is filled with dry rice husk, which insulates the store and needs no water.
-2. **Cool.** Two 250 mm fans in the front wall exhaust air from the store, which pulls outside air in through the wetted pad on the opposite wall. At the fan and pad operating point of about 563 m³/h, evaporation cools the air from 35 °C toward its wet-bulb temperature of 21.5 °C; with a pad effectiveness of about 88 %, it enters at 23.1 °C and 87 % RH.
+2. **Cool.** Two 250 mm fans in a plywood fan box in the ceiling at the door end exhaust air from the store up into the shaded roof space, which pulls outside air in through the wetted pad on the opposite wall. At the fan and pad operating point of about 563 m³/h, evaporation cools the air from 35 °C toward its wet-bulb temperature of 21.5 °C; with a pad effectiveness of about 88 %, it enters at 23.1 °C and 87 % RH.
 3. **Store.** Air sweeps along the 0.6 m aisle and across 24 crates on two three-level timber racks, picking up about 440 W from the walls, ceiling, floor, produce and the day's warm field produce, and leaves through the fans at about 25.5 °C. Leafy and water-sensitive produce goes in covered or lined crates, which hold humidity near the produce.
 4. **Decide.** A controller compares the inside and outside readings every minute and runs one of four modes (below). A three-color lamp by the door shows the mode, so users know when to keep the door shut and when the store is not cooling.
 5. **Power.** A 150 W panel on the shade roof charges a 12.8 V, 12 Ah LiFePO4 battery through a 20 A PWM charge controller. The battery covers cloud and about 2 h of evening ventilation.
@@ -75,7 +79,7 @@ Numbers match the exploded view (Figure 3) and `bom/bom.csv`. Dimensions come fr
 | 5 | Insulated door with seal | 0.8 x 1.8 m, timber frame, plywood skins, 50 mm insulation, rubber seal, inside release | Opens from inside without a key |
 | 6 | Cellulose pad, frame, header and gutter | 150 mm pad, 0.6 x 0.5 m (0.3 m²), center 1.25 m above ground, with a drip header and return gutter | Decided (ZBX-DDR-002 item 11; was 100 mm) |
 | 7 | Sump drum, pump and hoses | 60 L covered drum, 12 V submersible pump about 6 W at 2 m head, float switch, feed and return hoses | Drained and cleaned weekly |
-| 8 | Exhaust fans (pair) | Two 250 mm 12 V DC axial fans with guards and gravity shutters, 1.65 m above ground | About 12 W and about 280 m³/h each in service |
+| 8 | Exhaust fans (pair) | Two 250 mm 12 V DC axial fans with guards and gravity shutters, in a ceiling fan box at the door end, blowing up into the roof space (ZBX-DDR-003) | About 12 W and about 280 m³/h each in service |
 | 9 | Controller and sensors | Low-cost microcontroller, two digital temperature and RH sensors (inside, outside in a radiation shield), MOSFET drivers, memory card, mode lamp, IP65 box | Generic parts |
 | 10 | Solar panel | 150 W monocrystalline, about 1,480 x 670 mm, on the shade roof | Decided (item 2) |
 | 11 | Power box | 20 A PWM charge controller, 12.8 V 12 Ah LiFePO4 battery with BMS, 15 A fuse, in a ventilated box | Battery decided (item 3); outside the store, shaded |
@@ -88,11 +92,11 @@ Numbers match the exploded view (Figure 3) and `bom/bom.csv`. Dimensions come fr
 
 ![Cutaway](../media/cutaway.png)
 
-*Figure 4. Section along the aisle, looking at one rack. The door and fans are at left, the pad at right, and the dry rice husk cavity shows as the pale band inside each end wall.*
+*Figure 4. Section along the aisle, looking at one rack. The door and the ceiling fan box are at left, the pad at right, and the dry rice husk cavity shows as the pale band inside each end wall.*
 
 ## TRL 3 figures
 
-All values come from ZBX-CAL-001 v0.2 (`python docs/04-calcs/sizing.py`). They are first-principles estimates, not measurements. The central case is quoted with the favorable to unfavorable range where it matters.
+All values come from ZBX-CAL-001 v0.3 (`python docs/04-calcs/sizing.py`). They are first-principles estimates, not measurements. The central case is quoted with the favorable to unfavorable range where it matters.
 
 ### Air, pad and store temperature
 
@@ -153,9 +157,9 @@ In the rainy season ZeerBox does little more than a shaded, ventilated shed. The
 
 | Group | Indicative cost | Requirement |
 | --- | --- | --- |
-| Cooling equipment kit (items 6 to 11 and 14) | about $270 | **R12 ($300 kit) met** |
-| Structure (items 1 to 5 and 12), materials only, costed separately | about $355 | |
-| Store total, crates excluded | about $625 | |
+| Cooling equipment kit (items 6 to 11, 14 and 18) | about $299 | R12: USD 1 under the USD 300 value-engineering target |
+| Structure (items 1 to 5, 12, 15, 16 and 17), materials only, costed separately | about $574 | |
+| Store total, crates excluded | about $873 | |
 | Crates (item 13, user supplied) | about $96 if bought | Not in the total |
 
 Labor for the mason and carpenter is not included.
@@ -171,7 +175,8 @@ Items marked "decided" were decided by Amish on 2026-09-25 (go with recommendati
 - **Panel size (decided).** 150 W, with a 20 A charge controller.
 - **Battery (decided).** A small LiFePO4 battery for evening ventilation and cloud.
 - **Set point and thresholds (decided).** 20 °C set point, 4 K wet-bulb depression threshold and 95 % RH guard as starting values for field tuning.
-- **Budget (decided).** `budget_usd: 300` covers the cooling equipment kit; the structure is costed separately.
+- **Budget (decided).** `budget_usd: 300` covers the cooling equipment kit; the structure is costed separately. Since 2026-10-01 it is a hypothetical value-engineering target, not a limit.
+- **Design for construction (made under Amish's 2026-09-30 instruction; open for his review).** Footings, lintels, linings, a framed ceiling and roof, and the fans moved from the front wall to a ceiling fan box, so that every part can be built (ZBX-DDR-003). Open decisions are in the register ZBX-DEC-001.
 - **Wall material (open).** Fired brick is the working choice; mud brick or block are alternatives (item 9).
 - **Pad depth and R3 (decided).** A 150 mm pad, R3 relaxed to 80 %, and covered or lined crates for sensitive produce (ZBX-DDR-002 item 11).
 - **Roof footings (decided).** 500 x 500 x 600 mm footings as a minimum; the local design wind speed is confirmed with a builder at the chosen site (ZBX-DDR-002 item 13).
@@ -186,7 +191,7 @@ Items marked "decided" were decided by Amish on 2026-09-25 (go with recommendati
 - **Battery.** A 154 Wh LiFePO4 battery is far less prone to thermal runaway than other lithium chemistries but can still overheat or short. Use a battery with a BMS rated for at least 10 A of charge, fuse it at the terminal, keep it shaded and ventilated outside the store, and do not charge it below 0 °C or above 45 °C.
 - **Electrical.** All wiring is 12 V DC and below the touch-safety threshold, but water and wiring meet at the pad and pump. Use IP65 connections, drip loops and a fused supply. Size the charge controller for 1.25 times the panel's short-circuit current.
 - **Moving parts.** Fans need guards on both faces. Isolate power before cleaning a fan or the pump.
-- **Structure.** Masonry walls (about 7 t of brick) and a roof that people stand under must be built by a competent mason. At a 30 m/s gust each roof post sees about 2.2 kN of uplift; set the posts in footings of at least 500 x 500 x 600 mm, screw the sheets down, confirm the local design wind speed, and inspect for cracks each season.
+- **Structure.** Masonry walls (about 7 t of brick) and a roof that people stand under must be built by a competent mason. At a 30 m/s gust each roof post sees about 1.9 kN of uplift after the roof's own weight; set the posts in footings of at least 500 x 500 x 600 mm with an anchor bar through each post foot, tie every purlin to its beam, screw the sheets down, confirm the local design wind speed, and inspect for cracks each season.
 - **Rice husk fill.** Dry husk is combustible. Keep the cavity capped with mortar, keep flames and hot work away from the walls during building, and keep the solar wiring in conduit where it passes the wall top.
 - **Food safety.** Cooling slows spoilage; it does not make produce safe to eat. ZeerBox is not for meat, fish, milk or medicines.
 
@@ -197,5 +202,6 @@ Items marked "decided" were decided by Amish on 2026-09-25 (go with recommendati
 - Confirm pad effectiveness and pressure drop, and the fan curve, from supplier data for the chosen parts.
 - Review MIT D-Lab's forced-air evaporative chamber work in Kenya in detail and contact the team.
 - Choose the wall material (item 9) and the first partner, site and crop mix (item 10).
+- The full list of open decisions and items to confirm is kept in the design decisions register, ZBX-DEC-001 ([docs/06-design-decisions.md](06-design-decisions.md)).
 
 Concept media: [blueprint sheet](../media/concept-blueprint.pdf), [interactive 3D model](../media/viewer.html). General arrangement: `cad/drawings/ZBX-DWG-001.pdf`.

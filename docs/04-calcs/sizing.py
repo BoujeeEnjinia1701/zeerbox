@@ -95,7 +95,7 @@ U_FLOOR = 1 / (R_SI + P["FLOOR"] / 1000 / K_BRICK + 0.10)   # brick on compacted
 
 def areas():
     L, W, H = P["IN_L"] / 1000, P["IN_W"] / 1000, P["IN_H"] / 1000
-    openings = D["door_area_m2"] + D["pad_area_m2"] + D["fan_area_m2"]
+    openings = D["door_area_m2"] + D["pad_area_m2"]       # the fans are in the ceiling (ZBX-DDR-003)
     a_wall_in = 2 * (L + W) * H - openings
     a_wall_out = 2 * (D["out_l"] + D["out_w"]) / 1000 * D["top"] / 1000 - openings
     return dict(wall_in=a_wall_in, wall_out=a_wall_out, ceil=L * W, floor=L * W, door=D["door_area_m2"])
@@ -355,13 +355,13 @@ RHO_FILL = {"rice husk": 120.0, "dry sand": 1600.0, "wet sand": 1900.0}[P["FILL"
 nominal = (0.240 * 0.085)          # 230 x 110 x 75 brick with 10 mm joints, laid on bed, one leaf
 leaf_area_out = 2 * ((D["out_l"] - P["LEAF"]) + (D["out_w"] - P["LEAF"])) / 1000 * D["top"] / 1000
 leaf_area_in = 2 * ((P["IN_L"] + P["LEAF"]) + (P["IN_W"] + P["LEAF"])) / 1000 * D["top"] / 1000
-open_both = 2 * (D["door_area_m2"] + D["pad_area_m2"] + D["fan_area_m2"])
+open_both = 2 * (D["door_open_m2"] + D["pad_open_m2"])   # brick openings, the fans are in the ceiling
 wall_bricks = (leaf_area_out + leaf_area_in - open_both) / nominal
 floor_bricks = A["floor"] / (0.240 * 0.125)
 bricks = (wall_bricks + floor_bricks) * 1.10
 wall_vol = (leaf_area_out + leaf_area_in - open_both) * P["LEAF"] / 1000
-cav_vol = (2 * ((P["IN_L"] + 2 * P["LEAF"] + P["CAV"]) + (P["IN_W"] + 2 * P["LEAF"] + P["CAV"])) / 1000 * D["top"] / 1000
-           - (D["door_area_m2"] + D["pad_area_m2"] + D["fan_area_m2"])) * P["CAV"] / 1000
+cav_vol = (2 * ((P["IN_L"] + 2 * P["LEAF"] + P["CAV"]) + (P["IN_W"] + 2 * P["LEAF"] + P["CAV"])) / 1000 * (D["top"] - P["CAP"]) / 1000
+           - (D["door_open_m2"] + D["pad_open_m2"])) * P["CAV"] / 1000
 mass_walls = wall_vol * RHO_BRICK
 mass_sand = cav_vol * RHO_FILL
 line_load = (mass_walls + mass_sand) * 9.81 / (2 * (D["out_l"] + D["out_w"]) / 1000 - 2 * P["LEAF"] / 1000)
@@ -374,11 +374,40 @@ q_w = 0.5 * RHO_W * V_WIND ** 2
 roof_a = D["roof_area_m2"]
 uplift = CP_NET * q_w * roof_a
 sheet_w = 5.0 * 9.81 * roof_a
-per_post = (uplift - sheet_w) / 4
+frame_vol = (len(P["PURLIN_Y"]) * (P["ROOF_L"] - 100) * P["PURLIN"][0] * P["PURLIN"][1]
+             + 2 * (P["ROOF_W"] - 60) * P["BEAM"][0] * P["BEAM"][1]) / 1e9
+frame_w = frame_vol * 550.0 * 9.81          # sawn timber about 550 kg/m3
+per_post = (uplift - sheet_w - frame_w) / 4
 fdn = (P["FOOTING"] / 1000) ** 2 * P["FOOTING_DEPTH"] / 1000 * 23500
 fdn400 = 0.4 ** 2 * P["FOOTING_DEPTH"] / 1000 * 23500
 pr(f"roof uplift at {V_WIND:.0f} m/s gust, net Cp {CP_NET}: q {q_w:.0f} Pa, {uplift/1000:.1f} kN on {roof_a:.1f} m2; sheet weight {sheet_w/1000:.2f} kN; per post {per_post/1000:.2f} kN")
+pr(f"roof framing {frame_vol:.2f} m3 of timber, {frame_w/1000:.2f} kN dead weight (beams and purlins, ZBX-DDR-003)")
 pr(f"footing {P['FOOTING']:.0f} x {P['FOOTING']:.0f} x {P['FOOTING_DEPTH']:.0f} mm concrete: {fdn/1000:.2f} kN (factor {fdn/per_post:.2f}); a 400 mm footing gives {fdn400/1000:.2f} kN (factor {fdn400/per_post:.2f})")
+# roof framing and ceiling members (ZBX-DDR-003): sawn timber, bending stress allowed about 7 MPa, E about 10 GPa
+SIG_ALLOW, E_T = 7.0, 10000.0
+pu_b, pu_h = P["PURLIN"]
+pu_span = 2 * P["POST_X"] / 1000
+pu_trib = max(b - a for a, b in zip(P["PURLIN_Y"][:-1], P["PURLIN_Y"][1:])) / 1000
+w_pu = CP_NET * q_w * pu_trib                      # N/m, uplift on an inner purlin
+m_pu = w_pu * pu_span ** 2 / 8
+z_pu = pu_b * pu_h ** 2 / 6
+i_pu = pu_b * pu_h ** 3 / 12
+sig_pu = m_pu * 1000 / z_pu
+d_pu = 5 * (w_pu / 1000) * (pu_span * 1000) ** 4 / (384 * E_T * i_pu)
+z_100 = pu_b * 100 ** 2 / 6
+pr(f"purlin {pu_b:.0f} x {pu_h:.0f} mm, span {pu_span:.1f} m, {pu_trib:.1f} m wide strip: uplift {w_pu:.0f} N/m, M {m_pu:.0f} N m, stress {sig_pu:.1f} MPa (allow about {SIG_ALLOW:.0f}), deflection {d_pu:.0f} mm (L/{pu_span*1000/d_pu:.0f}); a 100 mm deep purlin would see {m_pu*1000/z_100:.1f} MPa")
+tie = w_pu * (P["ROOF_L"] - 100) / 1000 / 2
+pr(f"purlin to beam tie: {tie/1000:.2f} kN uplift at each end; use a tie rated 2 kN or more")
+be_b, be_h = P["BEAM"]
+be_span = 2 * P["POST_Y"] / 1000
+w_be = (uplift - sheet_w) / 2 / ((P["ROOF_W"] - 60) / 1000)
+m_be = w_be * be_span ** 2 / 8
+sig_be = m_be * 1000 / (be_b * be_h ** 2 / 6)
+pr(f"roof beam {be_b:.0f} x {be_h:.0f} mm, span {be_span:.1f} m between posts: {w_be:.0f} N/m, M {m_be:.0f} N m, stress {sig_be:.1f} MPa")
+jo_b, jo_h = P["JOIST"]
+jo_span = (P["IN_W"] + 2 * P["LEAF"]) / 1000
+m_jo = 1000 * jo_span / 4
+pr(f"ceiling joist {jo_b:.0f} x {jo_h:.0f} mm, span {jo_span:.2f} m: a 1 kN point load at mid-span gives {m_jo*1000/(jo_b*jo_h**2/6):.1f} MPa (boards are for maintenance access only)")
 res("R11", "Durability: structure 10 years, pad and fans 3 years", f"Wall bearing {bearing/1000:.0f} kPa; post footings {fdn/per_post:.1f} x uplift at 30 m/s; pad and fan life from supplier data not yet available",
     "10 years structure; 3 years pad, fans, pump", "Not verifiable at TRL 3")
 
@@ -386,7 +415,7 @@ res("R11", "Durability: structure 10 years, pad and fans 3 years", f"Wall bearin
 pr("\n== 8 Cost (R12) ==")
 budget = float(yaml.safe_load((ROOT / "project.yaml").read_text())["budget_usd"])
 rows = list(csv.DictReader((ROOT / "bom/bom.csv").open()))
-groups = {"structure": (1, 2, 3, 4, 5, 12), "kit": (6, 7, 8, 9, 10, 11, 14), "crates": (13,)}
+groups = {"structure": (1, 2, 3, 4, 5, 12, 15, 16, 17), "kit": (6, 7, 8, 9, 10, 11, 14, 18), "crates": (13,)}
 tot = {g: 0.0 for g in groups}
 for r in rows:
     n = int(r["item"].split()[0])
@@ -395,9 +424,11 @@ for r in rows:
             tot[g] += int(r["qty"]) * float(r["unit_cost_usd"])
 for g, v in tot.items():
     pr(f"{g}: ${v:,.2f}")
-pr(f"store total, crates excluded: ${tot['structure'] + tot['kit']:,.2f}; kit against budget ${budget:.0f}: {tot['kit']/budget*100:.0f} % used, ${budget - tot['kit']:.0f} left")
-res("R12", "Cooling equipment kit cost (structure costed separately)", f"Kit ${tot['kit']:.0f}; structure ${tot['structure']:.0f} (separate); crates ${tot['crates']:.0f} (user supplied)",
-    f"Kit ${budget:.0f} or less", "Met" if tot["kit"] <= budget else "Not met")
+gap = budget - tot["kit"]
+pr(f"store total, crates excluded: ${tot['structure'] + tot['kit']:,.2f}; kit against the value-engineering target of ${budget:.0f}: {tot['kit']/budget*100:.0f} %, ${abs(gap):.0f} {'under' if gap >= 0 else 'over'}")
+res("R12", "Cooling equipment kit cost against the value-engineering target (structure costed separately)",
+    f"Kit ${tot['kit']:.0f}; structure ${tot['structure']:.0f} (separate); crates ${tot['crates']:.0f} (user supplied)",
+    f"Kit ${budget:.0f} value-engineering target", f"{'Under' if gap >= 0 else 'Over'} the target by ${abs(gap):.0f}")
 
 # ------------------------------------------------------------------ results
 pr("\n== Results against requirements ==")

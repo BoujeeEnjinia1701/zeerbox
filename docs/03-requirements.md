@@ -3,9 +3,9 @@ doc_id: ZBX-REQ-001
 title: ZeerBox requirements
 project: ZeerBox
 doc_type: Requirements
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,15 +25,19 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002). R3 relaxed to 80 %; status from ZBX-CAL-001 v0.2 (150 mm pad, dry rice husk fill)
+- version: "0.5"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: Status from ZBX-CAL-001 v0.3 after the design for construction (ZBX-DDR-003); R12 reported against the value-engineering target
 ---
 
 # ZeerBox requirements
 
-These requirements are checked by calculation in ZBX-CAL-001 v0.2 at TRL 3. Eight are met (three of them by design or logic review only), **R3 is at risk**, none is not met, and R6, R10 and R11 cannot be verified at TRL 3. Targets are not yet validated with users and will be revised after co-design sessions (see ZBX-PRB-001).
+These requirements are checked by calculation in ZBX-CAL-001 v0.3 at TRL 3, after the design was made constructable (ZBX-DDR-003). Seven are met (three of them by design or logic review only), the kit cost (R12) is USD 1 under its value-engineering target, **R3 is at risk**, none is not met, and R6, R10 and R11 cannot be verified at TRL 3. Targets are not yet validated with users and will be revised after co-design sessions (see ZBX-PRB-001).
 
 The **design point** used throughout is outside air at 35 °C and 30 % RH (wet bulb 21.5 °C), a full store of 480 kg of mixed vegetables, and 100 kg of fresh produce loaded per day at 32 °C.
 
-*Table 1. Requirements and TRL 3 status. Values are central estimates from ZBX-CAL-001 v0.2, with the favorable to unfavorable range where it matters.*
+*Table 1. Requirements and TRL 3 status. Values are central estimates from ZBX-CAL-001 v0.3, with the favorable to unfavorable range where it matters.*
 
 | ID | Requirement | Target | Verification | TRL 3 status (ZBX-CAL-001) |
 | --- | --- | --- | --- | --- |
@@ -47,10 +51,10 @@ The **design point** used throughout is outside air at 35 °C and 30 % RH (wet b
 | R8 | Water use | 70 L or less of water per design day, including pad and wall cavity; sump holds at least one day | Water balance | Met: about 36 L (no cavity water); 60 L sump for 36 L of pad and bleed water |
 | R9 | Low-voltage and safe | All electrical parts at 12 V DC nominal, fused at the battery; fans guarded; door opens from inside without a key | Design review | Met by design review |
 | R10 | Local build and repair | Walls, roof, door and shelves built by a local mason and carpenter; every fan, pump, sensor and pad replaceable in 30 min or less with generic parts | Design review; parts availability survey with the partner | Not verifiable at TRL 3 |
-| R11 | Durability | Structure 10 years or more; pad 3 years or more with cleaning; fans and pump 3 years or more in dust | Material review; supplier data | Not verifiable at TRL 3; roof footings sized for uplift at 30 m/s, 500 mm kept as a minimum (ZBX-DDR-002) |
-| R12 | Affordable | Cooling equipment kit (pad, sump and pump, fans, controller, solar panel, power box, wiring: BOM items 6 to 11 and 14) $300 or less in parts (`project.yaml` budget). The structure (items 1 to 5 and 12) is built from local materials and costed separately | Priced BOM (`bom/bom.csv`) | Met: kit about $270; structure about $355, reported separately |
+| R11 | Durability | Structure 10 years or more; pad 3 years or more with cleaning; fans and pump 3 years or more in dust | Material review; supplier data | Not verifiable at TRL 3; roof footings 1.8 times the uplift at 30 m/s, 500 mm kept as a minimum (ZBX-DDR-002); roof beams and purlins sized (ZBX-CAL-001 v0.3) |
+| R12 | Affordable | Cooling equipment kit (pad, sump and pump, fans, controller, solar panel, power box, wiring and panel frames: BOM items 6 to 11, 14 and 18) priced against the USD 300 value-engineering target (`project.yaml` budget). The structure (items 1 to 5, 12, 15, 16 and 17) is built from local materials and costed separately | Priced BOM (`bom/bom.csv`) | Value-engineering target: USD 300 for the kit. Estimated cost of the constructable design: USD 299 (USD 1 under the target); structure USD 574, reported separately |
 
-R12 was redefined on 2026-09-25 by Amish's decision to go with the TRL 2 recommendation (ZBX-DDR-001 item 1). Its earlier target, the complete store for $300, was not met at about $575.
+R12 was redefined on 2026-09-25 by Amish's decision to go with the TRL 2 recommendation (ZBX-DDR-001 item 1). Its earlier target, the complete store for $300, was not met at about $575. Since 2026-10-01 the USD 300 figure is a hypothetical value-engineering target, not a limit (Amish: "the budgets are a hypothethical control target to ensure we are thinking along a value engineering lens"), so R12 is reported as over or under the target.
 
 R3 was relaxed from 85 % to 80 % on 2026-09-25 by Amish's decision to go with the TRL 3 recommendation (ZBX-DDR-002, item 11), together with a 150 mm pad and produce-level measures (covered or lined crates). At 85 % R3 would still not be met: the store averages 81 % and 85 % needs a pad about 185 mm deep or more.
 

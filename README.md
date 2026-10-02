@@ -8,7 +8,7 @@ Walk-in evaporative cooling chamber with a solar fan that forces air through a w
 
 ![ZeerBox: solar-powered walk-in evaporative cooling store, product render](media/render-hero.png)
 
-[Exploded render](media/render-exploded.png) · [Detail render](media/render-detail.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement ZBX-DWG-001 (PDF)](cad/drawings/ZBX-DWG-001.pdf) · [Sizing note ZBX-CAL-001](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
+[Exploded render](media/render-exploded.png) · [Detail render](media/render-detail.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement ZBX-DWG-001 (PDF)](cad/drawings/ZBX-DWG-001.pdf) · [Sizing note ZBX-CAL-001](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
@@ -63,12 +63,18 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
 - Double brick walls with a dry rice husk cavity, insulated ceiling and shade roof
 - 150 mm cellulose evaporative pad with drip header and gutter
-- Two 250 mm 12 V DC exhaust fans
+- Two 250 mm 12 V DC exhaust fans in a ceiling fan box at the door end
 - 60 L sump drum with a 12 V pump
 - 150 W PV panel, 20 A PWM charge controller and small LiFePO4 battery
 - Controller with inside and outside humidity and temperature sensors
 
-The priced bill of materials is in [bom/bom.csv](bom/bom.csv). The $300 budget covers the cooling equipment kit, about $270; the structure is built from local materials and costed separately, about $355 (indicative).
+The priced bill of materials is in [bom/bom.csv](bom/bom.csv). Value-engineering target: USD 300 for the cooling equipment kit. Estimated cost of the constructable design: USD 299 for the kit (USD 1 under the target); the structure is built from local materials and costed separately, about USD 574 (indicative).
+
+## Building the prototype
+
+The prototype build plan ([ZBX-BLD-001](docs/05-build-plan.md)) shows how to build the first store, component by component and step by step, with a making sketch for each of the 18 made components and a picture for every one of the 26 assembly steps. Making the concept buildable added a strip footing, lintels and lined openings, a framed ceiling and roof, and moved the two fans from the front wall into a ceiling fan box (decision record ZBX-DDR-003, open for review). A local mason and carpenter can build it; the cooling kit is bought and fitted. Decisions still open are kept in the [design decisions register](docs/06-design-decisions.md).
+
+![ZeerBox prototype: every component pulled apart, numbered in build order](docs/05-build-plan/overview.png)
 
 ## Safety
 

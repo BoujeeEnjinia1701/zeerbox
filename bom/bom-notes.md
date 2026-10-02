@@ -2,10 +2,10 @@
 
 All prices are indicative 2026 USD for parts bought in a regional town in sub-Saharan Africa. They are checked for arithmetic and against the TRL 3 sizing (ZBX-CAL-001) but not yet quoted by suppliers.
 
-- Line numbers match the callouts in `media/exploded.png`. Line 14 (wiring and plumbing) has no callout.
-- **Budget.** Decided by Amish, 2026-09-25 (ZBX-DDR-001 item 1): `budget_usd: 300` covers the cooling equipment kit. The structure is built from local materials and costed separately.
-- **Cooling equipment kit** (items 6 to 11 and 14): **$270**, 90 % of the $300 budget. It rose by $27 from TRL 2 for the decided 150 W panel (+$20), a 20 A charge controller in place of 10 A (+$4) and 2.5 mm² PV cable (+$3), then by $10 for the 150 mm pad (decided by Amish, 2026-09-25, ZBX-DDR-002 item 11).
-- **Structure** (items 1 to 5 and 12), costed separately: **$355** in materials. It rose by $20 for 500 x 500 x 600 mm roof post footings, then fell by $5 when the wet sand cavity and wetting pipe gave way to dry rice husk with lime, mesh and a damp-proof course (ZBX-DDR-002 item 12). Mason's and carpenter's labor is not included.
-- **Store total, crates excluded:** $625.
+- Line numbers match the callouts in `media/exploded.png`. Line 14 (wiring and plumbing) has no callout, and line 15 (the strip footing, below ground) is shown in the build plan and the general arrangement, not in the concept views. Lines 15 to 18 were added to make the design constructable (ZBX-DDR-003).
+- **Budget.** Decided by Amish, 2026-09-25 (ZBX-DDR-001 item 1): `budget_usd: 300` covers the cooling equipment kit. The structure is built from local materials and costed separately. Since 2026-10-01 the figure is a hypothetical value-engineering target, not a limit.
+- **Cooling equipment kit** (items 6 to 11, 14 and 18). Value-engineering target: USD 300. Estimated cost of the constructable design: **USD 299** (USD 1 under the target); it rose from $270 by $22 for the panel mounting frames (line 18) and $10 for the pad frame, lining, bars and brackets, less $3 for the roof clamps they replace (ZBX-DDR-003). Before that, it rose by $27 from TRL 2 for the decided 150 W panel (+$20), a 20 A charge controller in place of 10 A (+$4) and 2.5 mm² PV cable (+$3), then by $10 for the 150 mm pad (decided by Amish, 2026-09-25, ZBX-DDR-002 item 11).
+- **Structure** (items 1 to 5, 12, 15, 16 and 17), costed separately: **$574** in materials. It rose from $355 for the strip footing ($35), the roof beams and purlins ($70), the door lining, stops and fan box ($25), the framed ceiling (+$35), the full rack cut list (+$30 for two racks), lintels and wall ties (+$16) and post cap plates (+$8) (ZBX-DDR-003). Before that, it rose by $20 for 500 x 500 x 600 mm roof post footings, then fell by $5 when the wet sand cavity and wetting pipe gave way to dry rice husk with lime, mesh and a damp-proof course (ZBX-DDR-002 item 12). Mason's and carpenter's labor is not included.
+- **Store total, crates excluded:** $873.
 - **Crates** (item 13): $96 if bought; not included, since users normally own them.
 - `python docs/04-calcs/sizing.py` reads this BOM and prints the group totals.

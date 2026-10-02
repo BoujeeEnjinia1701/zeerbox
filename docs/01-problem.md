@@ -3,9 +3,9 @@ doc_id: ZBX-PRB-001
 title: ZeerBox problem statement
 project: ZeerBox
 doc_type: Problem statement
-version: "0.5"
+version: "0.6"
 status: Draft
-date: '2026-09-26'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -29,6 +29,10 @@ revisions:
   date: '2026-09-26'
   author: Amish Chadha
   change: Stronger sources
+- version: "0.6"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: Cost constraint restated against the value-engineering target with the constructable design's figures (ZBX-DDR-003)
 ---
 
 # ZeerBox problem statement
@@ -71,7 +75,7 @@ ZeerBox is a walk-in evaporative store, large enough for about 24 crates, that u
 
 ## Constraints
 
-- The $300 USD budget (`project.yaml`) covers the cooling equipment kit: pad, sump and pump, fans, controller, solar panel, power box and wiring. The walk-in structure is built from local materials and costed separately (decided by Amish, 2026-09-25, ZBX-DDR-001 item 1). At TRL 3 the kit costs about $270 and the structure about $355 (ZBX-CAL-001 v0.2).
+- The $300 USD budget (`project.yaml`) covers the cooling equipment kit: pad, sump and pump, fans, controller, solar panel, power box and wiring. The walk-in structure is built from local materials and costed separately (decided by Amish, 2026-09-25, ZBX-DDR-001 item 1). The USD 300 is a hypothetical value-engineering target, not a limit (Amish, 2026-10-01). Estimated cost of the constructable design: USD 299 for the kit (USD 1 under the target) and about USD 574 for the structure (ZBX-CAL-001 v0.3).
 - Structure built by a local mason and carpenter from local materials, with no specialist refrigeration skills, refrigerant or mains power.
 - Fans, pump and controller run from one small solar panel at 12 V, safe to touch and to work on.
 - Water use modest enough to carry or pump by hand on the hottest day.

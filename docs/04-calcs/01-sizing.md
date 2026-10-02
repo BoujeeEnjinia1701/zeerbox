@@ -3,9 +3,9 @@ doc_id: ZBX-CAL-001
 title: ZeerBox sizing and first-principles checks
 project: ZeerBox
 doc_type: Calculation note
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,11 +17,15 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002). 150 mm pad, dry rice husk cavity fill, R3 at 80 %; all figures rerun
+- version: "0.3"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: Design for construction (ZBX-DDR-003). Fans moved to the ceiling, brick openings with linings, roof beams and purlins sized, uplift with the framing weight, cost against the value-engineering target
 ---
 
 # ZeerBox sizing and first-principles checks
 
-On paper the store cools as the concept claims, with margin on temperature and humidity close to the relaxed target. This version (v0.2) applies the decisions in ZBX-DDR-002: a 150 mm pad in place of 100 mm, a dry rice husk cavity fill in place of wet sand, and R3 relaxed from 85 % to 80 %. At the design point of 35 °C and 30 % RH, the two 250 mm fans deliver about 563 m³/h (331 cfm) through the 150 mm pad, the supply air leaves the pad at 23.1 °C and 87 % RH, and the store averages **24.3 °C, 10.7 K below the outside air** (v0.1: 25.9 °C and 9.1 K). Eight of the twelve requirements are met (three of them by design review or logic review only), one is at risk, none is not met, and three cannot be verified at TRL 3. **R3 (store RH 80 % or more) is at risk:** the store averages about 81 % RH in the central case but 77 % in the unfavorable case. R2 is now met in every case (9.8 to 11.4 K). The dry fill also removes the cavity's water use, so the store needs about 36 L of water a day (v0.1: 44 L).
+On paper the store cools as the concept claims, with margin on temperature and humidity close to the relaxed target. Version 0.3 follows the design for construction (ZBX-DDR-003): the cooling figures are unchanged, the roof framing is sized and the costs are rerun against the value-engineering target. Version 0.2 applied the decisions in ZBX-DDR-002: a 150 mm pad in place of 100 mm, a dry rice husk cavity fill in place of wet sand, and R3 relaxed from 85 % to 80 %. At the design point of 35 °C and 30 % RH, the two 250 mm fans deliver about 563 m³/h (331 cfm) through the 150 mm pad, the supply air leaves the pad at 23.1 °C and 87 % RH, and the store averages **24.3 °C, 10.7 K below the outside air** (v0.1: 25.9 °C and 9.1 K). Seven of the twelve requirements are met (three of them by design review or logic review only), the kit cost (R12) is USD 1 under its value-engineering target, one is at risk, none is not met, and three cannot be verified at TRL 3. **R3 (store RH 80 % or more) is at risk:** the store averages about 81 % RH in the central case but 77 % in the unfavorable case. R2 is now met in every case (9.8 to 11.4 K). The dry fill also removes the cavity's water use, so the store needs about 36 L of water a day (v0.1: 44 L).
 
 Every number in this note is printed by `docs/04-calcs/sizing.py` (run from the repo root: `python docs/04-calcs/sizing.py`), which also writes `docs/04-calcs/results.csv`. The script reads the geometry from `PARAMS` in `cad/src/model.py`, the prices from `bom/bom.csv` and the budget from `project.yaml`, so the model, drawing ZBX-DWG-001 and this note agree. All values are first-principles estimates; nothing here is measured.
 
@@ -72,7 +76,7 @@ With both fans against the 150 mm pad, the shutters and the guards, the operatin
 
 | Gain | W | Basis |
 | --- | --- | --- |
-| Walls, dry rice husk cavity | 84 | U 0.57 W/(m²·K) from outside air to room over 13.8 m² net |
+| Walls, dry rice husk cavity | 85 | U 0.57 W/(m²·K) from outside air to room over 13.9 m² net (the fans are now in the ceiling, ZBX-DDR-003) |
 | Sun on the end walls | 20 | Allowance |
 | Ceiling | 46 | U 0.82 W/(m²·K), 3.6 m², air under the roof at 40 °C |
 | Floor | 55 | U 2.68 W/(m²·K), 3.6 m², ground at 30 °C |
@@ -80,9 +84,9 @@ With both fans against the 150 mm pad, the shutters and the guards, the operatin
 | Produce respiration | 72 | 480 kg x 0.15 W/kg |
 | Field heat | 104 | 100 kg from 32 °C, over 8 h |
 | Door openings and leaks | 50 | Allowance |
-| **Total** | **442** | 376 W favorable, 558 W unfavorable |
+| **Total** | **443** | 376 W favorable, 559 W unfavorable |
 
-The 442 W warms the 563 m³/h airstream by 2.35 K, so the store averages 24.3 °C, **10.7 K below the outside air** (9.8 to 11.4 K). R2 (8 K or more) is **met** in every case. The heat load is higher than in v0.1 (418 W) because the cooler store draws more heat through the ceiling and floor and from the day's warm produce; the deeper pad more than makes up for it.
+The 443 W warms the 563 m³/h airstream by 2.35 K, so the store averages 24.3 °C, **10.7 K below the outside air** (9.8 to 11.4 K). R2 (8 K or more) is **met** in every case. The heat load is higher than in v0.1 (418 W) because the cooler store draws more heat through the ceiling and floor and from the day's warm produce; the deeper pad more than makes up for it.
 
 ### 4.1 Pad depth and cavity fill
 
@@ -154,9 +158,20 @@ The full load draws 2.4 A at 12.8 V and the panel charges at up to 8.3 A; the 15
 
 ## 10. Structure (R11)
 
-The walls need about 1,977 bricks with 10 % waste (1,677 for the walls, 120 for the floor), 3.9 m³ of brickwork weighing about 7.1 t, and 1.3 m³ of dry rice husk weighing about 0.15 t (v0.1: 2.4 t of wet sand). That puts about 7.1 kN/m on the foundations, or about 16 kPa on a 450 mm strip, well below the 100 kPa or more of firm soils.
+The walls need about 1,973 bricks with 10 % waste (1,673 for the walls, 120 for the floor), 3.9 m³ of brickwork weighing about 7.1 t, and 1.2 m³ of dry rice husk weighing about 0.15 t (v0.1: 2.4 t of wet sand). The brick openings now include the 20 mm linings and the fans no longer pass through the wall (ZBX-DDR-003). That puts about 7.1 kN/m on the foundations, or about 16 kPa on the 450 x 250 mm concrete strip footing now in the model and BOM (line 15), well below the 100 kPa or more of firm soils.
 
-The shade roof is the structural risk. At a 30 m/s gust the net uplift on the 11.7 m² roof is about 9.5 kN, or 2.23 kN per post after the sheet weight. A 400 x 400 x 600 mm concrete footing weighs only 2.26 kN, a factor of 1.01. The model and BOM use **500 x 500 x 600 mm footings** (3.52 kN, a factor of 1.58), kept as a minimum by ZBX-DDR-002 (item 13). The local design wind speed must be confirmed with a builder at the chosen site; squall lines in the Sahel can exceed 30 m/s. Pad, fan and pump life depend on supplier data and dust exposure, so R11 is **not verifiable at TRL 3**.
+The shade roof is the structural risk. At a 30 m/s gust the net uplift on the 11.7 m² roof is about 9.5 kN. The constructable design carries the sheets on five 50 x 150 mm purlins and two 75 x 150 mm beams (ZBX-DDR-003), whose 0.21 m³ of timber adds 1.13 kN of dead weight, so each post sees about 1.94 kN after the sheet and framing weight (v0.2: 2.23 kN, sheet only). A 400 x 400 x 600 mm concrete footing weighs only 2.26 kN, a factor of 1.16. The model and BOM use **500 x 500 x 600 mm footings** (3.52 kN, a factor of 1.81), kept as a minimum by ZBX-DDR-002 (item 13). Each post is held in its footing by a 12 mm bar welded through its foot.
+
+The framing members are checked as simply supported sawn timber (bending stress allowed about 7 MPa, E about 10 GPa):
+
+*Table 6a. Roof and ceiling members (ZBX-DDR-003).*
+
+| Member | Span and load | Bending stress | Note |
+| --- | --- | --- | --- |
+| Purlin 50 x 150 mm | 3.7 m between beams, 0.7 m strip, 567 N/m uplift | 5.2 MPa; deflection 10 mm (span/376) | A 100 mm deep purlin would see 11.6 MPa, too much |
+| Purlin to beam tie | 1.08 kN uplift at each crossing | | Hurricane tie rated 2 kN or more |
+| Roof beam 75 x 150 mm | 2.8 m between posts, 1,514 N/m | 5.3 MPa | Two M10 coach screws through each cap plate |
+| Ceiling joist 50 x 100 mm | 1.73 m, 1 kN point load at mid-span | 5.2 MPa | Boards are for maintenance access only | The local design wind speed must be confirmed with a builder at the chosen site; squall lines in the Sahel can exceed 30 m/s. Pad, fan and pump life depend on supplier data and dust exposure, so R11 is **not verifiable at TRL 3**.
 
 ## 11. Cost (R12)
 
@@ -164,12 +179,12 @@ The shade roof is the structural risk. At a 30 m/s gust the net uplift on the 11
 
 | Group | Items | Cost |
 | --- | --- | --- |
-| Cooling equipment kit | 6 to 11 and 14 | **$270** |
-| Structure, costed separately | 1 to 5 and 12 | $355 |
-| Store total, crates excluded | | $625 |
+| Cooling equipment kit | 6 to 11, 14 and 18 | **$299** |
+| Structure, costed separately | 1 to 5, 12, 15, 16 and 17 | $574 |
+| Store total, crates excluded | | $873 |
 | Crates, user supplied | 13 | $96 if bought |
 
-R12 was redefined by ZBX-DDR-001 item 1 to cover the cooling equipment kit, with the structure costed separately. The kit costs **$270 against $300**, 90 % of the budget, and R12 is **met**. The kit rose by $10 from v0.1 for the 150 mm pad ($260 to $270); the structure fell by $5 for the rice husk fill with lime, mesh and damp-proof course in place of sand and a wetting pipe ($360 to $355).
+R12 was redefined by ZBX-DDR-001 item 1 to cover the cooling equipment kit, with the structure costed separately. `budget_usd` is a hypothetical value-engineering target, not a spending limit (Amish, 2026-10-01). Value-engineering target: USD 300 for the kit. Estimated cost of the constructable design: USD 299 for the kit (USD 1 under the target). The kit rose from $270 in v0.2 by $10 for the pad frame, lining, bars and brackets and $22 for the two panel mounting frames, less $3 for the roof clamps they replace (ZBX-DDR-003). The structure rose from $355 to $574 because the concept BOM did not price the strip footing, the roof beams and purlins, the door and pad linings or the fan box, and underpriced the framed ceiling and the racks. The structure is not part of the target.
 
 ## 12. Results against requirements
 
@@ -185,14 +200,16 @@ R12 was redefined by ZBX-DDR-001 item 1 to cover the cooling equipment kit, with
 | R7 | Design-day energy from one panel | 372 Wh needed; 525 Wh from 150 W (41 % margin) | 10 h cooling plus 2 h evening, no grid | Met |
 | R8 | Water per design day; sump | 36 L/day (pad 32, cavity 0, bleed 4); 60 L sump for 36 L | 70 L or less; sump one day | Met |
 | R9 | Low voltage and safe | 12.8 V, 15 A terminal fuse, guards, inside release | As stated | Met (design review) |
-| R12 | Cooling equipment kit cost | Kit $270; structure $355 separate | Kit $300 or less | Met |
+| R12 | Cooling equipment kit cost | Kit $299; structure $574 separate | Kit $300 value-engineering target | Under the target by $1 |
 | R6 | Tomato shelf life | No calculation basis; ZECC data come from a cooler, more humid chamber | 1.5 times ambient or more | Not verifiable at TRL 3 |
 | R10 | Local build; 30 min part swaps | Needs a parts survey and swap trials with a partner | Local trades; 30 min | Not verifiable at TRL 3 |
-| R11 | Durability | Wall bearing 16 kPa; post footings 1.6 times uplift at 30 m/s; pad and fan life unknown | 10 years structure; 3 years pad, fans, pump | Not verifiable at TRL 3 |
+| R11 | Durability | Wall bearing 16 kPa; post footings 1.8 times uplift at 30 m/s; pad and fan life unknown | 10 years structure; 3 years pad, fans, pump | Not verifiable at TRL 3 |
 
-Counts: 8 met (R1, R2, R4, R5, R7, R8, R9, R12), 1 at risk (R3), none not met, 3 not verifiable at TRL 3 (R6, R10, R11).
+Counts: 7 met (R1, R2, R4, R5, R7, R8, R9), R12 under its value-engineering target, 1 at risk (R3), none not met, 3 not verifiable at TRL 3 (R6, R10, R11).
 
 ## 13. Corrections to earlier figures
+
+Changes in v0.3 (ZBX-DDR-003, design for construction): heat load 442 to 443 W (wall area once the fans left the wall); bricks 1,977 to 1,973; husk 1.3 to 1.2 m³ (capping course and lined openings); uplift per post 2.23 to 1.94 kN and footing factor 1.58 to 1.81 (framing weight counted); purlins, beams and joists checked (Table 6a); kit $270 to $299; structure $355 to $574; store total $625 to $873. Temperature, humidity, airflow, water and energy are unchanged.
 
 Changes in v0.2 (ZBX-DDR-002): pad 100 to 150 mm; cavity fill wet sand to dry rice husk; R3 target 85 to 80 %; airflow 584 to 563 m³/h; store 25.9 to 24.3 °C; drop 9.1 to 10.7 K; store RH 71 to 81 %; heat load 418 to 442 W; water 44 to 36 L/day; kit $260 to $270; structure $360 to $355.
 

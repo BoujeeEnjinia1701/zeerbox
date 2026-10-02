@@ -228,3 +228,58 @@ Appearance only: no tolerances, no fabrication detail and no TRL 4 work. `trl` s
 - Kit 1.5.0 synced: STANDARDS v1.5 (sections 12 to 15: product renders, storefront images and image quality, public release, authorship and signing), `.kit/cards.py`, `.kit/image_qc.py`, `.kit/release_gate.py`, issue templates, and the `/render-product` and `/release` commands. `CLAUDE.md` now matches `.kit/CLAUDE.md`.
 - Every `media/render-*.png` recaptioned from its original render with the new layout: the title, concept label and repository sit in a band above the render and the view note in a band below it, each line wrapped to the image width, so no text overlaps other text or the render or runs off the image. `media/card.png` and `media/social-preview.png` regenerated with the same rules.
 - `python .kit/image_qc.py` and `python .kit/release_gate.py` pass. trl stays 3.
+
+## Session 2026-10-02: design for construction and prototype build plan (kit 1.7.0)
+
+Amish approved the build plan format on 2026-09-30 and asked for it across all repos, with open decisions kept in a separate register, and wrote: "If you are realising that the design cannot be built as per concept - fix the design assumptions to match and be physically feasible as you draw the illustrations." This session made ZeerBox constructable and wrote its build plan. The repo stays at TRL 3.
+
+### What was done
+
+- Kit 1.7.0 installed (`.kit/`, `.claude/commands/`); `CLAUDE.md` now matches `.kit/CLAUDE.md`.
+- `cad/src/model.py` rebuilt as a component model (every made, bought or fixed part, with the faces it sits on) and a constructability check, `python cad/src/model.py --check`: 7,816 checks (no overlaps except posts cast in their footings, 39 named joints touching, no floating piece, 7 clearances), all pass. STEP and STL re-exported.
+- `docs/decisions/0003-design-for-construction.md` (ZBX-DDR-003 v0.1, Draft): every change below with its reason, made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review.
+- `docs/05-build-plan.md` (ZBX-BLD-001 v0.1) and `docs/06-design-decisions.md` (ZBX-DEC-001 v0.1), from the kit templates.
+- `cad/src/build_plan_media.py`: overview, setting-out plan, 18 making sketches (`cad/drawings/ZBX-DWG-101` to `118`), 9 joint close-ups, 26 assembly step pictures and a block wiring diagram, in `docs/05-build-plan/`. Every picture was looked at and the unclear ones redrawn.
+- `bom/bom.csv`: lines 15 (strip footing), 16 (door lining, stops and fan box), 17 (roof beams and purlins) and 18 (panel mounting frames) added; lines 1, 3, 4, 5, 6, 8, 10 and 12 respecified and repriced. `bom/bom-notes.md` updated.
+- `docs/04-calcs/sizing.py` and ZBX-CAL-001 v0.3: wall openings without fan holes, framing weight in the uplift, roof and ceiling members checked (Table 6a), new cost groups, R12 against the value-engineering target.
+- ZBX-REQ-001 v0.5 and ZBX-PRC-001 v0.5 updated; general arrangement ZBX-DWG-001 Rev P3 (`cad/src/sheets.py`); concept media regenerated (`cad/src/concept_media.py`; the concept views leave out the below-ground footings).
+- `project.yaml`: `design_state: constructable`; DDR-003, the build plan and the register added to `trl_evidence`. `budget_usd` unchanged. README: build plan and register links and a "Building the prototype" section.
+
+### Design changes made for construction (ZBX-DDR-003)
+
+1. **Fans moved from the front wall to a ceiling fan box** at the door end over the aisle: the wall holes left 50 mm brick piers beside the door and at the corners. The fans still exhaust at the door end with the pad opposite.
+2. **Roof framing added**: two 75 x 150 mm beams on welded, sloped post cap plates; five 50 x 150 mm purlins with hurricane ties; anchor bars through the post feet. 100 mm purlins would be over-stressed (11.6 MPa).
+3. **Wall strip footing** 450 x 250 mm with a damp-proof strip, which the calculation assumed but the model and BOM lacked.
+4. **Lintels, reveal linings and a door frame**: a hardwood lintel over each leaf at both openings, 20 mm linings closing the cavity, brick openings 40 mm larger, stop beads, hinges, a 74 mm door (as the U value assumed) opening outward.
+5. **Framed ceiling**: joists with cleats, insulation, vapor sheet and boards in the same 120 mm, strapped to the walls; a brick capping course over the cavity.
+6. **Racks rebuilt**: rails on the inside faces of the posts and slats across them (the posts used to pass through the shelves); wall brackets.
+7. **Pad assembly**: board frame on wall battens, support and retaining bars, header lying on the pad, gutter on brackets.
+8. **Panel mounting frames** in aluminium, screwed into the purlins; the panel had no mount and floated 150 mm above the roof. Panel centre 50 mm down the slope and 100 mm higher.
+9. **Sump drum moved 190 mm** to sit fully under the roof.
+10. **Outside sensor arm** added.
+
+### Key results
+
+- Cooling unchanged: store 24.3 °C, 10.7 K below 35 °C outside (9.8 to 11.4 K); 81 % RH; 563 m³/h; 36 L/day; 372 Wh/day. Heat load 443 W (was 442 W).
+- Roof: uplift per post 1.94 kN (was 2.23 kN) with the framing weight; footing factor 1.81.
+- Cost: value-engineering target USD 300 for the kit; estimated cost of the constructable design USD 299 (USD 1 under the target). Structure USD 574, costed separately (was USD 355); store USD 873.
+- Requirements: 7 met (3 by review), R12 under its target, **R3 at risk** (81 %, 77 % unfavorable), none not met, R6, R10, R11 not verifiable at TRL 3.
+
+### Proposed, awaiting Amish
+
+All open decisions are in the register ZBX-DEC-001: accept DDR-003; fan position (ceiling fan box recommended); exhaust into the roof space; wall material; partner; and the 2026-09-26 appearance items.
+
+### Stale and not regenerated
+
+The photoreal renders (`media/render-*.png`, made on Amish's Mac; not present in this copy), `media/card.png` and `media/social-preview.png` still show the fans in the front wall, the concept panel legs, racks and roof. They and `cad/src/product_model.py` need updating on Amish's Mac. The concept media in `media/` were regenerated.
+
+### Safety concerns
+
+- Work at height on the ceiling and roof (build plan stop S2); the roof must be tied and screwed down the day it goes on.
+- The door opens outward with an inside push latch and no outside lock (stop S7).
+- Fans are now in the ceiling at 2.1 m; guards on both faces remain required.
+- All earlier concerns stand: battery, *Legionella* in the sump, combustible husk, not for cold-chain products.
+
+### Recommended next step
+
+Amish to review DDR-003 and the register. TRL 4 (building to this plan) stays on hold until he releases it.

@@ -9,5 +9,5 @@ R7,Design-day energy from one PV panel,372 Wh/day needed; 150 W panel gives 525 
 R8,Water per design day; sump capacity,"36 L/day (pad 32, cavity 0, bleed 4); sump 60 L for 36 L of pad use",70 L or less; sump at least one day,Met
 R9,"12 V DC, fused, guarded, door opens from inside","12.8 V system, 15 A terminal fuse; guards both faces; inside release (design review)","12 V DC, fused, guarded, inside release",Met (design review)
 R10,Local build; 30 min part swaps,"Masonry, timber and generic 12 V parts; swap times and parts survey need the partner",Local trades; swap in 30 min or less,Not verifiable at TRL 3
-R11,"Durability: structure 10 years, pad and fans 3 years",Wall bearing 16 kPa; post footings 1.6 x uplift at 30 m/s; pad and fan life from supplier data not yet available,"10 years structure; 3 years pad, fans, pump",Not verifiable at TRL 3
-R12,Cooling equipment kit cost (structure costed separately),Kit $270; structure $355 (separate); crates $96 (user supplied),Kit $300 or less,Met
+R11,"Durability: structure 10 years, pad and fans 3 years",Wall bearing 16 kPa; post footings 1.8 x uplift at 30 m/s; pad and fan life from supplier data not yet available,"10 years structure; 3 years pad, fans, pump",Not verifiable at TRL 3
+R12,Cooling equipment kit cost against the value-engineering target (structure costed separately),Kit $299; structure $574 (separate); crates $96 (user supplied),Kit $300 value-engineering target,Under the target by $1

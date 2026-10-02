@@ -11,7 +11,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parents[1] / ".kit"))
 sys.path.insert(0, str(HERE))
 from concept import Part, render_all, human_figure  # noqa: E402
-from model import build_parts, derived  # noqa: E402
+from model import BOM_LINES, build_components, shape_of, derived  # noqa: E402
 
 STYLE = {   # bom: (color, exploded-view offset in mm)
     1: ("#B45F3C", (0, 0, 0)),
@@ -27,9 +27,17 @@ STYLE = {   # bom: (color, exploded-view offset in mm)
     11: ("#16A34A", (-1300, -1300, 2600)),
     12: ("#CA8A04", (600, -3300, 0)),
     13: ("#65A30D", (0, 0, 3100)),
+    16: ("#78350F", (-1300, -2600, 600)),
+    17: ("#475569", (0, 0, 4500)),
+    18: ("#64748B", (0, 0, 5350)),
 }
 
-model = build_parts()
+# Concept views show the store above ground: the footings (line 15 and the post footings in line 4)
+# are left out here and drawn in the general arrangement and the build plan.
+BELOW_GROUND = ("strip_footing", "post_footings")
+C = build_components()
+model = {k: (name, shape_of([s for key in keys if key not in BELOW_GROUND for s in C[key][1]]))
+         for k, (name, keys) in BOM_LINES.items() if any(key not in BELOW_GROUND for key in keys)}
 parts = [Part(name, shape, STYLE[k][0], k, STYLE[k][1]) for k, (name, shape) in sorted(model.items())]
 
 if __name__ == "__main__":
@@ -42,11 +50,11 @@ if __name__ == "__main__":
                      "Design day 35 °C, 30 % RH: supply 23.1 °C, store 24.3 °C (ZBX-CAL-001)",
                      "About 560 m3/h through a 150 mm pad; store RH about 81 % (R3 80 %, at risk)",
                      "372 Wh/day from a 150 W panel (41 % margin); about 36 L water/day",
-                     "Kit $270 against $300; structure $355 costed separately (indicative)"],
+                     "Kit $299, value-engineering target $300; structure $574 separate (indicative)"],
         scale_figure=False, context=[person],
         cut_exclude=("Shade roof on posts", "Solar panel, 150 W"),
         flow={"title": "air and water path on the design day, 35 °C and 30 % RH (estimates, ZBX-CAL-001)", "unit": "",
               "stages": [("Outside air", "35 °C, 30 % RH"), ("Wetted pad (6)", "32 L/day evaporated"),
                          ("Supply air", "23.1 °C, 87 % RH"), ("Store and produce", "gains about 440 W"),
-                         ("Exhaust fans (8)", "560 m³/h at 25.5 °C")]},
+                         ("Ceiling exhaust fans (8)", "560 m³/h at 25.5 °C")]},
     )
