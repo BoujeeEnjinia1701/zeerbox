@@ -3,7 +3,7 @@ doc_id: ZBX-DDR-003
 title: ZeerBox design for construction
 project: ZeerBox
 doc_type: Design decision record
-version: "0.1"
+version: "0.3"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -13,12 +13,20 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: Changes that make the concept physically buildable, with the reason for each; made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review
+- version: "0.2"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: Accepted by Amish on 2026-10-02, with A1 and A2 decided as option (a)
+- version: "0.3"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: Controller mode lamp and plate shield for the outside sensor added to the model (C11 and C12); appearance model brought into line
 ---
 
 # 0003: Design for construction
 
 - **Date:** 2026-10-02
-- **Status:** Draft. The changes in Table 1 were made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review. The questions in Table 3 are proposed, awaiting Amish.
+- **Status:** Draft; accepted. Amish, 2026-10-02: "APPROVED: The open decisions from the last wave (TremorTrace to ZeerBox) came in after the review and aren't on the page either." This approves the recommendation written for each open decision in the design decisions register (ZBX-DEC-001 v0.1): every change in Table 1 is accepted as made, and A1 and A2 in Table 3 are decided as recorded there.
 
 ## Context
 
@@ -44,6 +52,8 @@ The changes keep what ZeerBox does: the same 2.4 x 1.5 x 2.0 m room, double bric
 | C8 | The solar panel floated 150 mm above the roof with no mount. | Two aluminium frames (angle base rail screwed through sheet crests into two purlins, two flat-bar legs, angle top rail bolted to the panel frame). The panel centre moves 50 mm down the slope and 100 mm higher so both base rails cross two purlins. Replaces the roof clamps of BOM line 10. | The panel keeps its 15° tilt and size; the fixing reaches the purlins, not just the thin sheet. |
 | C9 | The sump drum stood half outside the roof edge, in the sun. | Moved 190 mm toward the store, fully under the roof; hoses routed from the pump to the header end and from the gutter outlet to the drum lid. | Keeps the recirculating water shaded (cooler water, slower bacterial growth). |
 | C10 | The outside sensor's radiation shield floated 40 mm off the wall. | A short bent strip arm screws it to the wall. | A fixing. |
+| C11 | The three-color mode lamp in the precis had no place in the model, and the controller box was a solid block. | The box is a hollow clear-lid IP65 box (80 x 200 x 250 mm, 3 mm wall) with a 22 mm hole in its top, 70 mm toward the door from the middle. The lamp (30 mm flange, 3 mm thick, 22 mm dome standing 20 mm above it) sits in the hole. Amish, 2026-10-02: decision 7. | A bought lamp is fitted in a drilled hole, so the hole and the flange have to be in the model; the 100 mm clearance to the door lining and 15 mm to the sensor shield are checked. |
+| C12 | The outside sensor's shield was a 40 x 40 x 60 mm block. | Six round plates 46 mm across and 2 mm thick at a 10 mm pitch, on a 6 mm stud, on the strip arm (lowest plate 1,320 mm above ground, centre 63 mm from the wall). Amish, 2026-10-02: decision 8. | Stacked plates shed rain and let air through, as a real radiation shield does; the footprint grows by 3 mm a side. |
 
 *Table 2. Knock-on changes.*
 
@@ -55,16 +65,16 @@ The changes keep what ZeerBox does: the same 2.4 x 1.5 x 2.0 m room, double bric
 | Drawings | ZBX-DWG-001 Rev P3; making sketches ZBX-DWG-101 to 118 added. | Follows the model. |
 | Documents | ZBX-REQ-001 v0.5 and ZBX-PRC-001 v0.5 updated for the ceiling fans, cost and structure figures. No requirement changed status except R12, now reported against the value-engineering target. | Follows the model. |
 
-*Table 3. Proposed, awaiting Amish.*
+*Table 3. Decided by Amish, 2026-10-02.*
 
 | # | Question | Options | Recommendation |
 | --- | --- | --- | --- |
-| A1 | Fan position. The concept put the fans in the front wall beside the door, which leaves piers too narrow to build. | (a) ceiling fan box at the door end, as modelled; (b) keep wall fans by raising the room about 250 mm so they fit above the door (more brick, a taller room, a new heat balance); (c) narrow the door to about 600 mm to widen the piers. | (a): no change to the room, the airflow or the door. |
-| A2 | Moist exhaust air now leaves into the roof space, about 2.5 m from the pad intake. | (a) accept, and check at TRL 4 that it does not drift back to the pad; (b) add a short duct to carry it out past the roof edge at the door end. | (a); the roof space is open on all four sides. |
+| A1 | Fan position. The concept put the fans in the front wall beside the door, which leaves piers too narrow to build. | (a) ceiling fan box at the door end, as modelled; (b) keep wall fans by raising the room about 250 mm so they fit above the door (more brick, a taller room, a new heat balance); (c) narrow the door to about 600 mm to widen the piers. | (a): no change to the room, the airflow or the door. **Decided by Amish, 2026-10-02: (a).** |
+| A2 | Moist exhaust air now leaves into the roof space, about 2.5 m from the pad intake. | (a) accept, and check at TRL 4 that it does not drift back to the pad; (b) add a short duct to carry it out past the roof edge at the door end. | (a); the roof space is open on all four sides. **Decided by Amish, 2026-10-02: (a), with (b) only if the TRL 4 check shows moist air drifting back to the pad.** |
 
 ## Consequences
 
 - `design_state: constructable` in `project.yaml`. The build plan ZBX-BLD-001 shows every component and step in pictures generated from the model (`cad/src/build_plan_media.py`); open questions are in the design decisions register ZBX-DEC-001.
 - Requirement status: 7 met (3 by design or logic review), R12 USD 1 under its value-engineering target, 1 at risk (R3), none not met, 3 not verifiable at TRL 3 (ZBX-CAL-001 v0.3).
-- The photoreal renders (`media/render-*.png`), `media/card.png`, `media/social-preview.png` and the appearance model `cad/src/product_model.py` still show the fans in the front wall, the old panel legs and the concept racks; they need updating on Amish's Mac. The concept media in `media/` have been regenerated from the constructable model.
+- The appearance model `cad/src/product_model.py` now takes its structure, cooling kit and controller from the constructable model, and the render scenes are exported. The photoreal renders (`media/render-*.png`), `media/card.png` and `media/social-preview.png` are made on Amish's Mac next. The concept media in `media/` are regenerated from the constructable model.
 - The concept views (hero, exploded, cutaway, blueprint) leave out the below-ground footings; the general arrangement and the build plan show them.

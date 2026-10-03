@@ -3,7 +3,7 @@ doc_id: ZBX-BLD-001
 title: ZeerBox prototype build plan
 project: ZeerBox
 doc_type: Build plan
-version: "0.1"
+version: "0.2"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -13,6 +13,10 @@ revisions:
     date: '2026-10-02'
     author: Amish Chadha
     change: First build plan; design made constructable (ZBX-DDR-003)
+  - version: "0.2"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: Controller box with its mode lamp and the plate shield for the outside sensor; power box with a plain door; pictures redrawn
 ---
 
 # ZeerBox prototype build plan
@@ -442,8 +446,8 @@ Buy to specification, not brand. Line numbers are those of the bill of materials
 - **Exhaust fans (line 8).** Two 250 mm 12 V DC axial fans, about 12 W and about 400 m³/h free air, with a square frame no wider than 290 mm, finger guards on both faces and gravity shutters.
 - **Sump drum, pump and hoses (line 7).** A 60 L plastic drum with a tight lid; a 12 V submersible pump of about 6 W giving 3.6 L/min at 2 m head; a float switch; 25 mm feed hose and 32 mm return hose with clips. Drill the lid for the two hoses and a cable gland.
 - **Solar panel (line 10).** 150 W monocrystalline, about 1,480 x 670 x 35 mm, Vmp about 18 V, Isc about 9 A, with mounting holes in the back flange of its frame.
-- **Power box (line 11).** A 20 A PWM charge controller for 12.8 V lithium iron phosphate, a 12.8 V 12 Ah LiFePO4 battery with a BMS rated for 10 A charge or more, a 15 A fuse at the battery terminal, and a ventilated, shaded box about 100 x 220 x 300 mm.
-- **Controller and sensors (line 9).** A low-cost microcontroller board, two digital temperature and humidity sensors (one in a radiation shield on a strip arm), MOSFET drivers for the fans and pump, a memory card logger, a three-colour mode lamp and an IP65 box about 80 x 200 x 250 mm.
+- **Power box (line 11).** A 20 A PWM charge controller for 12.8 V lithium iron phosphate, a 12.8 V 12 Ah LiFePO4 battery with a BMS rated for 10 A charge or more, a 15 A fuse at the battery terminal, and a ventilated, shaded steel box with a plain door (no window), about 100 x 220 x 300 mm.
+- **Controller and sensors (line 9).** A low-cost microcontroller board, two digital temperature and humidity sensors (one in a radiation shield on a strip arm), MOSFET drivers for the fans and pump, a memory card logger, a three-colour mode lamp with a 22 mm body and a clear-lid IP65 box about 80 x 200 x 250 mm. The outside sensor sits in a shield of six round plates, 46 mm across, stacked 10 mm apart on a stud that is fixed to a short strip arm.
 - **Wiring and plumbing (line 14).** 2.5 mm² twin PV cable, 1.5 mm² twin load cable, 4-core 0.5 mm² sensor cable, conduit, IP65 connectors, glands, hose clips and fixings.
 - **Fixings.** Frame plugs and screws, galvanized joist straps, ten hurricane ties, eight M10 x 100 mm coach screws, sealing-washer roofing screws, M8 stainless bolts, three 100 mm butt hinges, an inside push latch and a pull handle.
 
@@ -614,7 +618,7 @@ Drum on level ground to the right of the pad, under the roof, lid on. Pump and f
 
 ![Step 25](05-build-plan/step-25.png)
 
-Power box to the right of the door and the controller to its left, 1.0 to 1.3 m above ground, each on four screws in plugs. Wire as section 3.19.1 with the battery fuse out. **Hold point:** safety stops S3 and S4 of section 6.
+Power box to the right of the door and the controller to its left, 1.0 to 1.3 m above ground, each on four screws in plugs. Drill a 22 mm hole in the top of the controller box, 70 mm from its middle toward the door, push the mode lamp body through from outside and tighten its nut inside, so the flange sits flat on top of the box. Screw the strip arm of the outside sensor to the wall about 1.35 m above ground, 75 mm above the top of the box, with its plates clear of the lamp by at least 15 mm. Wire as section 3.19.1 with the battery fuse out. **Hold point:** safety stops S3 and S4 of section 6.
 
 ### Step 26: racks in along the long walls
 

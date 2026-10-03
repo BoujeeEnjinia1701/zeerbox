@@ -3,12 +3,12 @@
 Finished-product look for photoreal renders of the walk-in evaporative store: fired-brick walls
 with coursing and a rendered plinth, timber lintels, an insulated ceiling with a timber fascia, a
 corrugated galvanized shade roof on purlins, rafters and steel posts with concrete footing collars, and a
-150 W panel with its cells, frame and mounting legs. The cooling kit gets a cellulose pad with its
-cross-fluted face in an aluminum frame, a PVC drip header and a galvanized return gutter; a 60 L
-drum with rolling hoops, lid and label, and its feed and return hoses; two 250 mm fans with
-blades, finger guards and gravity shutters; the IP65 controller with a clear lid window over its
-board, a lit green mode lamp and the outside sensor in a stacked-plate radiation shield; and a
-ventilated power box with a window onto the charge controller. The door has a seal, hinges and a
+150 W panel with its cells, frame and mounting frames. The cooling kit gets a cellulose pad with its
+cross-fluted face in a timber frame, a PVC drip header and a galvanized return gutter; a 60 L
+drum with rolling hoops, lid and label, and its feed and return hoses; two 250 mm fans in a ceiling box with
+blades and gravity shutters; the IP65 controller with a clear lid over its
+board, a lit green mode lamp and the outside sensor in a six-plate shield; and a
+ventilated shaded power box with a plain door. The door has a seal, hinges and a
 handle. Inside, the racks have slatted shelves and the crates carry produce. Context is a compact
 patch of ground and the shared clay mannequin standing by the door.
 APPEARANCE MODEL ONLY: no tolerances, no fabrication detail. CONCEPT, NOT FOR FABRICATION.
@@ -31,7 +31,7 @@ sys.path.insert(0, str(HERE.parents[1] / ".kit"))
 
 from build123d import (Axis, Box, Compound, Cylinder, Face, Plane, Pos, Rot, Solid, Sphere, Vector,  # noqa: E402
                        Wire, extrude, fillet)
-from model import PARAMS, derived, build_parts  # noqa: E402
+from model import PARAMS, derived, build_components, roof_frame, panel_frame  # noqa: E402
 
 TITLE = "ZeerBox: solar-powered walk-in evaporative cooling store"
 
@@ -43,13 +43,13 @@ RENDER_VIEWS = [
     {"name": "exploded", "groups": ["shell", "internal", "accessory"], "explode": True, "el": 28, "az": -55,
      "note": "Exploded view from the front right and above (about 28 deg elevation): panel, shade roof "
              "and posts, ceiling and rice husk fill lifted off the brick walls; pad, frame, header, "
-             "gutter and sump at right; door, fans, controller and power box at left; racks and crates "
+             "gutter and sump at right; door, controller and power box at left; fans lifted clear above the ceiling; racks and crates "
              "pulled out in front"},
     {"name": "detail", "groups": ["internal"], "explode": False, "el": 18, "az": -160,
      "note": "Detail from the door end, slightly to the front and above (about 18 deg elevation), cooling "
-             "kit only: controller with its lit green mode lamp and radiation shield, fans with gravity "
-             "shutters and power box in front; pad (inner face), drip header, gutter and sump drum at the "
-             "far end"},
+             "kit only: controller with its clear lid, lit green mode lamp and six-plate sensor shield, "
+             "power box with a plain door in front, fans with gravity shutters in their ceiling box above; "
+             "pad (inner face), drip header, gutter and sump drum at the far end"},
 ]
 
 # Appearance-only sizes and placement (mm)
@@ -159,35 +159,27 @@ def _panel_pt(x, y, z, c, tilt):
 
 
 # ------------------------------------------------------------------------------------ structure
-def _walls(P, D, model_parts):
+def _walls(P, D, C):
     """Model.py walls and floor with brick bed joints and a rendered plinth band."""
     ol, ow = D["out_l"], D["out_w"]
-    walls = model_parts[1][1]
+    walls = _comp(C["floor"][1] + C["walls"][1])
     ring = Box(ol + 20, ow + 20, 9) - Box(ol - 8, ow - 8, 11)
     cutters = [Pos(0, 0, COURSE * k) * ring for k in range(4, int(D["top"] // COURSE))]
     walls = walls - _comp(cutters)
     xf = -ol / 2
+    dw = P["DOOR_W"] + 2 * P["LINING"]
     plinth = Pos(0, 0, 150) * (Box(ol + 16, ow + 16, 300) - Box(ol - 2, ow - 2, 302))
-    plinth -= _box(xf, 0, P["FLOOR"] + 150, 60, P["DOOR_W"], 300)
+    plinth -= _box(xf, 0, P["FLOOR"] + 150, 60, dw, 300)
     top = _box(0, 0, 301, ol + 22, ow + 22, 6) - _box(0, 0, 301, ol - 2, ow - 2, 8)
-    top -= _box(xf, 0, 301, 60, P["DOOR_W"], 10)
+    top -= _box(xf, 0, 301, 60, dw, 10)
     plinth += top
     return walls, plinth
 
 
-def _lintels(P, D):
-    xf, xb = -D["out_l"] / 2, D["out_l"] / 2
-    zp = P["PAD_Z"] + P["PAD_H"] / 2 + 120
-    lp = _box(xb + 3, 0, zp, 6, P["PAD_W"] + 400, 120)
-    zd = P["FLOOR"] + P["DOOR_H"] + 70
-    ld = _box(xf - 3, 0, zd, 6, P["DOOR_W"] + 300, 120)
-    return lp + ld
-
-
-def _roof(P, D):
-    """Corrugated sheet, purlins, rafters, screws, posts and footing collars, in model.py's roof envelope."""
-    rz, pitch = D["roof_z"], P["ROOF_PITCH_DEG"]
+def _roof(P, D, C):
+    """Corrugated sheet and screws in model.py's roof envelope; framing, posts and footings from model.py."""
     L, W = P["ROOF_L"], P["ROOF_W"]
+    loc = roof_frame(P)
     pitch_c, amp, t = 76.0, 8.0, 2.0
     n = int(L // pitch_c)
     x0 = -n * pitch_c / 2
@@ -200,50 +192,31 @@ def _roof(P, D):
         bot.append(Vector(x, 0, z - t / 2))
     wire = Wire.make_polygon(top + bot[::-1], close=True)
     sheet = extrude(Face(wire), amount=W, dir=(0, 1, 0))
-    sheet = Pos(0, -W / 2, 0) * sheet
-    loc = Pos(0, 0, rz) * Rot(pitch, 0, 0)
-    sheet = loc * sheet
-
-    # purlins along X under the sheet, rafters along Y on the post lines
-    px, py = P["POST_X"], P["POST_Y"]
-    purl_y = (-py, -py / 3, py / 3, py)
-    frame = None
-    for y in purl_y:
-        b = loc * _box(0, y, -amp - t / 2 - 25, L - 100, 50, 50)
-        frame = b if frame is None else frame + b
-    for x in (-px, px):
-        frame += loc * _box(x, 0, -amp - t / 2 - 50 - 37.5, 75, W - 60, 75)
-
-    # roof screws on alternate crests along each purlin
+    sheet = loc * (Pos(0, -W / 2, 0) * sheet)
+    frame = _comp(C["beams"][1] + C["purlins"][1])
     screws = []
-    for y in purl_y:
-        for i in range(0, n, 2):
+    for y in P["PURLIN_Y"]:
+        for i in range(0, n, 3):
             x = x0 + i * pitch_c
             s = _zcyl(x, y, amp + t / 2 + 1.5, 9, 3) + _zcyl(x, y, amp + t / 2 + 6, 5, 6)
             screws.append(loc * s)
     screws = _comp(screws)
-
-    # posts (model.py positions and heights) with cap plates, and the visible tops of the footings
-    rise = math.tan(math.radians(pitch))
-    posts, collars = [], []
+    # posts above ground only (model.py posts run into their footings), and the footing tops
+    above = _box(0, 0, 3000, 8000, 8000, 6000)
+    posts = _comp([p & above for p in C["posts"][1]])
     fs = P["FOOTING"]
+    collars = []
     for sx in (-1, 1):
         for sy in (-1, 1):
-            x, y = sx * px, sy * py
-            ztop = rz - 15 + y * rise - amp - t / 2 - 50 - 75 + 15
-            posts.append(_zcyl(x, y, ztop / 2, P["POST_D"] / 2, ztop)
-                         + _zcyl(x, y, ztop - 4, P["POST_D"] / 2 + 12, 8))
-            c = _box(x, y, 15, fs, fs, 30)
+            c = _box(sx * P["POST_X"], sy * P["POST_Y"], 15, fs, fs, 30)
             collars.append(_fillet_try(c, _face_edges(c, Axis.Z, 1), [12.0, 6.0]))
-    return sheet, frame, screws, _comp(posts), _comp(collars)
+    return sheet, frame, screws, posts, _comp(collars)
 
 
-def _panel(P, D):
-    """150 W panel in model.py's position and tilt, with frame, cells, junction box and legs."""
+def _panel(P, D, C):
+    """150 W panel in model.py's position and tilt, with frame, cells and junction box; legs are model.py's mount."""
     L, W, T = P["PANEL_L"], P["PANEL_W"], P["PANEL_T"]
-    tilt = P["PANEL_TILT_DEG"]
-    c = (0.0, -300.0, D["roof_z"] + 150)
-    loc = Pos(*c) * Rot(-tilt, 0, 0)
+    loc = panel_frame(P)
     fr = Box(L, W, T)
     fr = _fillet_try(fr, _edges_par(fr, Axis.Z), [4.0, 2.0])
     fr -= Box(L - 44, W - 44, T + 2)
@@ -260,54 +233,36 @@ def _panel(P, D):
             for k in (-1, 1):
                 bars.append(loc * Pos(x + k * cs / 4, y, T / 2 - 2.8) * Box(1.6, cs - 6, 0.4))
     jb = loc * Pos(0, W / 4, -T / 2 - 12) * Box(110, 80, 24)
-    # four aluminum legs from the frame underside to the roof sheet
-    rz, pitch = D["roof_z"], P["ROOF_PITCH_DEG"]
-    rise = math.tan(math.radians(pitch))
-    legs = []
-    for lx in (-L / 2 + 180, L / 2 - 180):
-        for ly in (-W / 2 + 60, W / 2 - 60):
-            a = _panel_pt(lx, ly, -T / 2, c, tilt)
-            zr = rz + a[1] * rise + 9.0
-            legs.append(_box(a[0], a[1], (a[2] + zr) / 2, 30, 30, a[2] - zr + 10)
-                        + _box(a[0], a[1], zr + 2, 60, 60, 4))
-        a0 = _panel_pt(lx, -W / 2 + 60, -T / 2 - 12, c, tilt)
-        a1 = _panel_pt(lx, W / 2 - 60, -T / 2 - 12, c, tilt)
-        legs.append(_pipe([a0, a1], 12))
-    return frame, back, _comp(cells), _comp(bars), jb, _comp(legs)
+    return frame, back, _comp(cells), _comp(bars), jb, _comp(C["mount"][1])
 
 
 def _door(P, D):
+    """Door leaf in its lining: outer face 8 mm behind the wall face, DOOR_T thick (model.py)."""
     xf = -D["out_l"] / 2
+    xo = xf + 8.0
+    dt = P["DOOR_T"]
     fl, dw, dh = P["FLOOR"], P["DOOR_W"], P["DOOR_H"]
     zc = fl + dh / 2
-    leaf = _box(xf + 30, 0, zc, 50, dw - 10, dh - 10)
+    leaf = _box(xo + dt / 2, 0, fl + 5 + (dh - 8) / 2, dt, dw - 6, dh - 8)
     leaf = _fillet_try(leaf, _face_edges(leaf, Axis.X, -1), [6.0, 4.0, 2.0])
     for dz in (-dh / 4, dh / 4):
-        leaf -= _box(xf + 5, 0, zc + dz, 4, dw - 120, 6)
-    seal = _box(xf + 40, 0, zc, 20, dw + 2, dh + 2) - _box(xf + 40, 0, zc, 24, dw - 10, dh - 10)
+        leaf -= _box(xo + 2, 0, zc + dz, 4, dw - 120, 6)
+    seal = _box(xo + dt + 1, 0, fl + dh / 2, 2, dw, dh) - _box(xo + dt + 1, 0, fl + dh / 2 - 10, 4, dw - 40, dh - 20)
     hw = []
     for dz in (-dh / 2 + 200, 0, dh / 2 - 200):
-        hw.append(_zcyl(xf - 2, -dw / 2 + 12, zc + dz, 9, 110) + _box(xf + 2, -dw / 2 + 50, zc + dz, 4, 70, 90))
-    hx, hy, hz = xf - 25, dw / 2 - 90, fl + 1050
-    hw.append(_box(xf + 3, hy, hz, 6, 50, 200))
-    hw.append(_pipe([(xf + 2, hy, hz + 70), (hx, hy, hz + 70), (hx, hy, hz - 70), (xf + 2, hy, hz - 70)], 11))
-    sign = _box(xf + 4, 0, fl + 1450, 1.0, 260, 150)
-    sign_ink = _box(xf + 3.3, 0, fl + 1490, 0.6, 200, 24) + _box(xf + 3.3, 0, fl + 1440, 0.6, 160, 10) \
-        + _box(xf + 3.3, 0, fl + 1415, 0.6, 180, 10)
+        hw.append(_zcyl(xo - 2, -dw / 2 + 8, zc + dz, 9, 110) + _box(xo - 2, -dw / 2 + 50, zc + dz, 4, 70, 90))
+    hx, hy, hz = xo - 25, dw / 2 - 90, fl + 1050
+    hw.append(_box(xo - 3, hy, hz, 6, 50, 200))
+    hw.append(_pipe([(xo - 2, hy, hz + 70), (hx, hy, hz + 70), (hx, hy, hz - 70), (xo - 2, hy, hz - 70)], 11))
+    sign = _box(xo - 0.5, 0, fl + 1450, 1.0, 260, 150)
+    sign_ink = _box(xo - 1.2, 0, fl + 1490, 0.6, 200, 24) + _box(xo - 1.2, 0, fl + 1440, 0.6, 160, 10) \
+        + _box(xo - 1.2, 0, fl + 1415, 0.6, 180, 10)
     return leaf, seal, _comp(hw), sign, sign_ink
 
 
-def _racks(P, model_parts):
-    """model.py racks with slatted shelves (three gaps along each shelf)."""
-    racks = model_parts[12][1]
-    rd, rl, fl = P["RACK_D"], P["RACK_L"], P["FLOOR"]
-    cut = []
-    for s in (-1, 1):
-        yc = s * (P["IN_W"] / 2 - rd / 2)
-        for z in P["SHELVES"]:
-            for dy in (-rd / 4, 0, rd / 4):
-                cut.append(_box(0, yc + dy, fl + z - 12.5, rl - 2 * P["RACK_POST"] - 20, 14, 30))
-    return racks - _comp(cut)
+def _racks(P, C):
+    """model.py racks (slats already spaced); steel wall brackets separate."""
+    return _comp(C["racks"][1]), _comp(C["rack_brackets"][1])
 
 
 def _crates(P):
@@ -334,19 +289,11 @@ def _crates(P):
 
 
 # ------------------------------------------------------------------------------------ cooling kit
-def _pad(P, D):
+def _pad(P, D, C):
+    """Pad media with cross flutes; frame, bars, header and gutter from model.py."""
     xb = D["out_l"] / 2
     pt, pw, ph, pz = P["PAD_T"], P["PAD_W"], P["PAD_H"], P["PAD_Z"]
-    pad_x = xb + pt / 2 + 10
-    fo = _box(pad_x, 0, pz, pt + 20, pw + 100, ph + 100)
-    fo = _fillet_try(fo, _edges_par(fo, Axis.X), [10.0, 6.0])
-    fo = _fillet_try(fo, _face_edges(fo, Axis.X, 1), [3.0, 2.0])
-    frame = fo - _box(pad_x, 0, pz, pt + 40, pw, ph)
-    frame -= _box(pad_x + (pt + 20) / 2, 0, pz, 4, pw + 60, ph + 60) - _box(pad_x + (pt + 20) / 2, 0, pz, 6, pw + 56, ph + 56)
-    screws = []
-    for sy in (-1, 1):
-        for sz in (-1, 1):
-            screws.append(_xcyl(pad_x + (pt + 20) / 2 + 1, sy * (pw / 2 + 25), pz + sz * (ph / 2 + 25), 6, 3))
+    pad_x = xb + pt / 2
     media = _box(pad_x, 0, pz, pt, pw, ph)
     cut = []
     sp = 40.0 / math.cos(math.radians(45))
@@ -355,24 +302,20 @@ def _pad(P, D):
         for i in range(-k, k + 1):
             cut.append(Pos(face_x, i * sp, pz) * Rot(ang, 0, 0) * Box(10, 7, 1100))
     media = media - _comp(cut)
-    # drip header with end caps and a tee for the feed hose
-    hz = pz + ph / 2 + 80
-    header = _ycyl(pad_x, 0, hz, 16, pw + 160)
-    for sy in (-1, 1):
-        header += _ycyl(pad_x, sy * (pw / 2 + 80), hz, 20, 18)
-    header += _ycyl(pad_x, -pw / 2 - 60, hz, 20, 44)
-    # return gutter with an outlet
-    gz = pz - ph / 2 - 80
-    gut = _box(pad_x + 10, 0, gz, 150, pw + 160, 60)
-    gut = _fillet_try(gut, _edges_par(gut, Axis.Y), [4.0, 2.0])
-    gut -= _box(pad_x + 10, 0, gz + 15, 120, pw + 140, 60)
-    gut += _zcyl(pad_x + 10, -pw / 2 - 60, gz - 40, 20, 30)
-    return frame, _comp(screws), media, header, gut, pad_x, hz, gz
+    wood = _comp(C["pad_lining"][1] + C["pad_battens"][1] + C["pad_frame"][1])
+    bars = _comp(C["pad_bars"][1])
+    hz = pz + ph / 2 + 16
+    header = _comp(C["header"][1])
+    for y in (-pw / 2 - 100, pw / 2 + 40):
+        header += _ycyl(pad_x, y + (6 if y < 0 else -6), hz, 20, 12)
+    gut = _comp(C["gutter"][1])
+    brk = _comp(C["gutter_brackets"][1])
+    return wood, bars, media, header, gut, brk
 
 
-def _sump(P, D, pad_x, hz, gz):
-    xb = D["out_l"] / 2
-    dx, dy, dr, dh = xb + 450, -750.0, P["SUMP_D"] / 2, P["SUMP_H"]
+def _sump(P, D, C):
+    dx, dy = P["SUMP_XY"]
+    dr, dh = P["SUMP_D"] / 2, P["SUMP_H"]
     body = _zcyl(dx, dy, (dh - 30) / 2, dr, dh - 30)
     body = _fillet_try(body, _face_edges(body, Axis.Z, -1), [12.0, 6.0])
     hoops = _comp([_zcyl(dx, dy, z, dr + 6, 16) - _zcyl(dx, dy, z, dr - 2, 18) for z in (170, 400)])
@@ -381,63 +324,59 @@ def _sump(P, D, pad_x, hz, gz):
     for i in range(24):
         a = 2 * math.pi * i / 24
         lid -= Pos(dx + (dr + 5) * math.cos(a), dy + (dr + 5) * math.sin(a), dh - 18) * Rot(0, 0, math.degrees(a)) * Box(6, 8, 22)
-    fittings = _zcyl(dx, dy, dh + 10, 22, 20) + _zcyl(dx, dy + 60, dh + 8, 24, 16) + _zcyl(dx - 90, dy - 60, dh + 8, 14, 16)
+    fittings = (_zcyl(dx, dy, dh + 10, 22, 20) + _zcyl(dx, dy - 50, dh + 6, 20, 12) + _zcyl(dx, dy + 50, dh + 6, 22, 12)
+                + _zcyl(dx + 100, dy, dh + 8, 14, 16))
     view = math.radians(-40)
     lab = _zcyl(dx, dy, 290, dr + 0.8, 150) - _zcyl(dx, dy, 290, dr - 2, 152)
     lab &= Pos(dx + dr * math.cos(view), dy + dr * math.sin(view), 290) * Rot(0, 0, -40) * Box(dr, 2 * dr * 0.8, 200)
-    feed = _pipe([(dx, dy, dh + 20), (dx, dy, hz), (pad_x, -P["PAD_W"] / 2 - 60, hz)], 12)
-    ret = _pipe([(pad_x + 10, -P["PAD_W"] / 2 - 60, gz - 55), (pad_x + 10, -P["PAD_W"] / 2 - 60, dh + 220),
-                 (dx, dy + 60, dh + 220), (dx, dy + 60, dh + 16)], 16)
+    feed, ret = C["hoses"][1]
     return body, hoops, lid, fittings, lab, feed, ret
 
 
-def _fans(P, D):
-    xf = -D["out_l"] / 2
-    fr = P["FAN_D"] / 2
-    housing, blades, hubs, guards, shframe, louvers = [], [], [], [], [], []
+def _fans(P, D, C):
+    """Two 250 mm fans in the ceiling fan box, axes vertical, exhausting up through gravity shutters."""
+    top = D["top"]
+    z0 = top + P["JOIST"][1] + P["DECK_T"] + P["FANBOX_UP"] + P["PLY"]
+    fx, fr = P["FAN_X"], P["FAN_D"] / 2
+    housing, blades, hubs, shframe, louvers = [], [], [], [], []
     for s in (-1, 1):
-        y, z = s * P["FAN_Y"], P["FAN_Z"]
-        h = _xcyl(xf - 35, y, z, fr + 15, 90) - _xcyl(xf - 35, y, z, fr - 5, 100)
-        h = _fillet_try(h, h.edges(), [3.0, 1.5])
+        y = s * P["FAN_Y"]
+        h = _box(fx, y, z0 + 45, 274, 274, 90) - _zcyl(fx, y, z0 + 45, fr - 3, 92)
+        h = _fillet_try(h, _edges_par(h, Axis.Z), [14.0, 8.0])
         housing.append(h)
-        hub = _xcyl(xf - 35, y, z, 45, 80) + (Pos(xf - 75, y, z) * Sphere(45) & _box(xf - 90, y, z, 30, 100, 100))
-        hubs.append(hub)
+        hubs.append(_zcyl(fx, y, z0 + 45, 45, 80) + (Pos(fx, y, z0 + 85) * Sphere(45) & _box(fx, y, z0 + 100, 100, 100, 30)))
         for k in range(5):
-            b = Pos(xf - 50, y, z) * Rot(k * 72, 0, 0) * Pos(0, 0, 82) * Rot(0, 0, 32) * Box(3, 52, 70)
-            blades.append(b)
-        g = None
-        for r in (60, 88, 116):
-            ring = _xcyl(xf + 12, y, z, r + 2.5, 4) - _xcyl(xf + 12, y, z, r - 2.5, 6)
-            g = ring if g is None else g + ring
-        for a in (0, 90, 180, 270):
-            ca, sa = math.cos(math.radians(a)), math.sin(math.radians(a))
-            g += _pipe([(xf + 12, y + 40 * ca, z + 40 * sa), (xf + 12, y + (fr + 5) * ca, z + (fr + 5) * sa)], 2.5)
-        guards.append(g)
-        sq = P["FAN_D"] + 40
-        f = _box(xf - 85, y, z, 10, sq, sq) - _box(xf - 85, y, z, 12, sq - 40, sq - 40)
-        f = _fillet_try(f, _edges_par(f, Axis.X), [6.0, 3.0])
-        f += _box(xf - 85, y, z + sq / 2 + 12, 40, sq + 20, 8)
+            blades.append(Pos(fx, y, z0 + 50) * Rot(0, 0, k * 72) * Pos(82, 0, 0) * Rot(32, 0, 0) * Box(70, 52, 3))
+        f = _box(fx, y, z0 + 105, 280, 280, 30) - _box(fx, y, z0 + 105, 250, 250, 32)
+        f = _fillet_try(f, _edges_par(f, Axis.Z), [8.0, 4.0])
         shframe.append(f)
         for i in range(5):
-            zz = z - (sq - 40) / 2 + (i + 0.5) * (sq - 40) / 5
-            louvers.append(Pos(xf - 88, y, zz) * Rot(0, 25, 0) * Box(2, sq - 44, (sq - 40) / 5 + 4))
-    return (_comp(housing), _comp(blades), _comp(hubs), _comp(guards), _comp(shframe), _comp(louvers))
+            yy = y - 100 + 50 * i
+            louvers.append(Pos(fx, yy, z0 + 100) * Rot(14, 0, 0) * Box(246, 48, 2))
+    fanbox = _comp(C["fan_box"][1])
+    return _comp(housing), _comp(blades), _comp(hubs), _comp(shframe), _comp(louvers), fanbox
 
 
 def _controller(P, D):
     xf = -D["out_l"] / 2
-    cx, cy, cz = xf - 40, 860.0, 1150.0
-    outer = _box(cx, cy, cz, 80, 200, 250)
+    cd, cw, ch = P["CTRL"]
+    cy, cz = P["CTRL_YZ"]
+    cx = xf - cd / 2
+    outer = _box(cx, cy, cz, cd, cw, ch)
     outer = _fillet_try(outer, _edges_par(outer, Axis.X), [10.0, 6.0])
     outer = _fillet_try(outer, _face_edges(outer, Axis.X, -1), [3.0, 1.5])
-    xs = xf - 60                                            # lid parting plane
-    body = outer & _box((xs + xf) / 2 + 0.5, cy, cz, xf - xs - 1, 220, 270)
-    body -= _box(xs + 20, cy, cz, 50, 188, 238)
-    lid = outer & _box((xf - 80 + xs) / 2 - 0.5, cy, cz, xs - (xf - 80) - 1, 220, 270)
-    wz = cz + 10
-    lid -= _box(xf - 70, cy, wz, 30, 130, 130)
-    lid -= _box(xs - 4, cy, cz, 12, 188, 238)
-    pane = _box(xf - 76, cy, wz, 2.0, 140, 140)
+    xs = xf - cd + 20                                       # lid parting plane
+    body = outer & _box((xs + xf) / 2 + 0.5, cy, cz, xf - xs - 1, cw + 20, ch + 20)
+    body -= _box(xs + 20, cy, cz, 50, cw - 12, ch - 12)
+    # hole for the mode lamp through the top wall (model.py LAMP)
+    lh, lfl, lft, ldome, ldh, ldy = P["LAMP"]
+    lx, ly, ltop = xf - cd / 2, cy + ldy, cz + ch / 2
+    body -= _zcyl(lx, ly, ltop - 3, lh / 2, 14)
+    lid = outer & _box((xf - cd + xs) / 2 - 0.5, cy, cz, xs - (xf - cd) - 1, cw + 20, ch + 20)
+    # clear lid: a thin frame around a large clear window
+    lid -= _box(xf - cd + 10, cy, cz, 30, cw - 50, ch - 50)
+    lid -= _box(xs - 4, cy, cz, 12, cw - 12, ch - 12)
+    pane = _box(xf - cd + 4, cy, cz, 2.0, cw - 40, ch - 40)
     pcb = _box(xf - 8, cy, cz, 3, 180, 220)
     chips = (_box(xf - 16, cy - 30, cz + 40, 12, 50, 26) + _box(xf - 13, cy + 45, cz + 30, 6, 22, 22)
              + _box(xf - 14, cy + 40, cz - 20, 8, 40, 16) + _box(xf - 14, cy - 40, cz - 30, 8, 24, 30))
@@ -445,34 +384,30 @@ def _controller(P, D):
     for k in range(8):
         term -= _box(xf - 23.5, cy - 63 + 18 * k, cz - 76, 2, 7, 6)
     card = _box(xf - 12, cy + 60, cz + 70, 4, 26, 30)
-    screws = _comp([_xcyl(xf - 80.6, cy + sy * 88, cz + sz * 113, 3.4, 1.2) for sy in (-1, 1) for sz in (-1, 1)])
-    plate = _box(xf - 80.4, cy, cz + 97, 0.6, 120, 14)
+    screws = _comp([_xcyl(xf - cd - 0.6, cy + sy * (cw / 2 - 12), cz + sz * (ch / 2 - 12), 3.4, 1.2) for sy in (-1, 1) for sz in (-1, 1)])
+    plate = _box(xf - cd - 0.4, cy, cz + 97, 0.6, 120, 14)
     glands = []
     for dy in (-50, 0, 50):
-        g = _zcyl(cx + 5, cy + dy, cz - 125 - 3, 11, 6) + _zcyl(cx + 5, cy + dy, cz - 125 - 11, 8, 10)
-        glands.append(g + _zcyl(cx + 5, cy + dy, cz - 125 - 45, 4, 60))
-    # three-colour mode lamp on top of the box, lit green (evaporative cooling mode)
-    lx, ly, ltop = xf - 45, 790.0, cz + 125
-    lamp_base = _zcyl(lx, ly, ltop + 6, 20, 12)
-    lamp = _zcyl(lx, ly, ltop + 17, 16, 10) + (Pos(lx, ly, ltop + 22) * Sphere(16) & _box(lx, ly, ltop + 32, 40, 40, 20))
-    # outside RH/T sensor in a stacked-plate radiation shield (model.py envelope 40 x 40 x 60 mm)
-    sx, sy_, sz = xf - 60, 860.0, 1350.0
-    sh = _zcyl(sx, sy_, sz + 26, 23, 6)
-    sh = _fillet_try(sh, _face_edges(sh, Axis.Z, 1), [2.0, 1.0])
-    for k in range(4):
-        z = sz - 24 + 12 * k
-        sh += _zcyl(sx, sy_, z, 22, 3) - _zcyl(sx, sy_, z, 9, 4)
-    for k in range(3):
-        a = 2 * math.pi * k / 3
-        sh += _zcyl(sx + 15 * math.cos(a), sy_ + 15 * math.sin(a), sz, 2.0, 58)
-    probe = _zcyl(sx, sy_, sz - 6, 6, 26)
-    arm = _pipe([(xf - 1, sy_, sz + 38), (sx, sy_, sz + 38), (sx, sy_, sz + 29)], 4.5) + _box(xf - 2.5, sy_, sz + 38, 5, 36, 36)
-    return (body, lid, pane, pcb, chips, term, card, screws, plate, _comp(glands), lamp_base, lamp, sh, probe, arm)
+        g = _zcyl(cx + 5, cy + dy, cz - ch / 2 - 3, 11, 6) + _zcyl(cx + 5, cy + dy, cz - ch / 2 - 11, 8, 10)
+        glands.append(g + _zcyl(cx + 5, cy + dy, cz - ch / 2 - 45, 4, 60))
+    # mode lamp: flange on the box top, body through the hole, dome (lit green for evaporative cooling mode)
+    lamp_base = _zcyl(lx, ly, ltop + lft / 2, lfl / 2, lft) + _zcyl(lx, ly, ltop - 3, lh / 2 - 0.5, 6)
+    dome_cyl = ldh - ldome / 2
+    lamp = _zcyl(lx, ly, ltop + lft + dome_cyl / 2, ldome / 2, dome_cyl) + Pos(lx, ly, ltop + lft + dome_cyl) * Sphere(ldome / 2)
+    # outside sensor: six stacked plates on a stud, on a strip arm screwed to the wall (model.py SHIELD)
+    sd, sn, st_, sp_, sz0, sr_, sdx, sy0 = P["SHIELD"]
+    scx = xf - sdx
+    zt = sz0 + sp_ * (sn - 1) + st_
+    sh = _comp([_zcyl(scx, sy0, sz0 + sp_ * k + st_ / 2, sd / 2, st_) for k in range(sn)])
+    stud = _zcyl(scx, sy0, (sz0 + zt) / 2, sr_, zt - sz0)
+    probe = _zcyl(scx, sy0, sz0 + 2.5 * sp_, 6, 8)
+    arm = _box((scx + xf) / 2, sy0, 1350, sdx, 20, 10) + _box(xf - 1.5, sy0, 1350, 3, 36, 36)
+    return (body, lid, pane, pcb, chips, term, card, screws, plate, _comp(glands), lamp_base, lamp, sh, stud, probe, arm)
 
 
 def _powerbox(P, D):
     xf = -D["out_l"] / 2
-    cx, cy, cz = xf - 50, -860.0, 1150.0
+    cx, cy, cz = xf - 50, -860.0, 1150.0                    # model.py power box: 100 x 220 x 300
     outer = _box(cx, cy, cz, 100, 220, 300)
     outer = _fillet_try(outer, _edges_par(outer, Axis.X), [8.0, 5.0])
     xs = xf - 85
@@ -483,14 +418,10 @@ def _powerbox(P, D):
             body -= _box(cx + 8, cy + sgn * 110, cz - 90 + 30 * k, 50, 20, 7)
     hood = _box(cx - 5, cy, cz + 157, 116, 236, 10)
     hood = _fillet_try(hood, _edges_par(hood, Axis.Y), [3.0, 1.5])
-    door = outer & _box((xf - 100 + xs) / 2 - 0.5, cy, cz, xs - (xf - 100) - 1, 240, 320)
-    door -= _box(xf - 95, cy, cz + 70, 30, 140, 90)
+    door = outer & _box((xf - 100 + xs) / 2 - 0.5, cy, cz, xs - (xf - 100) - 1, 240, 320)     # plain door, no window
     door -= _box(xs - 4, cy, cz, 12, 206, 286)
-    pane = _box(xf - 97, cy, cz + 70, 2.0, 150, 100)
     ctrl = _box(xf - 30, cy, cz + 70, 50, 130, 80)
     ctrl = _fillet_try(ctrl, _edges_par(ctrl, Axis.X), [4.0, 2.0])
-    lcd = _box(xf - 55.5, cy + 20, cz + 78, 1.0, 60, 26)
-    led = _xcyl(xf - 56, cy - 40, cz + 78, 3.5, 2.0)
     batt = _box(xf - 35, cy, cz - 60, 70, 180, 110)
     batt = _fillet_try(batt, batt.edges(), [3.0, 1.5])
     hinges = _comp([_zcyl(xf - 101, cy - 108, cz + dz, 5, 50) for dz in (-90, 90)])
@@ -498,14 +429,16 @@ def _powerbox(P, D):
     label = _box(xf - 100.4, cy, cz - 60, 0.6, 120, 50)
     ink = _box(xf - 100.8, cy, cz - 45, 0.4, 90, 10) + _box(xf - 100.8, cy, cz - 68, 0.4, 100, 5) \
         + _box(xf - 100.8, cy, cz - 80, 0.4, 70, 5)
-    return body, hood, door, pane, ctrl, lcd, led, batt, hinges, hasp, label, ink
+    return body, hood, door, ctrl, batt, hinges, hasp, label, ink
 
 
 def _conduit(P, D):
+    """Cable run from the power box over the door and down to the controller, and over the ceiling to the fan box."""
     xf = -D["out_l"] / 2
     x = xf - 30
+    zc = D["ceil_top"] + 40
     run = _pipe([(x, -860.0, 1300.0), (x, -860.0, 2060.0), (x, 935.0, 2060.0), (x, 935.0, 1275.0)], 12)
-    run += _pipe([(x, -860.0, 2060.0), (x, -860.0, D["ceil_top"] - 2)], 12)
+    run += _pipe([(x, -860.0, 2060.0), (x, -860.0, zc), (P["FAN_X"], -860.0, zc), (P["FAN_X"], -P["FANBOX"][1] / 2 - 5, zc)], 12)
     clips = []
     for (y, z) in [(-860, 1700), (-400, 2060), (400, 2060), (935, 1700)]:
         clips.append(_box(x + 8, y, z, 46, 20, 30) if z == 2060 else _box(x + 8, y, z, 46, 30, 20))
@@ -521,37 +454,36 @@ def _ground():
 # ------------------------------------------------------------------------------------ assembly
 def product_parts(P=PARAMS):
     D = derived(P)
-    M = build_parts(P)
+    C = build_components(P)
     out = []
 
     def add(name, shape, color, material, bom, group, explode):
         out.append({"name": name, "shape": shape, "color": color, "material": material,
                     "bom": bom, "group": group, "explode": tuple(float(v) for v in explode)})
 
-    # ---- structure (BOM 1 to 5)
-    walls, plinth = _walls(P, D, M)
+    # ---- structure (BOM 1 to 5, 15 to 18)
+    walls, plinth = _walls(P, D, C)
     add("Double brick walls and floor", walls, C_BRICK, "paper", 1, "shell", (0, 0, 0))
     add("Rendered plinth band", plinth, C_PLINTH, "paper", 1, "shell", (0, 0, 0))
-    add("Timber lintels", _lintels(P, D), C_TIMBER, "wood", 1, "shell", (0, 0, 0))
-    add("Dry rice husk cavity fill", M[2][1], C_FILL, "fabric", 2, "shell", (0, 0, 900))
-    ceil = M[3][1]
-    ceil = _fillet_try(ceil, _face_edges(ceil, Axis.Z, 1), [8.0, 4.0])
-    add("Insulated ceiling, timber fascia", ceil, C_FASCIA, "wood", 3, "shell", (0, 0, 1900))
-    sheet, frame, screws, posts, collars = _roof(P, D)
+    add("Hardwood lintels", _comp(C["lintels"][1]), C_TIMBER, "wood", 1, "shell", (0, 0, 0))
+    add("Dry rice husk cavity fill", _comp(C["fill"][1]), C_FILL, "fabric", 2, "shell", (0, 0, 900))
+    ceil = _comp(C["joists"][1] + C["insulation"][1] + C["deck"][1])
+    add("Insulated ceiling, timber joists and boards", ceil, C_FASCIA, "wood", 3, "shell", (0, 0, 1900))
+    sheet, frame, screws, posts, collars = _roof(P, D, C)
     ER = (0, 0, 2700)
     add("Corrugated galvanized roof sheet", sheet, C_GALV, "metal", 4, "shell", ER)
-    add("Roof purlins and rafters, timber", frame, C_TIMBER, "wood", 4, "shell", ER)
+    add("Roof beams and purlins, timber", frame, C_TIMBER, "wood", 17, "shell", ER)
     add("Roof screws with washers", screws, C_POST, "metal", 4, "shell", ER)
     add("Roof posts, galvanized steel", posts, C_POST, "metal", 4, "shell", ER)
     add("Post footing collars, concrete", collars, C_CONC, "paper", 4, "shell", ER)
-    pf, pback, cells, bars, jb, legs = _panel(P, D)
+    pf, pback, cells, bars, jb, mount = _panel(P, D, C)
     EP = (0, 0, 3500)
     add("Solar panel frame, aluminum", pf, C_ALU, "metal", 10, "shell", EP)
     add("Solar panel backsheet", pback, C_BACKSHEET, "plastic", 10, "shell", EP)
     add("Solar cells", cells, C_CELL, "screen", 10, "shell", EP)
     add("Solar cell busbars", bars, C_ALU, "metal", 10, "shell", EP)
     add("Panel junction box", jb, C_BLACK, "plastic", 10, "shell", EP)
-    add("Panel mounting legs, aluminum", legs, C_ALU, "metal", 10, "shell", EP)
+    add("Panel mounting frames, aluminum", mount, C_ALU, "metal", 18, "shell", (0, 0, 3100))
     leaf, seal, hw, sign, ink = _door(P, D)
     ED = (-2500, 0, 0)
     add("Insulated door leaf", leaf, C_ACCENT, "painted", 5, "shell", ED)
@@ -559,6 +491,8 @@ def product_parts(P=PARAMS):
     add("Door hinges and handle", hw, C_POST, "metal", 5, "shell", ED)
     add("Door sign", sign, C_LABEL, "paper", 5, "shell", ED)
     add("Door sign print", ink, C_DARK, "paper", 5, "shell", ED)
+    add("Door lining and stop beads, timber", _comp(C["door_lining"][1] + C["door_stops"][1]), C_TIMBER, "wood", 16,
+        "shell", (-1800, 0, 0))
 
     # ---- racks and crates (BOM 12, 13); pulled out in front for the exploded view
     ERa, ERb = (-1250, -2600, 0), (1250, -3650, 0)
@@ -568,20 +502,21 @@ def product_parts(P=PARAMS):
             "accessory", e)
         for z, col, what in zip(P["SHELVES"], (C_ONION, C_PEPPER, C_TOMATO), ("onions", "peppers", "tomatoes")):
             add(f"Produce, {what}, {tag} rack", _comp(fills[(s, z)]), col, "plastic", 13, "accessory", e)
-    # split the racks by side so each moves with its crates
-    racks = _racks(P, M)
+    racks, brackets = _racks(P, C)
     for s, e, tag in ((-1, ERa, "near"), (1, ERb, "far")):
-        half = racks & _box(0, s * P["IN_W"] / 4, 1000, P["IN_L"], P["IN_W"] / 2, 2000)
-        add(f"Shelving rack, slatted timber, {tag}", half, C_RACK, "wood", 12, "shell", e)
+        box = _box(0, s * P["IN_W"] / 4, 1000, P["IN_L"] + 400, P["IN_W"] / 2, 2000)
+        add(f"Shelving rack, slatted timber, {tag}", racks & box, C_RACK, "wood", 12, "shell", e)
+        add(f"Rack wall brackets, steel, {tag}", brackets & box, C_POST, "metal", 12, "shell", e)
 
-    # ---- cooling kit (BOM 6 to 9, 11, 14)
-    frame6, fscr, media, header, gut, pad_x, hz, gz = _pad(P, D)
-    add("Pad frame, aluminum", frame6, C_ALU, "metal", 6, "internal", (700, 0, 0))
-    add("Pad frame screws", fscr, C_POST, "metal", 6, "internal", (760, 0, 0))
+    # ---- cooling kit (BOM 6 to 9, 11, 14, 16)
+    wood6, bars6, media, header, gut, gbrk = _pad(P, D, C)
+    add("Pad lining, battens and frame, timber", wood6, C_TIMBER, "wood", 6, "internal", (700, 0, 0))
+    add("Pad support and retaining bars", bars6, C_GALV, "metal", 6, "internal", (760, 0, 0))
     add("Cellulose evaporative pad, 150 mm", media, C_PAD, "paper", 6, "internal", (1050, 0, 0))
     add("Drip header, PVC", header, C_PVC, "plastic", 6, "internal", (1050, 0, 300))
     add("Return gutter, galvanized", gut, C_GALV, "metal", 6, "internal", (1050, 0, -250))
-    body, hoops, lid, fit, lab, feed, ret = _sump(P, D, pad_x, hz, gz)
+    add("Gutter brackets, galvanized", gbrk, C_GALV, "metal", 6, "internal", (1050, 0, -250))
+    body, hoops, lid, fit, lab, feed, ret = _sump(P, D, C)
     ES = (1700, -300, 0)
     add("Sump drum, 60 L", body, C_ACCENT, "plastic", 7, "internal", ES)
     add("Sump drum hoops", hoops, C_ACCENT, "plastic", 7, "internal", ES)
@@ -590,20 +525,20 @@ def product_parts(P=PARAMS):
     add("Sump drum label", lab, C_LABEL, "paper", 7, "internal", ES)
     add("Feed hose to header", feed, C_HOSE, "rubber", 7, "internal", (1350, -150, 150))
     add("Return hose from gutter", ret, C_HOSE, "rubber", 7, "internal", (1350, -150, -120))
-    housing, blades, hubs, guards, shf, louv = _fans(P, D)
-    EF = (-700, 0, 0)
+    housing, blades, hubs, shf, louv, fanbox = _fans(P, D, C)
+    add("Fan box, plywood", fanbox, C_FASCIA, "wood", 16, "internal", (0, 0, 1900))
+    EF = (0, 0, 2200)
     add("Fan housings", housing, C_DARK, "plastic", 8, "internal", EF)
     add("Fan blades", blades, C_BLACK, "plastic", 8, "internal", EF)
     add("Fan motor hubs", hubs, C_BLACK, "plastic", 8, "internal", EF)
-    add("Fan finger guards", guards, C_POST, "metal", 8, "internal", (-450, 0, 0))
-    add("Gravity shutter frames", shf, C_SHUTTER, "plastic", 8, "internal", (-1000, 0, 0))
-    add("Gravity shutter louvers", louv, C_SHUTTER, "plastic", 8, "internal", (-1000, 0, 0))
+    add("Gravity shutter frames", shf, C_SHUTTER, "plastic", 8, "internal", (0, 0, 2600))
+    add("Gravity shutter louvers", louv, C_SHUTTER, "plastic", 8, "internal", (0, 0, 2600))
     (cbody, clid, cpane, pcb, chips, term, card, cscr, plate, glands,
-     lbase, lamp, shield, probe, arm) = _controller(P, D)
+     lbase, lamp, shield, stud, probe, arm) = _controller(P, D)
     EC, ECL = (-700, 300, -150), (-900, 300, -150)
     add("Controller enclosure, IP65", cbody, C_SHELL, "plastic", 9, "internal", EC)
-    add("Controller lid frame", clid, C_SHELL2, "plastic", 9, "internal", ECL)
-    add("Controller window, clear polycarbonate", cpane, C_WINDOW, "clear", 9, "internal", ECL)
+    add("Controller clear lid frame", clid, C_SHELL2, "plastic", 9, "internal", ECL)
+    add("Controller clear lid, polycarbonate", cpane, C_WINDOW, "clear", 9, "internal", ECL)
     add("Controller lid screws", cscr, C_POST, "metal", 9, "internal", ECL)
     add("Controller name plate", plate, C_ACCENT, "painted", 9, "internal", ECL)
     add("Controller board", pcb, C_PCB, "plastic", 9, "internal", EC)
@@ -611,23 +546,21 @@ def product_parts(P=PARAMS):
     add("Fan and pump driver terminals", term, "#2E7D5B", "plastic", 9, "internal", EC)
     add("Memory card logger", card, C_POST, "metal", 9, "internal", EC)
     add("Controller cable glands and cables", glands, C_DARK, "rubber", 9, "internal", EC)
-    add("Mode lamp base", lbase, C_DARK, "plastic", 9, "internal", EC)
-    add("Mode lamp, green (lit)", lamp, C_LED_G, "emissive", 9, "internal", EC)
-    add("Radiation shield, outside sensor", shield, "#F2F2EF", "plastic", 9, "internal", (-700, 300, 150))
+    add("Mode lamp flange and body", lbase, C_DARK, "plastic", 9, "internal", EC)
+    add("Mode lamp dome, green (lit)", lamp, C_LED_G, "emissive", 9, "internal", EC)
+    add("Sensor shield, six stacked plates", shield, "#F2F2EF", "plastic", 9, "internal", (-700, 300, 150))
+    add("Sensor shield stud", stud, C_POST, "metal", 9, "internal", (-700, 300, 150))
     add("Outside RH/T sensor probe", probe, C_DARK, "plastic", 9, "internal", (-700, 300, 150))
-    add("Radiation shield bracket", arm, C_POST, "metal", 9, "internal", (-700, 300, 150))
-    (pbody, hood, pdoor, ppane, pctrl, lcd, led, batt, hinges, hasp, plab, pink) = _powerbox(P, D)
+    add("Sensor strip arm", arm, C_POST, "metal", 9, "internal", (-700, 300, 150))
+    (pbody, hood, pdoor, pctrl, batt, hinges, hasp, plab, pink) = _powerbox(P, D)
     EB, EBD = (-700, -300, -150), (-900, -300, -150)
     add("Power box, ventilated steel", pbody, C_SHELL2, "painted", 11, "internal", EB)
     add("Power box rain hood", hood, C_SHELL2, "painted", 11, "internal", (-700, -300, 0))
-    add("Power box door", pdoor, C_SHELL2, "painted", 11, "internal", EBD)
-    add("Power box window, clear", ppane, C_WINDOW, "clear", 11, "internal", EBD)
+    add("Power box door, plain", pdoor, C_SHELL2, "painted", 11, "internal", EBD)
     add("Power box hinges and hasp", _comp([hinges, hasp]), C_POST, "metal", 11, "internal", EBD)
     add("Power box label", plab, C_LABEL, "paper", 11, "internal", EBD)
     add("Power box label print", pink, C_DARK, "paper", 11, "internal", EBD)
     add("PWM charge controller", pctrl, C_DARK, "plastic", 11, "internal", EB)
-    add("Charge controller display (lit)", lcd, C_LCD, "emissive", 11, "internal", EB)
-    add("Charging indicator, green (lit)", led, C_LED_G, "emissive", 11, "internal", EB)
     add("LiFePO4 battery, 12.8 V", batt, "#1F4E79", "plastic", 11, "internal", EB)
     run, clips = _conduit(P, D)
     add("Cable conduit, PVC", run, C_PVC, "plastic", 14, "shell", (-650, 0, 0))

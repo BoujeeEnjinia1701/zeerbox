@@ -3,7 +3,7 @@ doc_id: ZBX-PRC-001
 title: ZeerBox design precis
 project: ZeerBox
 doc_type: Design precis
-version: "0.5"
+version: "0.7"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -29,6 +29,14 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: "Design made constructable (ZBX-DDR-003): fans in a ceiling fan box, footings, lintels, linings, framed ceiling and roof; cost against the value-engineering target; build plan ZBX-BLD-001 and register ZBX-DEC-001; drawing Rev P3"
+- version: "0.6"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: Design for construction, wall material and partner recorded from Amish's decisions of 2026-10-02 (ZBX-DEC-001)
+- version: "0.7"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: Controller parts list names the clear-lid box, mode lamp position and plate shield (ZBX-DEC-001, decisions 6 to 8)
 ---
 
 # ZeerBox design precis
@@ -72,7 +80,7 @@ Numbers match the exploded view (Figure 3) and `bom/bom.csv`. Dimensions come fr
 
 | # | Component | Choice | Notes |
 | --- | --- | --- | --- |
-| 1 | Double brick walls and floor | Two 115 mm fired-brick leaves around a 75 mm cavity, 305 mm total, outside 3,010 x 2,110 mm; brick floor on compacted sand; about 1,980 bricks | Wall material still open (ZBX-DDR-001 item 9) |
+| 1 | Double brick walls and floor | Two 115 mm fired-brick leaves around a 75 mm cavity, 305 mm total, outside 3,010 x 2,110 mm; brick floor on compacted sand; about 1,980 bricks | Fired brick, decided by Amish 2026-10-02 (ZBX-DEC-001) |
 | 2 | Dry rice husk cavity fill | About 1.3 m³ of dry rice husk mixed with hydrated lime, on a damp-proof course, capped with mortar | Decided (ZBX-DDR-002 item 12); dry sand is the fallback |
 | 3 | Insulated ceiling | Timber boards with about 50 mm of straw, rice husk or foam and a plastic vapor sheet | Keeps roof heat out |
 | 4 | Shade roof on posts | Corrugated steel, 3.9 x 3.0 m, on four 90 mm posts in 500 x 500 x 600 mm concrete footings, 450 mm clear above the ceiling | Carries the solar panel; 500 mm footings kept as a minimum (ZBX-DDR-002 item 13) |
@@ -80,7 +88,7 @@ Numbers match the exploded view (Figure 3) and `bom/bom.csv`. Dimensions come fr
 | 6 | Cellulose pad, frame, header and gutter | 150 mm pad, 0.6 x 0.5 m (0.3 m²), center 1.25 m above ground, with a drip header and return gutter | Decided (ZBX-DDR-002 item 11; was 100 mm) |
 | 7 | Sump drum, pump and hoses | 60 L covered drum, 12 V submersible pump about 6 W at 2 m head, float switch, feed and return hoses | Drained and cleaned weekly |
 | 8 | Exhaust fans (pair) | Two 250 mm 12 V DC axial fans with guards and gravity shutters, in a ceiling fan box at the door end, blowing up into the roof space (ZBX-DDR-003) | About 12 W and about 280 m³/h each in service |
-| 9 | Controller and sensors | Low-cost microcontroller, two digital temperature and RH sensors (inside, outside in a radiation shield), MOSFET drivers, memory card, mode lamp, IP65 box | Generic parts |
+| 9 | Controller and sensors | Low-cost microcontroller, two digital temperature and RH sensors (inside, outside in a six-plate shield), MOSFET drivers, memory card, mode lamp on top of the box, clear-lid IP65 box | Generic parts |
 | 10 | Solar panel | 150 W monocrystalline, about 1,480 x 670 mm, on the shade roof | Decided (item 2) |
 | 11 | Power box | 20 A PWM charge controller, 12.8 V 12 Ah LiFePO4 battery with BMS, 15 A fuse, in a ventilated box | Battery decided (item 3); outside the store, shaded |
 | 12 | Shelving racks | Two timber racks, 2.2 m long and 0.45 m deep, shelves at 0.30, 0.85 and 1.40 m above the floor | Termite-treated timber or steel angle |
@@ -166,7 +174,7 @@ Labor for the mason and carpenter is not included.
 
 ## Key design choices
 
-Items marked "decided" were decided by Amish on 2026-09-25 (go with recommendation, ZBX-DDR-001 and ZBX-DDR-002). The rest are proposed, awaiting Amish.
+Items marked "decided" were decided by Amish on 2026-09-25 (go with recommendation, ZBX-DDR-001 and ZBX-DDR-002) or on 2026-10-02 (ZBX-DEC-001).
 
 - **Forced air through a pad, not a passive chamber (decided).** A fan and pad give a larger, walk-in store with shelves at working height and a controlled airflow; a passive ZECC is cheaper and needs no power but holds far less and cannot respond to humidity.
 - **Exhaust fans, pad on the opposite wall (decided).** Pulling air through the pad spreads it evenly over the pad face and keeps the fan motors out of the humid supply air.
@@ -176,8 +184,8 @@ Items marked "decided" were decided by Amish on 2026-09-25 (go with recommendati
 - **Battery (decided).** A small LiFePO4 battery for evening ventilation and cloud.
 - **Set point and thresholds (decided).** 20 °C set point, 4 K wet-bulb depression threshold and 95 % RH guard as starting values for field tuning.
 - **Budget (decided).** `budget_usd: 300` covers the cooling equipment kit; the structure is costed separately. Since 2026-10-01 it is a hypothetical value-engineering target, not a limit.
-- **Design for construction (made under Amish's 2026-09-30 instruction; open for his review).** Footings, lintels, linings, a framed ceiling and roof, and the fans moved from the front wall to a ceiling fan box, so that every part can be built (ZBX-DDR-003). Open decisions are in the register ZBX-DEC-001.
-- **Wall material (open).** Fired brick is the working choice; mud brick or block are alternatives (item 9).
+- **Design for construction (accepted by Amish, 2026-10-02).** Footings, lintels, linings, a framed ceiling and roof, and the fans moved from the front wall to a ceiling fan box, so that every part can be built (ZBX-DDR-003). Decisions are recorded in the register ZBX-DEC-001.
+- **Wall material (decided).** Fired brick, as modelled and calculated: the pad wall is kept wet and fired brick does not soften (decided by Amish, 2026-10-02, ZBX-DEC-001).
 - **Pad depth and R3 (decided).** A 150 mm pad, R3 relaxed to 80 %, and covered or lined crates for sensitive produce (ZBX-DDR-002 item 11).
 - **Roof footings (decided).** 500 x 500 x 600 mm footings as a minimum; the local design wind speed is confirmed with a builder at the chosen site (ZBX-DDR-002 item 13).
 
@@ -201,7 +209,7 @@ Items marked "decided" were decided by Amish on 2026-09-25 (go with recommendati
 - Confirm the local design wind speed with a builder (ZBX-DDR-002 item 13).
 - Confirm pad effectiveness and pressure drop, and the fan curve, from supplier data for the chosen parts.
 - Review MIT D-Lab's forced-air evaporative chamber work in Kenya in detail and contact the team.
-- Choose the wall material (item 9) and the first partner, site and crop mix (item 10).
-- The full list of open decisions and items to confirm is kept in the design decisions register, ZBX-DEC-001 ([docs/06-design-decisions.md](06-design-decisions.md)).
+- Approach the first candidate partner, MIT D-Lab's evaporative cooling team, for a site in Mali's dry-season vegetable areas (decided by Amish, 2026-10-02, ZBX-DEC-001).
+- The decisions and the items to confirm are kept in the design decisions register, ZBX-DEC-001 ([docs/06-design-decisions.md](06-design-decisions.md)).
 
 Concept media: [blueprint sheet](../media/concept-blueprint.pdf), [interactive 3D model](../media/viewer.html). General arrangement: `cad/drawings/ZBX-DWG-001.pdf`.

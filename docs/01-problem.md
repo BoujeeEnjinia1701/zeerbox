@@ -3,7 +3,7 @@ doc_id: ZBX-PRB-001
 title: ZeerBox problem statement
 project: ZeerBox
 doc_type: Problem statement
-version: "0.6"
+version: "0.7"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -33,6 +33,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: Cost constraint restated against the value-engineering target with the constructable design's figures (ZBX-DDR-003)
+- version: "0.7"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: Partner, region and crop mix answered by Amish's decision of 2026-10-02 (ZBX-DEC-001)
 ---
 
 # ZeerBox problem statement
@@ -100,7 +104,7 @@ ZeerBox is a walk-in evaporative store, large enough for about 24 crates, that u
 
 ## Open questions
 
-- Which partner organization and which region first? A dry-season vegetable area in the Sahel (Mali, Niger, northern Nigeria, Burkina Faso) or a semi-arid area of East Africa (northern Kenya) fits the design point. Amish decided on 2026-09-25 that community designs pick co-design partners per area later; the choice for ZeerBox is still open (ZBX-DDR-001 item 10).
+- Which partner organization and which region first? A dry-season vegetable area in the Sahel (Mali, Niger, northern Nigeria, Burkina Faso) or a semi-arid area of East Africa (northern Kenya) fits the design point. Decided by Amish, 2026-10-02 (ZBX-DEC-001): a group that has already field-tested evaporative cooling chambers with vegetable growers; the first candidate to approach is MIT D-Lab's evaporative cooling team, with a dry-season vegetable area of Mali as the first candidate region and tomatoes, peppers and okra as the crop mix, leafy greens on a separate rack; not yet approached.
 - Is the store for one farm or for a group? This drives size, cost and who waters and cleans it.
 - How far is the water source, and is about 36 L on a hot day acceptable (ZBX-CAL-001 v0.2)?
 - Which crops dominate, and which must be kept apart (for example ethylene-producing tomatoes and bananas next to leafy greens)?

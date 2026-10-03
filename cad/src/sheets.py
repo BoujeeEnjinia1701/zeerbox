@@ -1,4 +1,4 @@
-"""ZeerBox general arrangement drawing ZBX-DWG-001 (Rev P3).
+"""ZeerBox general arrangement drawing ZBX-DWG-001 (Rev P4).
 
 Run from the repo root:  python cad/src/sheets.py
 Builds cad/drawings/ZBX-DWG-001.svg, .pdf and .png from the parametric model.
@@ -24,11 +24,12 @@ work = ROOT / "cad/drawings/_views"
 views = project_views(asm, work)
 
 s = Sheet(project="ZeerBox", title="General arrangement, TRL 3 model", dwg_no="ZBX-DWG-001",
-          rev="P3", author="Amish Chadha", date="2026-10-02", concept=True, scale=1 / 50,
+          rev="P4", author="Amish Chadha", date="2026-10-02", concept=True, scale=1 / 50,
           material="Fired brick, dry rice husk fill, timber, corrugated steel; 12 V kit. See bom/bom.csv",
           revisions=[("P1", "Preliminary GA from the TRL 3 model (ZBX-CAL-001)", "2026-09-25", "AC"),
                      ("P2", "150 mm pad; dry rice husk cavity fill; R3 80 % (DDR-002)", "2026-09-25", "AC"),
-                     ("P3", "Footings, lintels, framed ceiling and roof, ceiling fans (DDR-003)", "2026-10-02", "AC")])
+                     ("P3", "Footings, lintels, framed ceiling and roof, ceiling fans (DDR-003)", "2026-10-02", "AC"),
+                     ("P4", "Controller mode lamp; six-plate sensor shield (DEC-001)", "2026-10-02", "AC")])
 s.add_ortho(views, ["front", "top", "right"])
 s.add_svg(views["iso"], 276, 36, 140, 74, label="Isometric view", sublabel="Not to scale; crates hidden")
 s.add_notes("Key dimensions (mm) and data", [
@@ -43,6 +44,7 @@ s.add_notes("Key dimensions (mm) and data", [
     f"Door {P['DOOR_W']:.0f} x {P['DOOR_H']:.0f} clear, lined reveal, opens out, inside release",
     f"Pad {P['PAD_W']:.0f} x {P['PAD_H']:.0f} x {P['PAD_T']:.0f}, center {P['PAD_Z']:.0f} above ground",
     f"2 fans {P['FAN_D']:.0f} dia in a ceiling fan box, {abs(P['FAN_X']):.0f} from the room center",
+    f"Controller {P['CTRL'][0]:.0f} x {P['CTRL'][1]:.0f} x {P['CTRL'][2]:.0f} clear lid, {P['LAMP'][0]:.0f} mode lamp; {P['SHIELD'][1]}-plate sensor shield",
     f"Racks {P['RACK_L']:.0f} x {P['RACK_D']:.0f}; shelves {', '.join(f'{z:.0f}' for z in P['SHELVES'])} above floor",
     f"Aisle {D['aisle']:.0f}; {D['crates']} crates; 150 W panel {P['PANEL_L']:.0f} x {P['PANEL_W']:.0f}",
     "Design day: store 24.3 °C, 10.7 K drop, about 560 m3/h (CAL-001)",

@@ -3,9 +3,9 @@ doc_id: ZBX-DDR-002
 title: ZeerBox recommendations accepted
 project: ZeerBox
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,12 +13,16 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Record Amish's acceptance of all open recommendations (TRL 3 items 11 to 13) and the items that remain open
+- version: "0.2"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: Items 9 and 10 recorded as decided by Amish on 2026-10-02
 ---
 
 # 0002: Recommendations accepted
 
 - **Date:** 2026-09-25
-- **Status:** accepted (items 11, 12 and 13); items 9 and 10 remain proposed, awaiting Amish
+- **Status:** accepted (items 11, 12 and 13); items 9 and 10 decided by Amish on 2026-10-02 (ZBX-DEC-001)
 
 ## Context
 
@@ -59,14 +63,14 @@ Combined effect of items 11 and 12 (ZBX-CAL-001 v0.2):
 
 No item needs another repo to change, and no item was TRL 4 work that had to be put on hold.
 
-### Items that remain open
+### Items left open on 2026-09-25 (decided 2026-10-02)
 
-*Table 3. Proposed, awaiting Amish. No recommendation was made, so none is assumed.*
+*Table 3. No recommendation was made on 2026-09-25; both items were decided by Amish on 2026-10-02 (ZBX-DEC-001).*
 
 | # | Item | Status |
 | --- | --- | --- |
-| 9 | Wall material: fired brick, mud brick or concrete block | Proposed, awaiting Amish. No recommendation stated; fired brick remains the working choice in the model and BOM |
-| 10 | First co-design partner, region and crop mix | Proposed, awaiting Amish. No recommendation; partners are picked per area later under the cross-cutting rule in ZBX-DDR-001 |
+| 9 | Wall material: fired brick, mud brick or concrete block | Decided 2026-10-02: fired brick, the working choice in the model and BOM |
+| 10 | First co-design partner, region and crop mix | Decided 2026-10-02: MIT D-Lab's evaporative cooling team as the first candidate to approach, Mali as the first candidate region, tomatoes, peppers and okra with leafy greens on a separate rack |
 
 ## Consequences
 

@@ -36,7 +36,7 @@ COL = {"strip_footing": "#A8A29E", "post_footings": "#A8A29E", "posts": "#64748B
        "fans": "#111827", "beams": "#475569", "purlins": "#94A3B8", "sheet": "#CBD5E1", "mount": "#0E7490", "panel": "#1E3A8A",
        "pad_lining": "#92400E", "pad_battens": "#A16207", "pad_frame": "#CA8A04", "pad_bars": "#374151", "pad": "#0F766E",
        "header": "#E5E7EB", "gutter": "#6B7280", "gutter_brackets": "#1F2937", "sump": "#2563EB", "hoses": "#1D4ED8",
-       "controller": "#7C3AED", "sensor": "#E5E7EB", "power_box": "#16A34A", "racks": "#B45309", "rack_brackets": "#111827",
+       "controller": "#7C3AED", "mode_lamp": "#22C55E", "sensor": "#E5E7EB", "power_box": "#16A34A", "racks": "#B45309", "rack_brackets": "#111827",
        "crates": "#65A30D"}
 
 
@@ -136,7 +136,7 @@ NAMES = {"posts": "Roof posts", "post_footings": "Post footings", "walls": "Doub
          "gutter": "Gutter and brackets", "sump": "Sump drum and hoses", "power_box": "Power box, controller, sensor",
          "racks": "Racks (2) and brackets", "strip_footing": "Wall strip footing", "floor": "Brick floor"}
 GROUP = {"door": ("door", "door_hinges"), "pad_frame": ("pad_frame", "pad_battens", "pad_bars"), "gutter": ("gutter", "gutter_brackets"),
-         "sump": ("sump", "hoses"), "power_box": ("power_box", "controller", "sensor"), "racks": ("racks", "rack_brackets")}
+         "sump": ("sump", "hoses"), "power_box": ("power_box", "controller", "mode_lamp", "sensor"), "racks": ("racks", "rack_brackets")}
 
 
 def overview():
@@ -673,9 +673,9 @@ def steps(only=None):
        "Drum on level ground at the right of the pad; feed hose from the pump to the header, return hose from the gutter outlet", **PAD)
     walls.append(g("sump"))
     walls = walls_full + walls[len(pad_end):]
-    st(25, walls, [mv("power_box", (-400, 0, 0), "Power box (right of the door)"), part("Controller and outside sensor (left)", sh("controller", "sensor"), COL["controller"], (-400, 0, 0))],
+    st(25, walls, [mv("power_box", (-400, 0, 0), "Power box (right of the door)"), part("Controller and outside sensor (left)", sh("controller", "mode_lamp", "sensor"), COL["controller"], (-400, 0, 0))],
        "power box, controller and sensor on the front wall", "Screwed into plugs at 1.0 to 1.3 m; wire as the wiring diagram", **DOOR)
-    walls += [g("power_box", "Power box"), part("Controller", sh("controller", "sensor"), COL["controller"])]
+    walls += [g("power_box", "Power box"), part("Controller", sh("controller", "mode_lamp", "sensor"), COL["controller"])]
     inside = [g("strip_footing"), g("walls"), g("floor"), g("door_lining")]
     st(26, inside, [part("Racks", sh("racks"), COL["racks"], (0, 0, 0)), part("Wall brackets", sh("rack_brackets"), COL["rack_brackets"], (0, 0, 0))],
        "racks in along the long walls (roof and ceiling hidden)", "Carried in through the door in parts and assembled inside; end posts bracketed to the wall",
@@ -718,11 +718,11 @@ def wiring():
     blk(25, 44, 14, 11, "Charge controller", "20 A PWM,\n12.8 V LiFePO4 setting", "#16A34A")
     blk(25, 32, 14, 10, "Battery", "12.8 V 12 Ah LiFePO4\nwith BMS (10 A charge)", "#C2410C")
     blk(42, 32, 13, 10, "15 A fuse", "at the battery\nterminal", "#B91C1C")
-    blk(67, 41, 16, 15, "Controller", "microcontroller, MOSFET\ndrivers, card logger,\nthree-colour mode lamp", "#7C3AED")
+    blk(67, 41, 16, 15, "Controller", "clear-lid IP65 box: board,\nMOSFET drivers, card logger;\nmode lamp on top", "#7C3AED")
     blk(91, 50, 13, 9, "Fans (2)", "in the ceiling\nfan box, 12 W each", "#111827")
     blk(91, 38, 13, 9, "Pump", "in the sump drum,\n6 W, float switch", "#2563EB")
     blk(91, 26, 13, 9, "Inside sensor", "temperature and RH,\nmid-store, 1.5 m up", "#0F766E")
-    blk(67, 16, 16, 9, "Outside sensor", "in its radiation\nshield on the wall", "#0F766E")
+    blk(67, 16, 16, 9, "Outside sensor", "in a six-plate\nshield on the wall", "#0F766E")
     wire([(10, 44), (10, 40), (21, 40), (21, 49), (25, 49)], RED); lab(4, 38, "PV cable 2.5 mm², down the door-end\nright post in conduit", RED)
     wire([(36, 44), (36, 43.2), (48.5, 43.2), (48.5, 42)], RED); lab(50, 43.2, "battery terminal, 2.5 mm²", RED)
     wire([(39, 37), (42, 37)], RED); lab(40.5, 39.6, "2.5 mm²", RED, "center")

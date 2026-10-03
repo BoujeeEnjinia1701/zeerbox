@@ -212,9 +212,9 @@ Amish chose this repo for the first batch of product renders on 2026-09-26. This
 Main dimensions, positions and interfaces are unchanged. The items below go beyond model.py and are recorded for Amish.
 
 1. **Roof framing.** model.py runs the posts up to the roof sheet; the appearance model adds timber purlins and rafters under the sheet, so the posts stop under the rafters. The corrugated sheet stays inside model.py's 25 mm roof envelope. Proposed, awaiting Amish. Recommendation: add purlins and rafters to model.py at the next CAD revision so the drawing shows how the sheet is carried.
-2. **Clear windows on the controller lid and power box door.** The BOM calls for an IP65 box and a ventilated shaded box, with no window. The windows show the internals in the renders. Proposed, awaiting Amish. Recommendation: keep the controller window (a clear-lid IP65 box is a stock part and lets users read the board lights); drop the power box window if a partner prefers a plain steel door, since the battery box must stay shaded.
-3. **Mode lamp position.** model.py does not place the three-color mode lamp; the precis puts it by the door. The appearance model puts it on top of the controller box, which sits beside the door. Proposed, awaiting Amish. Recommendation: accept, and add it to model.py.
-4. **Radiation shield shape.** Stacked round plates, 46 mm across, in place of model.py's 40 x 40 x 60 mm block. Proposed, awaiting Amish. Recommendation: accept; the envelope grows by 3 mm a side.
+2. **Clear windows on the controller lid and power box door.** Decided 2026-10-02: clear lid on the controller only, plain power box door; carried into the appearance model. The BOM calls for an IP65 box and a ventilated shaded box, with no window. The windows show the internals in the renders. Proposed, awaiting Amish. Recommendation: keep the controller window (a clear-lid IP65 box is a stock part and lets users read the board lights); drop the power box window if a partner prefers a plain steel door, since the battery box must stay shaded.
+3. **Mode lamp position.** Decided 2026-10-02 and added to model.py. model.py does not place the three-color mode lamp; the precis puts it by the door. The appearance model puts it on top of the controller box, which sits beside the door. Proposed, awaiting Amish. Recommendation: accept, and add it to model.py.
+4. **Radiation shield shape.** Decided 2026-10-02 and added to model.py. Stacked round plates, 46 mm across, in place of model.py's 40 x 40 x 60 mm block. Proposed, awaiting Amish. Recommendation: accept; the envelope grows by 3 mm a side.
 5. **Plinth render band and lintel faces.** A 10 mm cement render band 300 mm high around the base and timber lintel faces 6 mm proud over the door and pad openings (lintels are in BOM line 1 but not modeled). Proposed, awaiting Amish. Recommendation: accept the lintels; treat the plinth render as optional, a finish a local mason can choose.
 6. **Hose and conduit routing.** The return hose runs down from the gutter outlet and across to the drum instead of model.py's straight diagonal; a PVC conduit (BOM line 14, not modeled in model.py) links the power box, the controller and the ceiling edge. Proposed, awaiting Amish. Recommendation: accept as a routing sketch only; wiring and plumbing stay unmodeled at TRL 3.
 7. **Footing collars.** A 30 mm concrete collar shows the top of each footing at ground level; the footings themselves (ZBX-CAL-001) are below ground and not drawn. No change to the footing size.
@@ -269,9 +269,9 @@ Amish approved the build plan format on 2026-09-30 and asked for it across all r
 
 All open decisions are in the register ZBX-DEC-001: accept DDR-003; fan position (ceiling fan box recommended); exhaust into the roof space; wall material; partner; and the 2026-09-26 appearance items.
 
-### Stale and not regenerated
+### Renders still to be made
 
-The photoreal renders (`media/render-*.png`, made on Amish's Mac; not present in this copy), `media/card.png` and `media/social-preview.png` still show the fans in the front wall, the concept panel legs, racks and roof. They and `cad/src/product_model.py` need updating on Amish's Mac. The concept media in `media/` were regenerated.
+The photoreal renders (`media/render-*.png`), `media/card.png` and `media/social-preview.png` are made on Amish's Mac. The appearance model and render scenes are current (see the 2026-10-02 section on approved follow-ups).
 
 ### Safety concerns
 
@@ -283,3 +283,82 @@ The photoreal renders (`media/render-*.png`, made on Amish's Mac; not present in
 ### Recommended next step
 
 Amish to review DDR-003 and the register. TRL 4 (building to this plan) stays on hold until he releases it.
+
+## Session 2026-10-02: open decisions decided
+
+Amish, 2026-10-02: "APPROVED: The open decisions from the last wave (TremorTrace to ZeerBox) came in after the review and aren't on the page either." This approves the recommendation written for each open decision in the design decisions register (ZBX-DEC-001), as he did for the other 555 open decisions ("i approve your recommendations for all 555 open decisions."). trl stays 3; no build or test work was done, and the model, BOM quantities and prices, and pictures are unchanged.
+
+### Decisions recorded
+
+Ten decisions, all moved to Decisions made in ZBX-DEC-001, dated 2026-10-02:
+
+1. Design for construction accepted: the changes C1 to C10 of ZBX-DDR-003, as made.
+2. Fan position: the two fans stay in the ceiling fan box at the door end, as modelled.
+3. Exhaust into the roof space accepted, with a check at TRL 4 that moist air does not drift back to the pad; a short duct past the roof edge is added only if it does.
+4. Wall material: fired brick, as modelled and calculated.
+5. First co-design partner, region and crop mix: a group that has already field-tested evaporative cooling chambers with vegetable growers; the first candidate to approach is MIT D-Lab's evaporative cooling team, with a dry-season vegetable area of Mali as the first candidate region and tomatoes, peppers and okra as the crop mix, leafy greens on a separate rack.
+6. Clear window in the controller lid only; the power box has a plain door.
+7. Mode lamp on top of the controller box beside the door, added to the model.
+8. Outside sensor shield: stacked round plates 46 mm across.
+9. Plinth render band: an optional 10 mm finish 300 mm high, the mason's choice.
+10. Hose and conduit routing accepted as sketched in the build plan, routed on site.
+
+### Documents changed
+
+- `docs/06-design-decisions.md` (ZBX-DEC-001 v0.2): open decisions moved to Decisions made.
+- `docs/decisions/0003-design-for-construction.md` (ZBX-DDR-003 v0.2): acceptance recorded in the status line; A1 and A2 decided (record stays Draft).
+- `docs/decisions/0001-trl2-review-decisions.md` (ZBX-DDR-001 v0.3) and `docs/decisions/0002-recommendations-accepted.md` (ZBX-DDR-002 v0.2): items 9 and 10 recorded as decided.
+- `docs/01-problem.md` (ZBX-PRB-001 v0.7): partner, region and crop mix answered.
+- `docs/02-concept.md` (ZBX-PRC-001 v0.6): design for construction accepted, wall material decided, partner next step.
+- `README.md`: the build plan paragraph says ZBX-DDR-003 is accepted and the decisions are all made.
+
+### Follow-up actions to carry approved decisions into the design
+
+1. Decision 7 (model): Add the three-color mode lamp on top of the controller box beside the door to the model, with its hole in the box.
+2. Decision 8 (model): Replace the 40 x 40 x 60 mm block of the outside sensor shield with stacked round plates 46 mm across in the model.
+3. Decision 6 (BOM): Name a clear-lid IP65 box for the controller and a plain-door box for the power box in the BOM specifications (no price change expected).
+4. Decisions 7 and 8 (pictures): Regenerate the general arrangement, concept media and the build plan pictures of the controller box and sensor arm for the mode lamp and the plate shield.
+5. Decision 5 (docs): Approach MIT D-Lab's evaporative cooling team about a site in Mali's dry-season vegetable areas, and confirm the crop mix and crate size with the growers there.
+
+### Points found in the review
+
+- None.
+
+## Session 2026-10-02: approved follow-ups carried out
+
+Amish approved on 2026-10-02 that every follow-up action from the open-decision sign-off be carried out. trl stays 3.
+
+### Follow-ups
+
+1. Done: mode lamp and its hole added to `cad/src/model.py` (controller box now hollow; component `mode_lamp`; contact and clearance checks). 7,857 checks, 0 failed. STEP and STL regenerated.
+2. Done: outside sensor shield is six round plates 46 mm across on a stud and strip arm.
+3. Done: `bom/bom.csv` line 9 names the clear-lid IP65 box, 22 mm lamp and six-plate shield; line 11 names a plain-door box. No price change; `bom/bom-notes.md` updated.
+4. Done: GA ZBX-DWG-001 Rev P4, concept media, build plan overview, step 25 and wiring picture regenerated. `drawing.py --check-text` reports no hits.
+5. Not done: outreach to MIT D-Lab and the Mali growers is Amish's action.
+
+Done 4 of 5.
+
+### Results
+
+- Requirement status changes: none. Value-engineering target: USD 300. Estimated cost of the constructable design: USD 299 (USD 1 under the target). `budget_usd` unchanged. Mass change is negligible (a lamp and six small plates).
+- Appearance model `cad/src/product_model.py` rewritten from `model.py` components (it had broken at the ceiling fan change). Render scenes exported to `/home/claude/renders/zeerbox`: hero, exploded, detail, plus `zeerbox__jobs.json`.
+
+### Documents changed
+
+- `docs/05-build-plan.md` v0.2, `docs/02-concept.md` v0.7, `docs/decisions/0003-design-for-construction.md` v0.3 (C11 and C12 added); this note; `cad/src/sheets.py`, `build_plan_media.py`.
+
+### Cross-repo actions
+
+- None found for this repo. The partner approach (follow-up 5) is outreach by Amish.
+
+### Proposed, awaiting Amish
+
+- Appearance only: the cable conduit to the fan box is drawn over the ceiling boards for visibility, whereas the build plan runs it under them.
+
+### Safety concerns
+
+- Unchanged.
+
+## 2026-10-02: photoreal renders redone on the constructable design
+
+Rendered with Blender Cycles on Amish's Mac from the updated appearance model; captioned with `.kit/photo_caption.py`; `media/card.png` and `media/social-preview.png` regenerated with `.kit/cards.py`. Views: hero, exploded, detail. image_qc passes. Appearance deviations are those logged above as proposed, awaiting Amish.

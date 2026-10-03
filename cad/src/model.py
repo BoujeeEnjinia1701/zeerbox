@@ -54,6 +54,14 @@ PARAMS = {
     "PANEL_L": 1480.0, "PANEL_W": 670.0, "PANEL_T": 35.0, "PANEL_TILT_DEG": 15.0,
     "PANEL_C": (0.0, -350.0, 250.0),                   # centre: x, y, height above the roof reference
     "MOUNT_X": 560.0, "ANGLE": (40.0, 4.0),
+    # controller box on the front wall beside the door (clear-lid IP65 box): depth x width x height, centre y and z, wall
+    "CTRL": (80.0, 200.0, 250.0), "CTRL_YZ": (860.0, 1150.0), "CTRL_WALL": 3.0,
+    # three-color mode lamp on top of the box (ZBX-DEC-001, 2026-10-02): hole diameter, flange diameter and thickness,
+    # dome diameter and height above the flange, offset of the lamp along the box toward the door (y)
+    "LAMP": (22.0, 30.0, 3.0, 22.0, 20.0, -70.0),
+    # outside sensor shield (ZBX-DEC-001, 2026-10-02): stacked round plates on a stud: plate diameter, number of plates,
+    # plate thickness, plate pitch, height of the lowest plate, stud radius, centre distance from the wall, centre y
+    "SHIELD": (46.0, 6, 2.0, 10.0, 1320.0, 3.0, 63.0, 860.0),
 }
 
 PROCESS = {   # how each component is made, for the constructability review (ZBX-DDR-003)
@@ -68,7 +76,7 @@ PROCESS = {   # how each component is made, for the constructability review (ZBX
     "pad_frame": "sawn boards, screwed", "pad_bars": "galvanised flat bar, drilled", "pad": "bought, cut to size",
     "header": "PVC pipe, drilled", "gutter": "bent galvanised sheet", "gutter_brackets": "bent galvanised strip",
     "sump": "bought drum, lid drilled", "hoses": "bought hose", "controller": "bought box, wired",
-    "sensor": "bought shield on a bent strip arm", "power_box": "bought box, wired", "racks": "sawn timber, screwed",
+    "sensor": "bought plate shield on a bent strip arm", "mode_lamp": "bought lamp, fitted in a drilled hole", "power_box": "bought box, wired", "racks": "sawn timber, screwed",
     "rack_brackets": "bought steel angle", "crates": "user supplied",
 }
 
@@ -355,8 +363,28 @@ def build_components(p=PARAMS):
     C["hoses"] = ("Feed and return hoses", hoses)
 
     # 9 controller and outside sensor; 11 power box; on the front wall beside the door
-    C["controller"] = ("Controller box", [_bx(xf - 80, xf, 760, 960, 1025, 1275)])
-    C["sensor"] = ("Outside sensor and shield", [_bx(xf - 40, xf, 850, 870, 1345, 1355) + _bx(xf - 80, xf - 40, 840, 880, 1320, 1380)])
+    from build123d import Cylinder, Pos, Sphere
+    cd_, cw_, ch_ = p["CTRL"]
+    cy_, cz_ = p["CTRL_YZ"]
+    cwall = p["CTRL_WALL"]
+    z0c, z1c = cz_ - ch_ / 2, cz_ + ch_ / 2
+    lh, lfl, lft, ldome, ldh, ldy = p["LAMP"]
+    lx, ly = xf - cd_ / 2, cy_ + ldy
+    ctrl = (_bx(xf - cd_, xf, cy_ - cw_ / 2, cy_ + cw_ / 2, z0c, z1c)
+            - _bx(xf - cd_ + cwall, xf - cwall, cy_ - cw_ / 2 + cwall, cy_ + cw_ / 2 - cwall, z0c + cwall, z1c - cwall)
+            - Pos(lx, ly, z1c - cwall / 2) * Cylinder(lh / 2, cwall + 2))
+    C["controller"] = ("Controller box (clear lid, hole for the mode lamp)", [ctrl])
+    lamp = (Pos(lx, ly, z1c + lft / 2) * Cylinder(lfl / 2, lft) + Pos(lx, ly, z1c - (cwall + 3) / 2) * Cylinder(lh / 2 - 0.5, cwall + 3 + 0.01)
+            + Pos(lx, ly, z1c + lft + (ldh - ldome / 2) / 2) * Cylinder(ldome / 2, ldh - ldome / 2)
+            + Pos(lx, ly, z1c + lft + ldh - ldome / 2) * Sphere(ldome / 2))
+    C["mode_lamp"] = ("Three-color mode lamp", [lamp])
+    sd, sn, st_, sp_, sz0, sr_, sdx, sy0 = p["SHIELD"]
+    scx = xf - sdx
+    zt = sz0 + sp_ * (sn - 1) + st_
+    sens = _bx(scx, xf, sy0 - 10, sy0 + 10, 1345, 1355) + Pos(scx, sy0, (sz0 + zt) / 2) * Cylinder(sr_, zt - sz0)
+    for k in range(sn):
+        sens = sens + Pos(scx, sy0, sz0 + sp_ * k + st_ / 2) * Cylinder(sd / 2, st_)
+    C["sensor"] = ("Outside sensor and plate shield", [sens])
     C["power_box"] = ("Power box", [_bx(xf - 100, xf, -970, -750, 1000, 1300)])
 
     # 12 racks: posts, rails on the inside faces of the posts, slats across the rails; wall brackets
@@ -419,7 +447,7 @@ BOM_LINES = {   # bom line: (name, component keys)
     6: ("Cellulose pad, frame, header, gutter", ("pad_lining", "pad_battens", "pad_frame", "pad_bars", "pad", "header", "gutter", "gutter_brackets")),
     7: ("Sump drum, 12 V pump and hoses", ("sump", "hoses")),
     8: ("Exhaust fans, 12 V DC (pair)", ("fans",)),
-    9: ("Controller and RH/T sensors", ("controller", "sensor")),
+    9: ("Controller and RH/T sensors", ("controller", "sensor", "mode_lamp")),
     10: ("Solar panel, 150 W", ("panel",)),
     11: ("Power box: charger, LiFePO4, fuse", ("power_box",)),
     12: ("Shelving racks", ("racks", "rack_brackets")),
@@ -493,6 +521,7 @@ CONTACTS = [
     ("hoses", "gutter", "return hose on the gutter outlet"),
     ("controller", "walls", "controller box screwed to the wall"),
     ("sensor", "walls", "sensor arm screwed to the wall"),
+    ("mode_lamp", "controller", "lamp flange on the box top, its body through the hole"),
     ("power_box", "walls", "power box screwed to the wall"),
     ("racks", "floor", "racks stand on the floor"),
     ("rack_brackets", "racks", "brackets screwed to the end posts"),
@@ -508,6 +537,8 @@ CLEARANCES = [
     ("post_footings", "strip_footing", 15.0, "post footings apart from the wall footing"),
     ("sump", "posts", 300.0, "sump clear of the roof post"),
     ("pad", "gutter", 5.0, "pad drips into the gutter"),
+    ("mode_lamp", "sensor", 15.0, "lamp clear of the sensor shield"),
+    ("mode_lamp", "door_lining", 100.0, "lamp clear of the door lining"),
 ]
 
 

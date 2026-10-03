@@ -72,7 +72,7 @@ The priced bill of materials is in [bom/bom.csv](bom/bom.csv). Value-engineering
 
 ## Building the prototype
 
-The prototype build plan ([ZBX-BLD-001](docs/05-build-plan.md)) shows how to build the first store, component by component and step by step, with a making sketch for each of the 18 made components and a picture for every one of the 26 assembly steps. Making the concept buildable added a strip footing, lintels and lined openings, a framed ceiling and roof, and moved the two fans from the front wall into a ceiling fan box (decision record ZBX-DDR-003, open for review). A local mason and carpenter can build it; the cooling kit is bought and fitted. Decisions still open are kept in the [design decisions register](docs/06-design-decisions.md).
+The prototype build plan ([ZBX-BLD-001](docs/05-build-plan.md)) shows how to build the first store, component by component and step by step, with a making sketch for each of the 18 made components and a picture for every one of the 26 assembly steps. Making the concept buildable added a strip footing, lintels and lined openings, a framed ceiling and roof, and moved the two fans from the front wall into a ceiling fan box (decision record ZBX-DDR-003, accepted by Amish on 2026-10-02). A local mason and carpenter can build it; the cooling kit is bought and fitted. The decisions, all made as of 2026-10-02, are kept in the [design decisions register](docs/06-design-decisions.md).
 
 ![ZeerBox prototype: every component pulled apart, numbered in build order](docs/05-build-plan/overview.png)
 
