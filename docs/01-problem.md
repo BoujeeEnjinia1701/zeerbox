@@ -3,9 +3,9 @@ doc_id: ZBX-PRB-001
 title: ZeerBox problem statement
 project: ZeerBox
 doc_type: Problem statement
-version: "0.7"
+version: "0.8"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-24'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -37,6 +37,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: Partner, region and crop mix answered by Amish's decision of 2026-10-02 (ZBX-DEC-001)
+- version: "0.8"
+  date: '2026-10-24'
+  author: Amish Chadha
+  change: "Kit 1.9.1 upgrade: users-and-needs and stakeholder tables (STANDARDS section 19), the source of ZBX-URS-001; kit cost restated at USD 300 after the load fuse (ZBX-DEC-001 D1)"
 ---
 
 # ZeerBox problem statement
@@ -67,6 +71,31 @@ ZeerBox is a walk-in evaporative store, large enough for about 24 crates, that u
 | Local builder (mason, carpenter) | Build the walls, roof and door from local materials with familiar methods | Brick or block walls, timber, corrugated sheet; no specialist cooling trades |
 | Local electrician or phone-repair technician | Install and repair the fans, pump, solar and controller | 12 V solar home system skills; hand tools and a multimeter |
 
+### Users and needs
+
+Table 2. Users and needs (kit 1.8). These rows are the source of the user requirements in ZBX-URS-001; none has been checked with users yet.
+
+| User type | Goals and needs | Typical use scenario | Pain points and challenges |
+| --- | --- | --- | --- |
+| Smallholder vegetable grower | Hold one to five days of harvest; sell when the price is right; keep tomatoes and greens from wilting | Picks in the morning, loads warm crates, sells at a weekly market or to a trader later in the week | Must sell on the day of harvest; brick chambers are small and at ground level; no way to tell whether a cooler is working in humid weather |
+| Farmer group or cooperative | A shared store at the collection point that several members can use fairly | Members bring crates on collection days; a rota waters, cleans and opens the store | Who pays, who waters and who is responsible for whose crates; cost of a store for the group |
+| Market trader | Keep stock fresh between market days near the stall | Several deliveries a week, stock turned over every few days | Losses between market days; renting cold space far from the stall |
+| Local builder (mason, carpenter) | Build from local bricks, timber and sheet with familiar methods and clear drawings | Builds over two to three weeks from a printed plan | No refrigeration trade; unfamiliar parts such as the pad frame and fan box |
+| Local electrician or phone-repair technician | Install and repair the 12 V parts with hand tools and a multimeter | Fits the kit in a day; returns for faults | Parts that are proprietary or only sold far away; water near wiring |
+
+### Stakeholders
+
+Table 3. Stakeholders.
+
+| Stakeholder group | Role or interest | Engagement needed |
+| --- | --- | --- |
+| Co-design partner (first candidate: MIT D-Lab's evaporative cooling team, ZBX-DEC-001) | Field experience with evaporative chambers and grower groups; would host co-design and a trial | Approach before any TRL 4 work; co-design sessions; review of URS and PRS |
+| Agricultural extension services and NGOs in the region | Train growers in post-harvest handling; could spread the design | Briefing and training material at TRL 5 and later |
+| Local suppliers of bricks, timber, sheet, solar parts and pads | Supply every BOM line | Parts and price survey with the partner (PR-010) |
+| Local authorities | Building permission and any food-handling rules (ZBX-REG-001 G1, G11) | To assess with the partner |
+| Buyers of produce (traders, markets) | Benefit from fresher produce; set the price premium that pays for storage | Interviews during co-design |
+| Amish Chadha (design lead, Design Molecule) | Decides scope, budget, concept and safety trade-offs | Decisions recorded in ZBX-DEC-001 |
+
 ### Operating environment
 
 - **Climate (design case):** hot, dry season in the Sahel and similar semi-arid regions, daytime highs of 32 to 40 °C and 15 to 35 % RH. The design point is 35 °C and 30 % RH.
@@ -79,7 +108,7 @@ ZeerBox is a walk-in evaporative store, large enough for about 24 crates, that u
 
 ## Constraints
 
-- The $300 USD budget (`project.yaml`) covers the cooling equipment kit: pad, sump and pump, fans, controller, solar panel, power box and wiring. The walk-in structure is built from local materials and costed separately (decided by Amish, 2026-09-25, ZBX-DDR-001 item 1). The USD 300 is a hypothetical value-engineering target, not a limit (Amish, 2026-10-01). Estimated cost of the constructable design: USD 299 for the kit (USD 1 under the target) and about USD 574 for the structure (ZBX-CAL-001 v0.3).
+- The $300 USD budget (`project.yaml`) covers the cooling equipment kit: pad, sump and pump, fans, controller, solar panel, power box and wiring. The walk-in structure is built from local materials and costed separately (decided by Amish, 2026-09-25, ZBX-DDR-001 item 1). The USD 300 is a hypothetical value-engineering target, not a limit (Amish, 2026-10-01). Estimated cost of the constructable design: USD 300 for the kit (at the target, after USD 1 for the load fuse of ZBX-DEC-001 D1) and about USD 574 for the structure (ZBX-CAL-001 v0.4).
 - Structure built by a local mason and carpenter from local materials, with no specialist refrigeration skills, refrigerant or mains power.
 - Fans, pump and controller run from one small solar panel at 12 V, safe to touch and to work on.
 - Water use modest enough to carry or pump by hand on the hottest day.
@@ -106,7 +135,7 @@ ZeerBox is a walk-in evaporative store, large enough for about 24 crates, that u
 
 - Which partner organization and which region first? A dry-season vegetable area in the Sahel (Mali, Niger, northern Nigeria, Burkina Faso) or a semi-arid area of East Africa (northern Kenya) fits the design point. Decided by Amish, 2026-10-02 (ZBX-DEC-001): a group that has already field-tested evaporative cooling chambers with vegetable growers; the first candidate to approach is MIT D-Lab's evaporative cooling team, with a dry-season vegetable area of Mali as the first candidate region and tomatoes, peppers and okra as the crop mix, leafy greens on a separate rack; not yet approached.
 - Is the store for one farm or for a group? This drives size, cost and who waters and cleans it.
-- How far is the water source, and is about 36 L on a hot day acceptable (ZBX-CAL-001 v0.2)?
+- How far is the water source, and is about 43 L on a hot day acceptable (ZBX-CAL-001 v0.4, bleed included)?
 - Which crops dominate, and which must be kept apart (for example ethylene-producing tomatoes and bananas next to leafy greens)?
 - Do users need the store to work in the rainy season, or only in the dry season when losses and prices are highest?
 

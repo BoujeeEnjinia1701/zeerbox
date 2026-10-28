@@ -3,9 +3,9 @@ doc_id: ZBX-BLD-001
 title: ZeerBox prototype build plan
 project: ZeerBox
 doc_type: Build plan
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-24'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,6 +17,10 @@ revisions:
     date: '2026-10-02'
     author: Amish Chadha
     change: Controller box with its mode lamp and the plate shield for the outside sensor; power box with a plain door; pictures redrawn
+  - version: "0.3"
+    date: '2026-10-24'
+    author: Amish Chadha
+    change: "Kit 1.9.1 upgrade: 5 A load fuse and 2.5 mm2 battery leads (ZBX-DEC-001 D1); parts cost USD 874; pictures redrawn from the D3 model's base geometry"
 ---
 
 # ZeerBox prototype build plan
@@ -29,7 +33,7 @@ revisions:
 
 *Figure 1. Every component pulled apart and numbered in build order. The crates are the users' own and are not shown.*
 
-The prototype is one walk-in store, 2.4 x 1.5 x 2.0 m inside, on a patch of level, firm ground about 4.5 x 3.5 m. It has double brick walls around a dry rice husk cavity, a framed and insulated ceiling, a corrugated shade roof on four steel posts, a 150 mm wetted pad in the back wall, two 12 V fans in a ceiling fan box at the door end, a sump drum and pump, a 150 W solar panel on the roof, a controller and a power box beside the door, and two timber racks for 24 crates. Figure 1 shows the 28 components in the order they are made or fitted. Most are made on site: concrete is cast, bricks are laid, and timber, plywood, aluminium angle and galvanized sheet are sawn, drilled, bent and screwed. The pad, fans, pump, drum, panel, battery, charge controller and controller parts are bought and fitted. A local mason builds the footings and walls and a carpenter the timber work; the metal parts need a drill, a hacksaw and, for the post caps, a welder. The parts cost about $873 from the bill of materials, crates excluded.
+The prototype is one walk-in store, 2.4 x 1.5 x 2.0 m inside, on a patch of level, firm ground about 4.5 x 3.5 m. It has double brick walls around a dry rice husk cavity, a framed and insulated ceiling, a corrugated shade roof on four steel posts, a 150 mm wetted pad in the back wall, two 12 V fans in a ceiling fan box at the door end, a sump drum and pump, a 150 W solar panel on the roof, a controller and a power box beside the door, and two timber racks for 24 crates. Figure 1 shows the 28 components in the order they are made or fitted. Most are made on site: concrete is cast, bricks are laid, and timber, plywood, aluminium angle and galvanized sheet are sawn, drilled, bent and screwed. The pad, fans, pump, drum, panel, battery, charge controller and controller parts are bought and fitted. A local mason builds the footings and walls and a carpenter the timber work; the metal parts need a drill, a hacksaw and, for the post caps, a welder. The parts cost about $874 from the bill of materials, crates excluded.
 
 > **Safety:** This is a building that people walk into and stand under. About 7 t of brickwork and a roof that the wind tries to lift must be built by a competent mason, and the roof must be screwed and tied down before the first windy day. The door must open from inside at all times, with no outside lock. The store holds a 154 Wh lithium iron phosphate battery, fans that can catch fingers and a drum of warm water that can grow *Legionella*: keep the battery fuse out until section 6 says otherwise, guard the fans on both faces, and keep the drum covered. Rice husk burns: no flames or hot work near the walls once the cavity is filled. Weld the post caps before the posts go in, away from the site.
 
@@ -446,7 +450,7 @@ Buy to specification, not brand. Line numbers are those of the bill of materials
 - **Exhaust fans (line 8).** Two 250 mm 12 V DC axial fans, about 12 W and about 400 m³/h free air, with a square frame no wider than 290 mm, finger guards on both faces and gravity shutters.
 - **Sump drum, pump and hoses (line 7).** A 60 L plastic drum with a tight lid; a 12 V submersible pump of about 6 W giving 3.6 L/min at 2 m head; a float switch; 25 mm feed hose and 32 mm return hose with clips. Drill the lid for the two hoses and a cable gland.
 - **Solar panel (line 10).** 150 W monocrystalline, about 1,480 x 670 x 35 mm, Vmp about 18 V, Isc about 9 A, with mounting holes in the back flange of its frame.
-- **Power box (line 11).** A 20 A PWM charge controller for 12.8 V lithium iron phosphate, a 12.8 V 12 Ah LiFePO4 battery with a BMS rated for 10 A charge or more, a 15 A fuse at the battery terminal, and a ventilated, shaded steel box with a plain door (no window), about 100 x 220 x 300 mm.
+- **Power box (line 11).** A 20 A PWM charge controller for 12.8 V lithium iron phosphate, a 12.8 V 12 Ah LiFePO4 battery with a BMS rated for 10 A charge or more, a 15 A fuse at the battery terminal, a 5 A fuse in a holder for the load circuit (ZBX-DEC-001 D1), and a ventilated, shaded steel box with a plain door (no window), about 100 x 220 x 300 mm.
 - **Controller and sensors (line 9).** A low-cost microcontroller board, two digital temperature and humidity sensors (one in a radiation shield on a strip arm), MOSFET drivers for the fans and pump, a memory card logger, a three-colour mode lamp with a 22 mm body and a clear-lid IP65 box about 80 x 200 x 250 mm. The outside sensor sits in a shield of six round plates, 46 mm across, stacked 10 mm apart on a stud that is fixed to a short strip arm.
 - **Wiring and plumbing (line 14).** 2.5 mm² twin PV cable, 1.5 mm² twin load cable, 4-core 0.5 mm² sensor cable, conduit, IP65 connectors, glands, hose clips and fixings.
 - **Fixings.** Frame plugs and screws, galvanized joist straps, ten hurricane ties, eight M10 x 100 mm coach screws, sealing-washer roofing screws, M8 stainless bolts, three 100 mm butt hinges, an inside push latch and a pull handle.
@@ -459,7 +463,7 @@ Buy to specification, not brand. Line numbers are those of the bill of materials
 
 1. Panel to the charge controller's panel terminals: 2.5 mm² PV cable down the right front post in conduit.
 2. Charge controller to the battery through the 15 A fuse at the battery terminal: 2.5 mm².
-3. Charge controller load output to the controller box: 1.5 mm².
+3. Charge controller load output to the controller box through the 5 A load fuse in the power box: 1.5 mm². The 15 A battery fuse alone does not protect this cable (ZBX-CAL-001 s9); label the holder "5 A".
 4. Controller to each fan: 1.5 mm² twin, up the wall in conduit and over the wall top under the ceiling boards to the fan box. Seal the conduit where it crosses the husk-filled wall top.
 5. Controller to the pump: 1.5 mm² twin in conduit along the right long wall, 300 mm above ground, with a drip loop at the drum.
 6. Inside sensor: 4-core 0.5 mm² through a gland in the door lining head, to a sensor on the right rack's middle post about 1.5 m up. Outside sensor: 4-core 0.5 mm² to its shield beside the controller.
@@ -628,7 +632,7 @@ Carry the rack parts in through the door and assemble each rack in place against
 
 ## 5. First checks
 
-These are the checks a TRL 4 test report would record; this plan only lists them. Requirement numbers are those of ZBX-REQ-001.
+These are the checks a TRL 4 test report would record; this plan only lists them. Requirement numbers are those of ZBX-REQ-001, now PR-001 to PR-012 in ZBX-PRS-001 (R1 is PR-001, and so on).
 
 *Table 2. First checks.*
 
@@ -644,7 +648,7 @@ These are the checks a TRL 4 test report would record; this plan only lists them
 | Mode change | R4, R5 | Feed the controller a humid-air reading and a 95 % RH store reading from a test input | It switches to hold, and stops the pump after 60 minutes at 95 %; the lamp shows the mode |
 | Charge controller and fuse | R7, R9 | Measure the charge voltage; check the fuse rating and the BMS charge limit on their labels | Charge voltage within the battery maker's limit; 15 A fuse at the terminal; BMS 10 A or more |
 | Day's energy | R7 | Log battery voltage over a sunny design day | The battery ends the day fuller than it started |
-| Water use | R8 | Mark the drum level morning and evening | 70 L a day or less (about 36 L expected) |
+| Water use | R8 | Mark the drum level morning and evening | 70 L a day or less (about 43 L expected, bleed included) |
 | Roof tie-down | R11 | Pull up on each purlin end by hand; look at every tie and screw | Nothing lifts; every tie, coach screw and sheet screw in place |
 
 ## 6. Safety stops
@@ -678,4 +682,4 @@ Stop at each point. Carry on only when everything listed is true.
 - Calculations: `docs/04-calcs/01-sizing.md` (ZBX-CAL-001 v0.3) and `docs/04-calcs/sizing.py`; structure and roof framing in section 10 and Table 6a.
 - Bill of materials: `bom/bom.csv`.
 - Decisions: `docs/decisions/0003-design-for-construction.md` (ZBX-DDR-003), with ZBX-DDR-001 and ZBX-DDR-002; open items in `docs/06-design-decisions.md` (ZBX-DEC-001).
-- Requirements: `docs/03-requirements.md` (ZBX-REQ-001 v0.5).
+- Requirements: `docs/03-requirements.md` (ZBX-PRS-001 v0.6, formerly ZBX-REQ-001).

@@ -1,4 +1,4 @@
-"""ZeerBox general arrangement drawing ZBX-DWG-001 (Rev P4).
+"""ZeerBox general arrangement drawing ZBX-DWG-001 (Rev P5).
 
 Run from the repo root:  python cad/src/sheets.py
 Builds cad/drawings/ZBX-DWG-001.svg, .pdf and .png from the parametric model.
@@ -24,12 +24,13 @@ work = ROOT / "cad/drawings/_views"
 views = project_views(asm, work)
 
 s = Sheet(project="ZeerBox", title="General arrangement, TRL 3 model", dwg_no="ZBX-DWG-001",
-          rev="P4", author="Amish Chadha", date="2026-10-02", concept=True, scale=1 / 50,
+          rev="P5", author="Amish Chadha", date="2026-10-24", concept=True, scale=1 / 50,
           material="Fired brick, dry rice husk fill, timber, corrugated steel; 12 V kit. See bom/bom.csv",
           revisions=[("P1", "Preliminary GA from the TRL 3 model (ZBX-CAL-001)", "2026-09-25", "AC"),
                      ("P2", "150 mm pad; dry rice husk cavity fill; R3 80 % (DDR-002)", "2026-09-25", "AC"),
                      ("P3", "Footings, lintels, framed ceiling and roof, ceiling fans (DDR-003)", "2026-10-02", "AC"),
-                     ("P4", "Controller mode lamp; six-plate sensor shield (DEC-001)", "2026-10-02", "AC")])
+                     ("P4", "Controller mode lamp; six-plate sensor shield (DEC-001)", "2026-10-02", "AC"),
+                     ("P5", "Kit 1.9.1: redrawn; 5 A load fuse (DEC-001 D1); no dimension changed", "2026-10-24", "AC")])
 s.add_ortho(views, ["front", "top", "right"])
 s.add_svg(views["iso"], 276, 36, 140, 74, label="Isometric view", sublabel="Not to scale; crates hidden")
 s.add_notes("Key dimensions (mm) and data", [
@@ -48,7 +49,8 @@ s.add_notes("Key dimensions (mm) and data", [
     f"Racks {P['RACK_L']:.0f} x {P['RACK_D']:.0f}; shelves {', '.join(f'{z:.0f}' for z in P['SHELVES'])} above floor",
     f"Aisle {D['aisle']:.0f}; {D['crates']} crates; 150 W panel {P['PANEL_L']:.0f} x {P['PANEL_W']:.0f}",
     "Design day: store 24.3 °C, 10.7 K drop, about 560 m3/h (CAL-001)",
-    "At risk at TRL 3: R3 (store RH 81 %, 77 % unfavorable, vs 80 %)",
+    "At risk at TRL 3: PR-003 (store RH 81 %, 77 % unfavorable, vs 80 %)",
+    "Fuses: 15 A battery on 2.5 mm2 leads; 5 A load circuit (DEC-001 D1)",
     "PRELIMINARY, NOT FOR FABRICATION",
 ], x=276, y=127, width=140)
 s.save(ROOT / "cad/drawings/ZBX-DWG-001")

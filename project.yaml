@@ -5,23 +5,49 @@ repo: BoujeeEnjinia1701/zeerbox         # GitHub repository, shown on every draw
 area: Agriculture
 trl: 3                   # Technology Readiness Level, see .kit/STANDARDS.md section 9
 trl_target: 3
+stage: P3                # pipeline stage, STANDARDS section 19 (kit 1.9.1 upgrade, 2026-10-24)
+stem_check: open         # ZBX-STM-001: no Fails row; S3, S5, S25, S35, S36 need supplier or field data (TRL 4); S16 fixed (ZBX-DEC-001 D1)
+concept_options: [A, B, C]   # ZBX-OPT-001: A forced-air pad store (existing design), B passive wet-wall chamber, C charcoal-wall wind cooler
+# concept_chosen: left unset; A (proposed as design of record): all three options within 10 %, choice awaiting Amish (ZBX-DDR-004, ZBX-DEC-001 D2)
 design_state: constructable   # STANDARDS section 18; made constructable in ZBX-DDR-003
 trl_evidence:
   - docs/01-problem.md
+  - docs/01b-stem-check.md
   - docs/02-concept.md
+  - docs/02a-concept-options.md
+  - docs/03a-user-requirements.md
   - docs/03-requirements.md
+  - docs/03b-traceability.md
   - docs/decisions/0001-trl2-review-decisions.md
   - docs/decisions/0002-recommendations-accepted.md
   - docs/decisions/0003-design-for-construction.md
+  - docs/decisions/0004-concept-selection.md
   - docs/04-calcs/01-sizing.md
   - docs/04-calcs/sizing.py
+  - docs/04-calcs/stem_check.py
+  - docs/04-calcs/stem_results.csv
   - cad/src/model.py
-  - cad/step/zeerbox-assembly.step
+  - cad/src/zbx_parts.py
+  - cad/src/product_model.py
+  - cad/fidelity.json
+  - cad/step/A-assembly.step
+  - cad/step/B-assembly.step
+  - cad/step/C-assembly.step
+  - cad/stl/zeerbox-assembly.stl
   - cad/drawings/ZBX-DWG-001.svg
   - cad/drawings/ZBX-DWG-001.pdf
   - bom/bom.csv
   - docs/05-build-plan.md
+  - docs/05-build-plan/overview.png
   - docs/06-design-decisions.md
+  - docs/07-regulatory.md
+  - docs/08-feasibility.md
+  - docs/09-risk.md
+  - docs/10-market.md
+  - docs/11-plan.md
+  - media/hero.png
+  - media/concept-blueprint.png
+  - media/model.glb
 shortlisted: false
 pitch: >-
   Walk-in evaporative cooling chamber with a solar fan that forces air through a wetted pad, and a controller that responds to humidity.

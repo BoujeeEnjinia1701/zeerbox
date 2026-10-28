@@ -324,7 +324,10 @@ pr("\n== 5 Water (R8) ==")
 pad_l = c["pad_evap_kgh"] * HOURS_COOL
 cav_w = U_OUT_WET * A["wall_out"] * (35 - c["t_cav"]) if WET else 0.0
 cav_l = cav_w * 12 * 3600 / HFG
-bleed = 4.0
+# bleed sized for at most 4 cycles of concentration, so hard or silty water does not scale the pad
+# (ZBX-DEC-001 D5, after the independent review of 2026-10-24; was a 4 L allowance): bleed = E / (COC - 1)
+COC = 4.0
+bleed = pad_l / (COC - 1)
 total_w = pad_l + cav_l + bleed
 sump_gross = math.pi * (P["SUMP_D"] / 2000) ** 2 * P["SUMP_H"] / 1000 * 1000
 sump_work = 60.0
@@ -333,7 +336,7 @@ flow_lpm = 6.0 * pad_len
 hyd = 1000 * 9.81 * 2.0 * flow_lpm / 60000
 pr(f"pad evaporation {c['pad_evap_kgh']:.2f} kg/h, {pad_l:.1f} L over {HOURS_COOL:.0f} h; unfavorable {R['unf']['pad_evap_kgh']*HOURS_COOL:.1f} L, favorable {R['fav']['pad_evap_kgh']*HOURS_COOL:.1f} L")
 pr(f"cavity ({P['FILL']}): {cav_w:.0f} W through the outer leaf over 12 h equivalent = {cav_l:.1f} L/day (wet sand in TRL 3 v0.1: about 12 L)")
-pr(f"bleed and cleaning {bleed:.0f} L; total {total_w:.1f} L/day")
+pr(f"bleed and cleaning {bleed:.1f} L (at most {COC:.0f} cycles of concentration; was 4 L); total {total_w:.1f} L/day")
 pr(f"sump {sump_gross:.0f} L gross, {sump_work:.0f} L working; pad and bleed per day {pad_l + bleed:.1f} L")
 pr(f"pad wetting flow {flow_lpm:.1f} L/min (6 L/min per m of pad length, assumed); hydraulic power at 2 m head {hyd:.2f} W; at 20 % pump efficiency {hyd/0.2:.1f} W")
 res("R8", "Water per design day; sump capacity", f"{total_w:.0f} L/day (pad {pad_l:.0f}, cavity {cav_l:.0f}, bleed {bleed:.0f}); sump {sump_work:.0f} L for {pad_l + bleed:.0f} L of pad use",
@@ -342,8 +345,14 @@ res("R8", "Water per design day; sump capacity", f"{total_w:.0f} L/day (pad {pad
 # ------------------------------------------------------------------ 6 electrical safety (R9)
 pr("\n== 6 Electrical (R9) ==")
 i_load = (2 * FAN_W + PUMP_W + CTRL_W) / 12.8
-pr(f"load current {i_load:.1f} A; charge current up to 8.3 A; 15 A terminal fuse above both, below the 1.5 mm2 cable rating")
-res("R9", "12 V DC, fused, guarded, door opens from inside", "12.8 V system, 15 A terminal fuse; guards both faces; inside release (design review)",
+# cable protection (ZBX-DEC-001 D1, 2026-10-24): capacities for two loaded PVC conductors in conduit on a wall
+# (IEC 60364-5-52 method B1: 1.5 mm2 17.5 A, 2.5 mm2 24 A) derated by 0.79 for a 45 C roof space
+IZ = {1.5: 17.5 * 0.79, 2.5: 24.0 * 0.79}
+FUSE_BATT, FUSE_LOAD = 15.0, 5.0
+pr(f"load current {i_load:.1f} A; charge current up to 8.3 A; battery terminal fuse {FUSE_BATT:.0f} A on 2.5 mm2 battery leads (Iz {IZ[2.5]:.1f} A)")
+pr(f"load circuit: 1.5 mm2 cable, Iz {IZ[1.5]:.1f} A at 45 C; {FUSE_LOAD:.0f} A load fuse (1.25 x {i_load:.1f} A = {1.25 * i_load:.1f} A <= In <= Iz); "
+   f"the earlier 15 A terminal fuse alone did not protect it ({FUSE_BATT:.0f} A > {IZ[1.5]:.1f} A)")
+res("R9", "12 V DC, fused, guarded, door opens from inside", f"12.8 V system; {FUSE_BATT:.0f} A battery fuse on 2.5 mm2 leads, {FUSE_LOAD:.0f} A load fuse on the 1.5 mm2 load circuit (ZBX-DEC-001 D1); guards both faces; inside release (design review)",
     "12 V DC, fused, guarded, inside release", "Met (design review)")
 res("R10", "Local build; 30 min part swaps", "Masonry, timber and generic 12 V parts; swap times and parts survey need the partner",
     "Local trades; swap in 30 min or less", "Not verifiable at TRL 3")
@@ -428,7 +437,7 @@ gap = budget - tot["kit"]
 pr(f"store total, crates excluded: ${tot['structure'] + tot['kit']:,.2f}; kit against the value-engineering target of ${budget:.0f}: {tot['kit']/budget*100:.0f} %, ${abs(gap):.0f} {'under' if gap >= 0 else 'over'}")
 res("R12", "Cooling equipment kit cost against the value-engineering target (structure costed separately)",
     f"Kit ${tot['kit']:.0f}; structure ${tot['structure']:.0f} (separate); crates ${tot['crates']:.0f} (user supplied)",
-    f"Kit ${budget:.0f} value-engineering target", f"{'Under' if gap >= 0 else 'Over'} the target by ${abs(gap):.0f}")
+    f"Kit ${budget:.0f} value-engineering target", "At the target" if abs(gap) < 0.5 else f"{'Under' if gap >= 0 else 'Over'} the target by ${abs(gap):.0f}")
 
 # ------------------------------------------------------------------ results
 pr("\n== Results against requirements ==")

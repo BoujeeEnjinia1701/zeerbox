@@ -3,9 +3,9 @@ doc_id: ZBX-PRC-001
 title: ZeerBox design precis
 project: ZeerBox
 doc_type: Design precis
-version: "0.7"
+version: "0.8"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-24'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -37,11 +37,15 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: Controller parts list names the clear-lid box, mode lamp position and plate shield (ZBX-DEC-001, decisions 6 to 8)
+- version: "0.8"
+  date: '2026-10-24'
+  author: Amish Chadha
+  change: "Kit 1.9.1 upgrade: this design is option A of ZBX-OPT-001 (concept choice awaiting Amish, ZBX-DDR-004); 5 A load fuse and 2.5 mm2 battery leads (ZBX-DEC-001 D1, STEM check S16); kit USD 300; requirements now PR-001 to PR-012"
 ---
 
 # ZeerBox design precis
 
-ZeerBox is a walk-in store, 2.4 x 1.5 x 2.0 m inside, with double brick walls around a dry rice husk cavity, a shade roof, a 150 mm cellulose pad in the back wall, and two 12 V exhaust fans in the ceiling at the door end that pull outside air through the pad and along the aisle between two shelving racks. A controller reads temperature and humidity inside and outside and chooses between evaporative cooling, night ventilation and hold, and a 150 W solar panel with a small LiFePO4 battery powers it all. The TRL 3 calculation (ZBX-CAL-001 v0.3) shows that on a 35 °C, 30 % RH day the store holds 480 kg of produce at about 24.3 °C, 10.7 K below the outside air, using about 36 L of water and 372 Wh of solar energy. Store humidity is about 81 %, just above the 80 % target (R3, at risk in the unfavorable case). Value-engineering target: USD 300 for the cooling equipment kit. Estimated cost of the constructable design: USD 299 for the kit (USD 1 under the target); the structure, about USD 574 in local materials, is costed separately. How to build it is in the prototype build plan ([ZBX-BLD-001](05-build-plan.md)).
+ZeerBox is a walk-in store, 2.4 x 1.5 x 2.0 m inside, with double brick walls around a dry rice husk cavity, a shade roof, a 150 mm cellulose pad in the back wall, and two 12 V exhaust fans in the ceiling at the door end that pull outside air through the pad and along the aisle between two shelving racks. A controller reads temperature and humidity inside and outside and chooses between evaporative cooling, night ventilation and hold, and a 150 W solar panel with a small LiFePO4 battery powers it all. The TRL 3 calculation (ZBX-CAL-001 v0.3) shows that on a 35 °C, 30 % RH day the store holds 480 kg of produce at about 24.3 °C, 10.7 K below the outside air, using about 43 L of water and 372 Wh of solar energy. Store humidity is about 81 %, just above the 80 % target (R3, at risk in the unfavorable case). Value-engineering target: USD 300 for the cooling equipment kit. Estimated cost of the constructable design: USD 300 for the kit (at the target); the structure, about USD 574 in local materials, is costed separately. How to build it is in the prototype build plan ([ZBX-BLD-001](05-build-plan.md)). This design is option A of the concept options ([ZBX-OPT-001](02a-concept-options.md)); its claims pass the STEM check ([ZBX-STM-001](01b-stem-check.md)) with five rows open on supplier and field data.
 
 ![Hero render](../media/hero.png)
 
@@ -67,12 +71,12 @@ The thresholds are starting values for field tuning (decided by Amish, 2026-09-2
 
 | Mode | When | Fans | Pump | Lamp |
 | --- | --- | --- | --- | --- |
-| Evaporative cooling | Outside wet-bulb depression 4 K or more and store above its 20 °C set point | On, speed by store temperature | On, duty cycled to keep the pad wet | Green |
+| Evaporative cooling | Outside wet-bulb depression 4 K or more and store above its 20 °C set point | On, speed by store temperature | On, duty cycled to keep the pad wet; off for the last 60 min of each cooling day so the pad dries (ZBX-DEC-001 D5) | Green |
 | Night ventilation | Outside air at least 2 K cooler than the store, whatever its humidity | On, at reduced speed after the 2 h evening run | Off | Blue |
 | Hold | Outside warmer than the store and too humid to cool | One fan at about 30 % speed, about 8 air changes an hour | Off | Amber |
 | Guard | Store RH above 95 % for 60 min, sump float low, or battery low | Low | Off | Red, flashing |
 
-The battery can carry full-speed night ventilation for only about 2.5 h beyond the evening run (ZBX-CAL-001 section 7), so night ventilation runs at reduced speed. The controller logs both sensor pairs and the mode every 10 min to a memory card, so a partner can compare seasons and sites. Firmware is out of scope at TRL 3 beyond a labeled sketch of this logic.
+The battery can carry full-speed night ventilation for only about 2.5 h beyond the evening run (ZBX-CAL-001 section 7), so night ventilation runs at reduced speed. Each morning before the first person goes in, the fans run for 10 min to clear pad drift and respiration air (ZBX-DEC-001 D5). The controller logs both sensor pairs and the mode every 10 min to a memory card, so a partner can compare seasons and sites. Firmware is out of scope at TRL 3 beyond a labeled sketch of this logic.
 
 ## Main components
 
@@ -90,7 +94,7 @@ Numbers match the exploded view (Figure 3) and `bom/bom.csv`. Dimensions come fr
 | 8 | Exhaust fans (pair) | Two 250 mm 12 V DC axial fans with guards and gravity shutters, in a ceiling fan box at the door end, blowing up into the roof space (ZBX-DDR-003) | About 12 W and about 280 m³/h each in service |
 | 9 | Controller and sensors | Low-cost microcontroller, two digital temperature and RH sensors (inside, outside in a six-plate shield), MOSFET drivers, memory card, mode lamp on top of the box, clear-lid IP65 box | Generic parts |
 | 10 | Solar panel | 150 W monocrystalline, about 1,480 x 670 mm, on the shade roof | Decided (item 2) |
-| 11 | Power box | 20 A PWM charge controller, 12.8 V 12 Ah LiFePO4 battery with BMS, 15 A fuse, in a ventilated box | Battery decided (item 3); outside the store, shaded |
+| 11 | Power box | 20 A PWM charge controller, 12.8 V 12 Ah LiFePO4 battery with BMS, 15 A battery fuse on 2.5 mm² leads, 5 A load fuse (ZBX-DEC-001 D1), in a ventilated box | Battery decided (item 3); outside the store, shaded |
 | 12 | Shelving racks | Two timber racks, 2.2 m long and 0.45 m deep, shelves at 0.30, 0.85 and 1.40 m above the floor | Termite-treated timber or steel angle |
 | 13 | Produce crates | 24 ventilated crates, about 500 x 350 x 300 mm, 20 kg each | User supplied; not in the cost |
 
@@ -137,8 +141,8 @@ The decided dry rice husk fill lets in about 84 W through the walls with no wate
 | --- | --- | --- |
 | Evaporated at the pad | 32 L/day (29 to 35 L) | |
 | Wall cavity | none (dry fill) | |
-| Bleed, splash and cleaning | 4 L/day | |
-| **Total** | **about 36 L/day** | R8 (70 L) met; the 60 L sump covers the 36 L of pad and bleed water |
+| Bleed, splash and cleaning | 11 L/day (at most 4 cycles of concentration, ZBX-DEC-001 D5) | |
+| **Total** | **about 43 L/day** | PR-008 (R8, 70 L) met; the 60 L sump covers the 43 L of pad and bleed water |
 
 ### Energy
 
@@ -165,9 +169,9 @@ In the rainy season ZeerBox does little more than a shaded, ventilated shed. The
 
 | Group | Indicative cost | Requirement |
 | --- | --- | --- |
-| Cooling equipment kit (items 6 to 11, 14 and 18) | about $299 | R12: USD 1 under the USD 300 value-engineering target |
+| Cooling equipment kit (items 6 to 11, 14 and 18) | about $300 | PR-012 (R12): at the USD 300 value-engineering target |
 | Structure (items 1 to 5, 12, 15, 16 and 17), materials only, costed separately | about $574 | |
-| Store total, crates excluded | about $873 | |
+| Store total, crates excluded | about $874 | |
 | Crates (item 13, user supplied) | about $96 if bought | Not in the total |
 
 Labor for the mason and carpenter is not included.
@@ -194,10 +198,10 @@ Items marked "decided" were decided by Amish on 2026-09-25 (go with recommendati
 > **Safety:** ZeerBox is a walk-in room that people enter, with a lithium iron phosphate battery, spinning fans, standing warm water, heavy masonry and a roof that can catch the wind. Treat each of these as a hazard at every stage.
 
 - **Entrapment and air quality.** The door must open from inside at all times, with no outside lock that can be closed on a person inside. Produce respires and uses oxygen; with the fans off and door shut for a long time, open the door and let the store air out before entering.
-- **Water-borne bacteria.** Warm recirculating water in pads and sumps can grow *Legionella* and other bacteria, and the fine droplets from a pad can carry them. Cover the sump, drain and clean it weekly, dry the pad out regularly, never use the sump water for drinking or washing produce, and replace a pad that smells or grows slime. Covered water also stops mosquitoes breeding.
+- **Water-borne bacteria.** Warm recirculating water in pads and sumps can grow *Legionella* and other bacteria, and the fine droplets from a pad can carry them. Cover and shade the sump, bleed about 11 L a day and drain and clean it weekly, let the controller dry the pad at the end of every cooling day, run the fans for 10 min before going in (ZBX-DEC-001 D5), never use the sump water for drinking or washing produce, and replace a pad that smells or grows slime. Covered water also stops mosquitoes breeding.
 - **Mold and spoilage.** A damp, poorly ventilated store can spread mold between crates. The guard mode, weekly cleaning and removal of rotten produce are part of operation.
 - **Battery.** A 154 Wh LiFePO4 battery is far less prone to thermal runaway than other lithium chemistries but can still overheat or short. Use a battery with a BMS rated for at least 10 A of charge, fuse it at the terminal, keep it shaded and ventilated outside the store, and do not charge it below 0 °C or above 45 °C.
-- **Electrical.** All wiring is 12 V DC and below the touch-safety threshold, but water and wiring meet at the pad and pump. Use IP65 connections, drip loops and a fused supply. Size the charge controller for 1.25 times the panel's short-circuit current.
+- **Electrical.** All wiring is 12 V DC and below the touch-safety threshold, but water and wiring meet at the pad and pump. Use IP65 connections, drip loops and a fused supply: a 15 A fuse at the battery terminal on 2.5 mm² leads and a 5 A fuse on the 1.5 mm² load circuit, which the battery fuse alone does not protect (ZBX-DEC-001 D1). Size the charge controller for 1.25 times the panel's short-circuit current.
 - **Moving parts.** Fans need guards on both faces. Isolate power before cleaning a fan or the pump.
 - **Structure.** Masonry walls (about 7 t of brick) and a roof that people stand under must be built by a competent mason. At a 30 m/s gust each roof post sees about 1.9 kN of uplift after the roof's own weight; set the posts in footings of at least 500 x 500 x 600 mm with an anchor bar through each post foot, tie every purlin to its beam, screw the sheets down, confirm the local design wind speed, and inspect for cracks each season.
 - **Rice husk fill.** Dry husk is combustible. Keep the cavity capped with mortar, keep flames and hot work away from the walls during building, and keep the solar wiring in conduit where it passes the wall top.

@@ -1,0 +1,47 @@
+{
+ "level": "D3",
+ "stage": "P3",
+ "hash": "da3cb48d7e02e143",
+ "options": {
+  "A": {
+   "title": "Forced-air pad store",
+   "parts": 1181,
+   "made_or_bought": 360,
+   "fasteners": 817,
+   "welds": 4,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 12479.7,
+   "step_files": 360
+  },
+  "B": {
+   "title": "Passive wet-wall chamber",
+   "parts": 1004,
+   "made_or_bought": 286,
+   "fasteners": 706,
+   "welds": 12,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 15040.6,
+   "step_files": 0
+  },
+  "C": {
+   "title": "Charcoal-wall wind cooler",
+   "parts": 538,
+   "made_or_bought": 187,
+   "fasteners": 343,
+   "welds": 8,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 2467.5,
+   "step_files": 0
+  }
+ },
+ "failures": [],
+ "warnings": [],
+ "passed": true,
+ "seconds": 294.9
+}

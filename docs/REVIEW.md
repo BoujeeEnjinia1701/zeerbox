@@ -362,3 +362,81 @@ Done 4 of 5.
 ## 2026-10-02: photoreal renders redone on the constructable design
 
 Rendered with Blender Cycles on Amish's Mac from the updated appearance model; captioned with `.kit/photo_caption.py`; `media/card.png` and `media/social-preview.png` regenerated with `.kit/cards.py`. Views: hero, exploded, detail. image_qc passes. Appearance deviations are those logged above as proposed, awaiting Amish.
+
+## Session 2026-10-24: kit 1.9.1 upgrade
+
+Upgrade of a TRL 3 repo from kit 1.7 to kit 1.9.1: the kit 1.8 pipeline documents (`/upgrade-1.8`) and the kit 1.9 detailed CAD for every concept option (`/upgrade-1.9`), under Amish's instructions of 2026-10-24 ("I want detailed TRL3 CAD"; "Detail every option"; "Kit 1.9.1 rollout - proceed to rollout across the other repos") and his standing fix rule of 2026-10-23. The design of record (option A) is unchanged except for the fixes listed below. `stage: P3`.
+
+### What was added
+
+- **STEM check** `docs/01b-stem-check.md` (ZBX-STM-001) with `docs/04-calcs/stem_check.py` and `stem_results.csv`: 37 option A rows checked against independent estimates (importing ZBX-CAL-001's `sizing.py`), 5 option B rows, 5 option C rows, and the independent review.
+- **Concept options** `docs/02a-concept-options.md` (ZBX-OPT-001) and the concept selection record `docs/decisions/0004-concept-selection.md` (ZBX-DDR-004).
+- **User requirements** `docs/03a-user-requirements.md` (ZBX-URS-001, 14 URs); **product requirements** `docs/03-requirements.md` now ZBX-PRS-001 v0.6 (R1 to R12 migrated to PR-001 to PR-012, "Was" column kept; old ZBX-REQ-001 PDFs removed); **traceability** `docs/03b-traceability.md` (ZBX-RTM-001, generated, 0 gaps).
+- **Regulatory** `docs/07-regulatory.md` (ZBX-REG-001), **feasibility** `docs/08-feasibility.md` (ZBX-FEA-001), **risk** `docs/09-risk.md` (ZBX-RSK-001, with preliminary hazard analysis and first-pass design FMEA), **market** `docs/10-market.md` (ZBX-MKT-001, prices cited with dates), **plan** `docs/11-plan.md` (ZBX-PLN-001, with the repo's reference list).
+- PRB v0.8 gains the users-and-needs and stakeholder tables; PRC v0.8, CAL v0.4, BLD v0.3, DEC v0.3 updated; README in the house structure with STEM check and concept options sections.
+- **CAD, kit 1.9 interface** in `cad/src/model.py` (`PARAMS`, `OPTIONS`, `PRINCIPLES`, `CHOSEN = "A"`, `OPTION_VIEWS`, `ALLOWED_CONTACTS`, `components(option)`), with repo helpers in `cad/src/zbx_parts.py` (materials the kit lacks, timber, wood and roofing fixings, wall ties, ring welds, box-profile sheet). The TRL 3 geometry (`build_components`, `PARAMS`) is kept, so `sizing.py`, `sheets.py` and `build_plan_media.py` run unchanged against it. Every option at D3: `cad/fidelity.json` passes; per-part STEP files of option A in `cad/step/A/` and `cad/step/{A,B,C}-assembly.step`; the old `cad/step/zeerbox-*.step` files are replaced by these. STL of option A at 0.2 mm chord in `cad/stl/`.
+- `cad/src/product_model.py` rebuilt on `components(CHOSEN)` with produce and a mannequin as context; `RENDER_VIEWS`: hero (outdoor, dry soil, ground at z = 0), studio, open-top, exploded.
+- Regenerated: ZBX-DWG-001 Rev P5 and the build plan sheets and pictures (wiring picture shows the 5 A load fuse), concept media from the D3 model (`cad/src/concept_media.py`; `media/model.glb` re-exported alone, 13 MB, fasteners left out to stay under 20 MB).
+
+### Parts and mass per option (`cad/fidelity.json`, D3)
+
+| Option | Parts | Made or bought | Fasteners | Welds | Bare share | Mass |
+| --- | --- | --- | --- | --- | --- | --- |
+| A forced-air pad store | 1,181 | 360 | 817 | 4 | 0 % | 12,480 kg |
+| B passive wet-wall chamber | 1,004 | 286 | 706 | 12 | 0 % | 15,041 kg |
+| C charcoal-wall wind cooler | 538 | 187 | 343 | 8 | 0 % | 2,468 kg |
+
+Most of the mass of A and B is brick, concrete and (B) wet sand.
+
+### STEM verdicts and fixes
+
+- Option A: 30 within known science, 7 plausible (S26 closed by the scenario range; S3, S5, S25, S31, S35, S36 open). Options B and C: B1 to B3, C3 within; B4, B5, C1, C2, C4, C5 plausible. No Fails row. `stem_check: open`.
+- **D1 (fixed under the standing instruction):** the 1.5 mm² load cable was protected only by the 15 A battery fuse, above its 13.8 A capacity derated for a 45 °C roof space. Now 2.5 mm² battery leads and a 5 A load fuse; BOM line 11 +USD 1 (estimate); kit USD 300, at the value-engineering target.
+- **D5 (fixed under the standing instruction, from the independent review):** (a) sump bleed sized for at most 4 cycles of concentration, 10.6 L a day in place of 4 L, total water 36 to 43 L a day (PR-008 still met); (b) both fuses DC rated with enough breaking capacity; (c) EPDM isolating washers under the stainless bolts on the aluminium frames; (d) the pump stops for the last 60 min of each cooling day so the pad dries, and the fans run 10 min before anyone enters.
+- **Independent review:** a headless second agent saw only the STEM check, CAL, PRS and sizing script. It let 17 rows stand, found the 10.7 K drop rests on the unconfirmed pad effectiveness (PR-002 holds down to about 68 %), the bleed too small, the fuses needing DC rating, the structure margin thin above about 32 m/s and at canopy edge zones, the battery close to its charging limit outside, CO₂ arithmetic slightly low, and several option B and C rows overstated. Every finding and what changed is in ZBX-STM-001, Independent review.
+
+### Option scores
+
+A forced-air pad store 190, B passive wet-wall chamber 173, C charcoal-wall wind cooler 173 (of 235). All within 10 % of the top, so all three go to Amish with no pick (ZBX-DDR-004). Option A stays the design of record and is the only one meeting PR-002 (8 K) and PR-004 (mode shown).
+
+### Requirements not met or at risk
+
+- **PR-003 (store RH 80 % or more): at risk,** 81 % central, 77 % unfavorable.
+- PR-005 holds only while the battery has charge (STM S36, D3).
+- PR-006, PR-010, PR-011: to verify at TRL 4. None is not met.
+
+### Decisions awaiting Amish
+
+- **D2 concept choice:** A, B or C, no pick (all within 10 %); A stays until he decides.
+- **D3 ventilation with a flat battery:** recommended, an always-open meshed vent and stack with a turbine head (the graft from options B and C).
+- **D6 battery location:** recommended, the power box inside the store, away from the 45 °C charging limit.
+- **D7 design gust and roof pressure zones:** recommended, keep 30 m/s with a hold point to confirm the local gust before the roof is built.
+- **D8 sump disinfection:** recommended, a weekly shock dose of chlorine after cleaning.
+- Unchanged from before: the items to confirm when parts are bought (ZBX-DEC-001).
+
+### Safety concerns
+
+- A sealed store with no power reaches about 2.3 % CO₂ in 12 h (D3); hold-mode airflow can be stalled by wind on the pad wall.
+- *Legionella* in the warm sump and pad drift through the room (controls in D5; disinfection D8).
+- Roof uplift above about 32 m/s or at edge zones (D7); bearing on poor soil needs a site check.
+- LiFePO4 battery near its charging temperature limit outside (D6).
+
+### Kit gaps and bugs met
+
+- `.kit/cad_parts.MATERIALS` has no fired brick, rice husk, wet sand, charcoal, cellulose pad, straw board, PVC or FR4; `cad/src/zbx_parts.py` registers them at import, each with an existing photoreal render class. The photoreal `concrete` class ignores the base colour, so brick uses `paper`.
+- `cad_check.py` matches `ALLOWED_CONTACTS` fragments case-sensitively, and filleting concave edges with `break_edges()` adds material, which shows as interference against the parts in the recess.
+- Assembly STEP size: fully filleted timber (64 KB per board) and fused wire forms (174 KB per wall tie) took option A's assembly to 49 MB; chamfering only the long arrises and making ties compounds brought it under 45 MB. The kit gives no size budget per part.
+- `.kit/concept.py render_all` with a 1,000-part D3 model ran out of memory on the shared 7 GB machine; the concept views are drawn from the made and bought parts only, and `model.glb` with fasteners was 29 MB, so the web model leaves them out too.
+- `media/options.png` is not rendered here (`.kit/options.py` runs on Amish's Mac), so `render.py --check` reports it missing.
+
+### Renders still to be made (coordinator, on Amish's Mac)
+
+`media/options.png` (`python .kit/options.py`) and the product renders of `RENDER_VIEWS` (hero, studio, open-top, exploded), then the cards. The README links `media/render-studio.png` and `media/render-open-top.png`, which those renders create; the older `render-detail.png` is no longer a view.
+
+### Recommended next step
+
+Amish decides D2, D3 and D6 to D8; then supplier curves for the fan and pad (to confirm 2) and the first approach to the partner. TRL 4 waits for the portfolio cap.
+
+### Checks run (2026-10-24)
+
+`python3 docs/04-calcs/sizing.py` (runs; R8 now 43 L), `python3 .kit/trace.py` (0 gaps), `python3 .kit/cad_check.py --export` (PASS at D3, every option; largest file `cad/step/A-assembly.step` 36 MB), `python3 .kit/render.py` (all 19 controlled documents pass; the PDFs were built with a temporary blank stand-in for `media/options.png` that was deleted and not committed, so `docs/pdf/ZBX-OPT-001_v0.1.pdf` shows a blank options figure until the picture is rendered and the PDF rebuilt), `python3 .kit/render.py --check` (one FAIL: `media/options.png` missing, expected before the Mac render), `reuse lint` (compliant), no em or en dashes outside `.kit/` and `LICENSES/`.

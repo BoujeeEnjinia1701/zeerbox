@@ -1,14 +1,14 @@
 # ZeerBox
 
-![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![DOI](https://zenodo.org/badge/1386353154.svg)](https://zenodo.org/badge/latestdoi/1386353154) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/zeerbox/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/zeerbox/actions/workflows/reuse.yml) [![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/BoujeeEnjinia1701/zeerbox/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/BoujeeEnjinia1701/zeerbox)
+![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Stage P3](https://img.shields.io/badge/stage-P3%20design%20outputs-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![DOI](https://zenodo.org/badge/1386353154.svg)](https://zenodo.org/badge/latestdoi/1386353154) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/zeerbox/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/zeerbox/actions/workflows/reuse.yml) [![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/BoujeeEnjinia1701/zeerbox/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/BoujeeEnjinia1701/zeerbox)
 
-**Area:** Agriculture · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** $300 USD for the cooling equipment kit · **Difficulty:** 2 of 5
+**Area:** Agriculture · **TRL:** 3 of 9 (proof of concept on paper) · **Value-engineering target:** USD 300 for the cooling equipment kit; kit USD 300, structure USD 574 · **Difficulty:** 2 of 5
 
 Walk-in evaporative cooling chamber with a solar fan that forces air through a wetted pad, and a controller that responds to humidity.
 
 ![ZeerBox: solar-powered walk-in evaporative cooling store, product render](media/render-hero.png)
 
-[Exploded render](media/render-exploded.png) · [Detail render](media/render-detail.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement ZBX-DWG-001 (PDF)](cad/drawings/ZBX-DWG-001.pdf) · [Sizing note ZBX-CAL-001](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [Review note](docs/REVIEW.md)
+[Studio render](media/render-studio.png) · [Open-top render](media/render-open-top.png) · [Exploded render](media/render-exploded.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement ZBX-DWG-001 (PDF)](cad/drawings/ZBX-DWG-001.pdf) · [STEM check ZBX-STM-001](docs/01b-stem-check.md) · [Concept options ZBX-OPT-001](docs/02a-concept-options.md) · [Requirements ZBX-PRS-001](docs/03-requirements.md) · [Traceability ZBX-RTM-001](docs/03b-traceability.md) · [Sizing note ZBX-CAL-001](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
@@ -55,9 +55,17 @@ Smallholders lose produce after harvest because they have no cold storage. Refri
 
 ## Concept
 
-A walk-in store (2.4 x 1.5 x 2.0 m inside, 24 crates) with double brick walls around a dry rice husk cavity. Two 12 V fans pull outside air through a 150 mm wetted cellulose pad, and a controller reads temperature and humidity inside and out to choose between evaporative cooling, night ventilation and hold. A 150 W solar panel with a small battery powers it. The TRL 3 calculation puts the store at about 24.3 °C on a 35 °C, 30 % RH day, 10.7 K below the outside air, using about 36 L of water. Store humidity is about 81 %, just above the 80 % target and at risk in the unfavorable case (estimates, [ZBX-CAL-001](docs/04-calcs/01-sizing.md)).
+A walk-in store (2.4 x 1.5 x 2.0 m inside, 24 crates) with double brick walls around a dry rice husk cavity. Two 12 V fans pull outside air through a 150 mm wetted cellulose pad, and a controller reads temperature and humidity inside and out to choose between evaporative cooling, night ventilation and hold. A 150 W solar panel with a small battery powers it. The TRL 3 calculation puts the store at about 24.3 °C on a 35 °C, 30 % RH day, 10.7 K below the outside air, using about 43 L of water. Store humidity is about 81 %, just above the 80 % target and at risk in the unfavorable case (estimates, [ZBX-CAL-001](docs/04-calcs/01-sizing.md)).
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
+
+## STEM check
+
+Every physical, chemical and biological claim was checked against known science ([ZBX-STM-001](docs/01b-stem-check.md), `docs/04-calcs/stem_check.py`): 30 of the 36 claims for this design are within known science and 6 are plausible, five of which need supplier data or field data at TRL 4 (pad effectiveness and pressure drop, shelf life, roof-space temperature, ventilation through a long sunless spell). One detail failed and was fixed under Amish's standing instruction: the load cable now has its own 5 A fuse (ZBX-DEC-001 D1). An independent reviewer tried to refute the results; its findings are in the STEM check.
+
+## Concept options
+
+Three working principles were modelled at the same detail and scored against the user requirements ([ZBX-OPT-001](docs/02a-concept-options.md)): A, this forced-air pad store (190 of 235); B, a passive wet-wall chamber (173); C, a charcoal-wall wind cooler (173). All three are within 10 %, so the choice is Amish's, with no pick (Proposed, awaiting Amish; [ZBX-DDR-004](docs/decisions/0004-concept-selection.md)). Option A stays the design of record and is the only one that meets both the 8 K cooling target and the mode indicator.
 
 ## Key components
 
@@ -68,25 +76,25 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md)
 - 150 W PV panel, 20 A PWM charge controller and small LiFePO4 battery
 - Controller with inside and outside humidity and temperature sensors
 
-The priced bill of materials is in [bom/bom.csv](bom/bom.csv). Value-engineering target: USD 300 for the cooling equipment kit. Estimated cost of the constructable design: USD 299 for the kit (USD 1 under the target); the structure is built from local materials and costed separately, about USD 574 (indicative).
+The priced bill of materials is in [bom/bom.csv](bom/bom.csv). Value-engineering target: USD 300 for the cooling equipment kit. Estimated cost of the constructable design: USD 300 for the kit (at the target); the structure is built from local materials and costed separately, about USD 574 (indicative).
 
 ## Building the prototype
 
-The prototype build plan ([ZBX-BLD-001](docs/05-build-plan.md)) shows how to build the first store, component by component and step by step, with a making sketch for each of the 18 made components and a picture for every one of the 26 assembly steps. Making the concept buildable added a strip footing, lintels and lined openings, a framed ceiling and roof, and moved the two fans from the front wall into a ceiling fan box (decision record ZBX-DDR-003, accepted by Amish on 2026-10-02). A local mason and carpenter can build it; the cooling kit is bought and fitted. The decisions, all made as of 2026-10-02, are kept in the [design decisions register](docs/06-design-decisions.md).
+The prototype build plan ([ZBX-BLD-001](docs/05-build-plan.md)) shows how to build the first store, component by component and step by step, with a making sketch for each of the 18 made components and a picture for every one of the 26 assembly steps. Making the concept buildable added a strip footing, lintels and lined openings, a framed ceiling and roof, and moved the two fans from the front wall into a ceiling fan box (decision record ZBX-DDR-003, accepted by Amish on 2026-10-02). A local mason and carpenter can build it; the cooling kit is bought and fitted. Decisions are kept in the [design decisions register](docs/06-design-decisions.md); the concept choice (D2) and ventilation with a flat battery (D3) await Amish.
 
 ![ZeerBox prototype: every component pulled apart, numbered in build order](docs/05-build-plan/overview.png)
 
 ## Safety
 
-> A walk-in room: the door must open from inside. Warm recirculating water can grow *Legionella*, so cover, drain and clean the sump weekly. Contains a LiFePO4 battery; use a BMS, fuse it and keep it shaded. Guard the fans. Not for meat, fish, milk or medicines.
+> A walk-in room: the door must open from inside. Warm recirculating water can grow *Legionella*, so cover, drain and clean the sump weekly. Contains a LiFePO4 battery; use a BMS, fuse the battery leads at 15 A and the load circuit at 5 A, and keep it shaded. With the fans off, air the store before going in. Guard the fans. Not for meat, fish, milk or medicines.
 
 ## Repository layout
 
 | Folder | Contents |
 | --- | --- |
-| `docs/` | Problem, concept, requirements, calculations and design decisions |
-| `cad/src/` | build123d Python source, the source of truth for all geometry |
-| `cad/step/`, `cad/stl/` | Exported models for FreeCAD, other CAD tools and printing |
+| `docs/` | Problem, STEM check, concept options, user and product requirements, traceability, calculations, build plan, decisions, regulatory, feasibility, risk, market and plan |
+| `cad/src/` | build123d Python source, the source of truth for all geometry: `model.py` (every option at detail level D3), `product_model.py` (render views) |
+| `cad/step/`, `cad/stl/` | Per-part STEP files of the chosen design (`cad/step/A/`), an assembly STEP per option, and STL of the chosen design |
 | `cad/drawings/` | 2D sketches and dimensioned drawings |
 | `bom/` | Bill of materials |
 | `electronics/` | KiCad schematics and PCB layouts |

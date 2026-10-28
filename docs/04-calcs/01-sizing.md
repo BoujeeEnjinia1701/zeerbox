@@ -3,9 +3,9 @@ doc_id: ZBX-CAL-001
 title: ZeerBox sizing and first-principles checks
 project: ZeerBox
 doc_type: Calculation note
-version: "0.3"
+version: "0.4"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-24'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -21,11 +21,15 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: Design for construction (ZBX-DDR-003). Fans moved to the ceiling, brick openings with linings, roof beams and purlins sized, uplift with the framing weight, cost against the value-engineering target
+- version: "0.4"
+  date: '2026-10-24'
+  author: Amish Chadha
+  change: "Kit 1.9.1 upgrade: load-circuit cable protection checked against the derated cable capacity; a 5 A load fuse and 2.5 mm2 battery leads added under Amish's standing instruction (ZBX-DEC-001 D1, STEM check S16); kit USD 300; requirements now traced as PR-001 to PR-012 (ZBX-PRS-001)"
 ---
 
 # ZeerBox sizing and first-principles checks
 
-On paper the store cools as the concept claims, with margin on temperature and humidity close to the relaxed target. Version 0.3 follows the design for construction (ZBX-DDR-003): the cooling figures are unchanged, the roof framing is sized and the costs are rerun against the value-engineering target. Version 0.2 applied the decisions in ZBX-DDR-002: a 150 mm pad in place of 100 mm, a dry rice husk cavity fill in place of wet sand, and R3 relaxed from 85 % to 80 %. At the design point of 35 °C and 30 % RH, the two 250 mm fans deliver about 563 m³/h (331 cfm) through the 150 mm pad, the supply air leaves the pad at 23.1 °C and 87 % RH, and the store averages **24.3 °C, 10.7 K below the outside air** (v0.1: 25.9 °C and 9.1 K). Seven of the twelve requirements are met (three of them by design review or logic review only), the kit cost (R12) is USD 1 under its value-engineering target, one is at risk, none is not met, and three cannot be verified at TRL 3. **R3 (store RH 80 % or more) is at risk:** the store averages about 81 % RH in the central case but 77 % in the unfavorable case. R2 is now met in every case (9.8 to 11.4 K). The dry fill also removes the cavity's water use, so the store needs about 36 L of water a day (v0.1: 44 L).
+On paper the store cools as the concept claims, with margin on temperature and humidity close to the relaxed target. Version 0.3 follows the design for construction (ZBX-DDR-003): the cooling figures are unchanged, the roof framing is sized and the costs are rerun against the value-engineering target. Version 0.2 applied the decisions in ZBX-DDR-002: a 150 mm pad in place of 100 mm, a dry rice husk cavity fill in place of wet sand, and R3 relaxed from 85 % to 80 %. At the design point of 35 °C and 30 % RH, the two 250 mm fans deliver about 563 m³/h (331 cfm) through the 150 mm pad, the supply air leaves the pad at 23.1 °C and 87 % RH, and the store averages **24.3 °C, 10.7 K below the outside air** (v0.1: 25.9 °C and 9.1 K). Seven of the twelve requirements are met (three of them by design review or logic review only), the kit cost (R12) is at its USD 300 value-engineering target (v0.4, after the load fuse of ZBX-DEC-001 D1), one is at risk, none is not met, and three cannot be verified at TRL 3. **R3 (store RH 80 % or more) is at risk:** the store averages about 81 % RH in the central case but 77 % in the unfavorable case. R2 is now met in every case (9.8 to 11.4 K). The dry fill also removes the cavity's water use, so the store needs about 36 L of water a day (v0.1: 44 L); v0.4 sizes the bleed against scale, which takes it to about 43 L.
 
 Every number in this note is printed by `docs/04-calcs/sizing.py` (run from the repo root: `python docs/04-calcs/sizing.py`), which also writes `docs/04-calcs/results.csv`. The script reads the geometry from `PARAMS` in `cad/src/model.py`, the prices from `bom/bom.csv` and the budget from `project.yaml`, so the model, drawing ZBX-DWG-001 and this note agree. All values are first-principles estimates; nothing here is measured.
 
@@ -36,7 +40,7 @@ Every number in this note is printed by `docs/04-calcs/sizing.py` (run from the 
 | Input | Value | Basis |
 | --- | --- | --- |
 | Architecture | Forced air, exhaust fans with the pad on the opposite wall, dry rice husk cavity fill, 24 crates, 150 W panel with a LiFePO4 battery | Decided, ZBX-DDR-001 items 2 to 5 and 7; ZBX-DDR-002 item 12 (fill) |
-| Design point | 35 °C, 30 % RH, sea-level pressure (101.325 kPa); 480 kg of produce inside; 100 kg loaded per day at 32 °C | ZBX-REQ-001 |
+| Design point | 35 °C, 30 % RH, sea-level pressure (101.325 kPa); 480 kg of produce inside; 100 kg loaded per day at 32 °C | ZBX-PRS-001 (formerly ZBX-REQ-001) |
 | Psychrometrics | ASHRAE saturation pressure over water and the ASHRAE humidity-ratio relation for the thermodynamic wet bulb | ASHRAE *Fundamentals* (2017), chapter 1 |
 | Pad | 150 mm cellulose (decided, ZBX-DDR-002 item 11), 0.6 x 0.5 m (0.3 m²); saturation effectiveness of a 100 mm pad 80, 75 or 70 % at 0.6 m/s, scaled with depth and with face velocity to the power -0.2 (NTU model); wet pressure drop 15 Pa at 1.0 m/s, proportional to depth and to velocity to the power 1.8 | TRL 2 assumption for effectiveness; pressure drop is an assumption to confirm with the pad supplier's chart |
 | Fans | Two 250 mm 12 V DC axial fans, each 400 m³/h free air and 12 W; straight-line fan curve to a shut-off pressure of 70, 60 or 50 Pa | BOM line 8; shut-off pressure is an assumption to confirm with the fan's curve |
@@ -148,13 +152,13 @@ The charge current of up to 8.3 A is 0.69 C for the 12 Ah battery, so its BMS mu
 
 ## 8. Water (R8)
 
-The 150 mm pad evaporates 3.19 kg/h, **32 L** over the 10 h cooling day (29 to 35 L), about 4 L more than the 100 mm pad because it cools the air further. The dry rice husk cavity needs no water (v0.1: about 12 L/day for the wet sand). With 4 L of bleed and cleaning the total is **about 36 L/day** (v0.1: 44 L), and R8 (70 L or less) is **met**. The sump holds 68 L gross and 60 L working, which covers the 36 L of pad and bleed water for a full day.
+The 150 mm pad evaporates 3.19 kg/h, **32 L** over the 10 h cooling day (29 to 35 L), about 4 L more than the 100 mm pad because it cools the air further. The dry rice husk cavity needs no water (v0.1: about 12 L/day for the wet sand). Version 0.3 allowed 4 L of bleed and cleaning, a total of about 36 L/day. The independent review of the STEM check pointed out that 4 L of bleed against 32 L evaporated leaves the sump water at about 9 cycles of concentration, and cellulose pads scale above about 3 to 5 in typical water; the site water may be hard or silty (ZBX-PRB-001). Version 0.4 sizes the bleed for at most 4 cycles, bleed = evaporation / (4 - 1) = **10.6 L/day**, drained from the sump each day before topping up (ZBX-DEC-001 D5, under Amish's standing instruction). The total is **about 43 L/day** (v0.1: 44 L), and R8 (70 L or less) is **met**. The sump holds 68 L gross and 60 L working, which covers the 43 L of pad and bleed water for a full day. The cycles to use depend on the source water's hardness, which is to measure at the site.
 
 The pad needs about 3.6 L/min to stay wet (6 L/min per m of pad length, a typical supplier figure to confirm). Lifting that 2 m takes 1.2 W of hydraulic power, or about 6 W at a small pump's 20 % efficiency, which matches the 6 W pump in the BOM.
 
 ## 9. Electrical (R9, R10)
 
-The full load draws 2.4 A at 12.8 V and the panel charges at up to 8.3 A; the 15 A fuse at the battery terminal sits above both and below the cable ratings. Every electrical part runs at 12 V DC, the fans are guarded on both faces and the door opens from inside. R9 is **met** by design review. R10 (local build and 30 min part swaps) depends on a parts survey and swap trials with a partner and is **not verifiable at TRL 3**.
+The full load draws 2.4 A at 12.8 V and the panel charges at up to 8.3 A. Version 0.3 claimed that the 15 A fuse at the battery terminal sat below the cable ratings; the STEM check (ZBX-STM-001, S16) found that it does not for the 1.5 mm² load cable once that cable is derated for the roof space. Two loaded PVC conductors in conduit on a wall carry 17.5 A in 1.5 mm² and 24 A in 2.5 mm² at 30 °C (IEC 60364-5-52, installation method B1), and 0.79 of that at 45 °C, so the 1.5 mm² load cable is good for 13.8 A, below the 15 A fuse. The fix, made under Amish's standing instruction of 2026-10-23 (ZBX-DEC-001 D1): the battery leads to the charge controller are 2.5 mm² (18.9 A derated, above the 15 A battery fuse), and the load circuit gets its own 5 A fuse at the power box, between 1.25 times the 2.4 A load (3.0 A) and the 13.8 A cable capacity. Both fuses are DC rated, with a breaking capacity above the battery's short-circuit current, which for a LiFePO4 pack can exceed 1 kA (D5, after the independent review). The tabulated capacities are to be confirmed against the edition of the standard used. Every electrical part runs at 12 V DC, the fans are guarded on both faces and the door opens from inside. R9 is **met** by design review. R10 (local build and 30 min part swaps) depends on a parts survey and swap trials with a partner and is **not verifiable at TRL 3**.
 
 ## 10. Structure (R11)
 
@@ -179,12 +183,12 @@ The framing members are checked as simply supported sawn timber (bending stress 
 
 | Group | Items | Cost |
 | --- | --- | --- |
-| Cooling equipment kit | 6 to 11, 14 and 18 | **$299** |
+| Cooling equipment kit | 6 to 11, 14 and 18 | **$300** |
 | Structure, costed separately | 1 to 5, 12, 15, 16 and 17 | $574 |
-| Store total, crates excluded | | $873 |
+| Store total, crates excluded | | $874 |
 | Crates, user supplied | 13 | $96 if bought |
 
-R12 was redefined by ZBX-DDR-001 item 1 to cover the cooling equipment kit, with the structure costed separately. `budget_usd` is a hypothetical value-engineering target, not a spending limit (Amish, 2026-10-01). Value-engineering target: USD 300 for the kit. Estimated cost of the constructable design: USD 299 for the kit (USD 1 under the target). The kit rose from $270 in v0.2 by $10 for the pad frame, lining, bars and brackets and $22 for the two panel mounting frames, less $3 for the roof clamps they replace (ZBX-DDR-003). The structure rose from $355 to $574 because the concept BOM did not price the strip footing, the roof beams and purlins, the door and pad linings or the fan box, and underpriced the framed ceiling and the racks. The structure is not part of the target.
+R12 was redefined by ZBX-DDR-001 item 1 to cover the cooling equipment kit, with the structure costed separately. `budget_usd` is a hypothetical value-engineering target, not a spending limit (Amish, 2026-10-01). Value-engineering target: USD 300 for the kit. Estimated cost of the constructable design: USD 300 for the kit, at the target, after USD 1 (estimate) for the 5 A load fuse and holder of ZBX-DEC-001 D1 (v0.3: USD 299). The kit rose from $270 in v0.2 by $10 for the pad frame, lining, bars and brackets and $22 for the two panel mounting frames, less $3 for the roof clamps they replace (ZBX-DDR-003). The structure rose from $355 to $574 because the concept BOM did not price the strip footing, the roof beams and purlins, the door and pad linings or the fan box, and underpriced the framed ceiling and the racks. The structure is not part of the target.
 
 ## 12. Results against requirements
 
@@ -198,16 +202,18 @@ R12 was redefined by ZBX-DDR-001 item 1 to cover the cooling equipment kit, with
 | R4 | Humid-weather detection and mode change | 4 K threshold; 30 °C and 75 % RH gives 3.7 K and switches to hold; lamp shows mode | Detect under 4 K and switch, with indicator | Met (logic review) |
 | R5 | Guard and minimum ventilation | Pump stop at 95 % RH for 60 min; hold mode about 8 air changes an hour at about 2 W | Pump stop rule; 1 air change an hour or more | Met (logic review) |
 | R7 | Design-day energy from one panel | 372 Wh needed; 525 Wh from 150 W (41 % margin) | 10 h cooling plus 2 h evening, no grid | Met |
-| R8 | Water per design day; sump | 36 L/day (pad 32, cavity 0, bleed 4); 60 L sump for 36 L | 70 L or less; sump one day | Met |
-| R9 | Low voltage and safe | 12.8 V, 15 A terminal fuse, guards, inside release | As stated | Met (design review) |
-| R12 | Cooling equipment kit cost | Kit $299; structure $574 separate | Kit $300 value-engineering target | Under the target by $1 |
+| R8 | Water per design day; sump | 43 L/day (pad 32, cavity 0, bleed 11); 60 L sump for 43 L | 70 L or less; sump one day | Met |
+| R9 | Low voltage and safe | 12.8 V; 15 A battery fuse on 2.5 mm² leads; 5 A load fuse on the 1.5 mm² load circuit (D1); guards, inside release | As stated | Met (design review) |
+| R12 | Cooling equipment kit cost | Kit $300; structure $574 separate | Kit $300 value-engineering target | At the target |
 | R6 | Tomato shelf life | No calculation basis; ZECC data come from a cooler, more humid chamber | 1.5 times ambient or more | Not verifiable at TRL 3 |
 | R10 | Local build; 30 min part swaps | Needs a parts survey and swap trials with a partner | Local trades; 30 min | Not verifiable at TRL 3 |
 | R11 | Durability | Wall bearing 16 kPa; post footings 1.8 times uplift at 30 m/s; pad and fan life unknown | 10 years structure; 3 years pad, fans, pump | Not verifiable at TRL 3 |
 
-Counts: 7 met (R1, R2, R4, R5, R7, R8, R9), R12 under its value-engineering target, 1 at risk (R3), none not met, 3 not verifiable at TRL 3 (R6, R10, R11).
+Counts: 7 met (R1, R2, R4, R5, R7, R8, R9), R12 at its value-engineering target, 1 at risk (R3), none not met, 3 not verifiable at TRL 3 (R6, R10, R11).
 
 ## 13. Corrections to earlier figures
+
+Changes in v0.4 (kit 1.9.1 upgrade, 2026-10-24): load-circuit cable protection corrected (section 9, ZBX-DEC-001 D1); bleed sized against scale, 4 to 10.6 L and total water 36 to 43 L/day (section 8, D5); kit $299 to $300; store total $873 to $874. The product requirements R1 to R12 are now PR-001 to PR-012 in ZBX-PRS-001; this note keeps the R numbers, which the traceability matrix maps. Nothing else changes.
 
 Changes in v0.3 (ZBX-DDR-003, design for construction): heat load 442 to 443 W (wall area once the fans left the wall); bricks 1,977 to 1,973; husk 1.3 to 1.2 m³ (capping course and lined openings); uplift per post 2.23 to 1.94 kN and footing factor 1.58 to 1.81 (framing weight counted); purlins, beams and joists checked (Table 6a); kit $270 to $299; structure $355 to $574; store total $625 to $873. Temperature, humidity, airflow, water and energy are unchanged.
 
