@@ -33,6 +33,37 @@ import concept
 INK, MUTED, ACCENT = "#111827", "#4B5563", "#0F766E"
 
 
+
+
+def _tess(shape):
+    """Tessellate a part for the options picture. A face that does not mesh at the fine tolerance is retried
+    coarser, then face by face, skipping only the face that fails (kit 1.9.1)."""
+    for tol in ((0.05, 0.1), (0.2, 0.3)):
+        try:
+            return shape.tessellate(*tol)
+        except Exception:
+            pass
+    verts, tris = [], []
+    for f in shape.faces():
+        try:
+            v, t = f.tessellate(0.2, 0.3)
+        except Exception:
+            continue
+        n = len(verts); verts += list(v); tris += [tuple(i + n for i in tri) for tri in t]
+    return verts, tris
+
+def _choice_label(from_model):
+    """CHOSEN only when project.yaml records a decided concept_chosen; otherwise the option is the current design
+    (kit 1.9.1: a proposed or open choice must not read as decided)."""
+    try:
+        import yaml
+        c = str((yaml.safe_load((ROOT / "project.yaml").read_text()) or {}).get("concept_chosen") or "")
+    except Exception:
+        c = ""
+    if c and "propos" not in c.lower() and "open" not in c.lower() and "await" not in c.lower():
+        return "CHOSEN"
+    return "CURRENT DESIGN" if from_model else "RECOMMENDED"
+
 def load_options():
     src = ROOT / "cad/src/options.py"
     if not src.exists():
@@ -98,7 +129,7 @@ def cycles_panel(opt, tmp):
         man = Pos(bb.min.X - 450, bb.center().Y, gz) * context_parts.mannequin(1750.0, "stand")
         parts = parts + [dict(name="Person (scale)", shape=man, color="#9C9C9E", material="clay", kind="context")]
     for i, p in enumerate(parts):
-        v, t = p["shape"].tessellate(0.05, 0.1)
+        v, t = _tess(p["shape"])
         arrays[f"v{i}"] = np.array([[q.X, q.Y, q.Z] for q in v], dtype=np.float32) / 1000.0
         arrays[f"f{i}"] = np.array(t, dtype=np.int32)
         meta.append(dict(name=p["name"], color=p["color"], bom=p.get("bom"), alpha=1.0, material=p.get("material"),
@@ -163,7 +194,7 @@ def main():
         fig.text(i / n + 0.02, 0.17, f"Option {o['key']}: {o['name']}", fontsize=11, fontweight="bold", color=INK, va="top")
         fig.text(i / n + 0.02, 0.12, textwrap.fill(o.get("principle", ""), 52), fontsize=8.5, color=MUTED, va="top")
         if o.get("chosen"):
-            fig.text((i + 1) / n - 0.02, 0.17, "CHOSEN" if mo else "RECOMMENDED", fontsize=8, fontweight="bold", color=ACCENT, va="top", ha="right")
+            fig.text((i + 1) / n - 0.02, 0.195, _choice_label(mo), fontsize=8, fontweight="bold", color=ACCENT, va="top", ha="right")
     out = ROOT / "media/options.png"
     out.parent.mkdir(exist_ok=True)
     fig.savefig(out, facecolor="white"); plt.close(fig)
